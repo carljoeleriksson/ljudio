@@ -1,0 +1,23 @@
+{
+  "name": "ljudio",
+  "version": "1.0.0",
+  "description": "Eli\r Alex\r Omar\r Joel E\r Fahima",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wpmeal/ljudio.git"
+  },
+  "author": "Group6",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wpmeal/ljudio/issues"
+  },
+  "homepage": "https://github.com/wpmeal/ljudio#readme",
+  "dependencies": {
+    "better-sqlite3": "^7.4.3",
+    "express": "^4.17.1"
+  }
+}
