@@ -1,7 +1,9 @@
-// TO DO 
+const { Router } = require('express');
+const router = new Router();
 
-// a route for register user
+const { registerMemberCont } = require('../controller/memberControl.js');
 
-// a route for login
 
-// a route for logout
+router.post('/registerMemeber', registerMemberCont);
+
+module.exports = router;
