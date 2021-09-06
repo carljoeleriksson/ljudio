@@ -1,4 +1,6 @@
 const db = require('../model/memberModel')
+const jwt = require('jsonwebtoken');
+
 
 // a controle to register a new member
 async function registerMemberCont(request, response) {
@@ -46,11 +48,18 @@ async function loginCont(request, response) {
 
     let credentials = request.body;
 
-    let select = await db.login(credentials)
+    let user = await db.login(credentials)
 
-    console.log(select);
+    console.log('A loggged in User:' + user.Email);
 
-    result = select
+    // Sign loggedIn user using jwt  
+    const token = jwt.sign({ id: user.id }, 'zdt346', {
+      expiresIn: 600 //Går ut om 10 minuter 
+    });
+    // reassign the token of signed user 
+    result = token;
+
+    //result = select
 
 
     // catch any throwable error 
