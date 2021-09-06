@@ -11,6 +11,7 @@ function run(query, params = {}) {
   return stmt.run(params)
 }
 
+
 // check if an obj has an empty property value 
 function isEmpty(data = {}) {
 
@@ -56,11 +57,32 @@ module.exports = {
     return run(query, member)
 
 
-  }
+  },
+
+  // Login 
+  login(credentials) {
+
+    if (isEmpty(credentials)) {
+      throw Error("All fields should be filled!")
+    }
+
+    const select = 'SELECT * FROM Members WHERE Email = ? AND Password = ?'
+
+    const stml = conn.prepare(select)
+    const user = stml.get([credentials.Email, credentials.Password])
+
+    if (!user) {
+      throw Error('Wrong Credentials');
+    }
+
+    return user
+
+
+  },
 }
 
 
 // TO DO
-// login 
+
 
 // logout 
