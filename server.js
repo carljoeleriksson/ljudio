@@ -1,4 +1,4 @@
-
+const db = require('./database')
 const express = require('express');
 const app = express();
 
@@ -10,6 +10,7 @@ const memberRouter = require('./routes/member');
 // our app has two different routes bases: /api/auth/ route base and /api/event route base
 app.use('/api', memberRouter); // 
 
+app.use(express.static('/frontend'))
 
 app.listen(8000, () => {
   console.log('Server started');
