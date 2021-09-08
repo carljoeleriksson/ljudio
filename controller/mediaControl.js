@@ -3,8 +3,8 @@ const { fetchInfo, connectTopApi } = require('../model/mediaModel')
 // a controle to search for a song/artist...
 // request body as json :{
 //      {
-//			"SearchType": "search" || "suggestions" || "albums" || ... // visit https://yt-music-api.herokuapp.com/ for more types
-//			"Keyword": "laura" //
+//			"searchType": "search" || "suggestions" || "albums" || ... // visit https://yt-music-api.herokuapp.com/ for more types
+//			"keyWord": "laura" //
 //		}
 //} 
 async function searchMedia(request, response) {
@@ -18,18 +18,18 @@ async function searchMedia(request, response) {
     let req = request.body;
 
 
-    // console.log(req.SearchType)
+    // console.log(req.searchType)
 
     // check if search type is missing in the request json body then the default is search 
-    fetchInfoObj.paramName = (!req.SearchType) ? "search" : req.SearchType
+    fetchInfoObj.paramName = (!req.searchType) ? "search" : req.searchType
 
 
     console.log("Search Type: " + fetchInfoObj.paramName)
 
-    if (!req.Keyword)
-      throw Error("Keyword is required!")
+    if (!req.keyWord)
+      throw Error("keyWord is required!")
 
-    fetchInfoObj.paramValue = req.Keyword
+    fetchInfoObj.paramValue = req.keyWord
 
     //console.log(fetchInfoObj)
 
