@@ -1,29 +1,31 @@
 import React from 'react'
 
+function SearchRender(result) {
+	//Getting prop (result) as object form some reason, so I redirect to the array that it contains.
+	const searchResult = result.result;
 
-
-function SearchRender(searchResult) {
 	return 	(<>
-		<div className="songResContainer">
+		<div className="song-result-container">
 			<h2>Songs</h2>
-			<ul className="songResults">
+			<ul className="song-list">
 				{
-				searchResult.searchResult.filter(content => content.type == "song")
+				searchResult.filter(content => content.type == "song")
 				.map(song => (
 				<li key={song.videoId}>
 					<p className="song-title">{song.name}</p>
 					<p className="artist-name">{song.artist.name}</p>
+					{/* playSong-button HERE */}
 				</li>
 				))
 				}
 			</ul>
 		</div>
 
-		<div className="artistResContainer">
+		<div className="artist-result-container">
 			<h2>Artists</h2>
-			<ul className="artistResults">
+			<ul className="artist-list">
 				{
-				searchResult.searchResult.filter(content => content.type == "artist")
+				searchResult.filter(content => content.type == "artist")
 				.map(artist => (
 				<li key={artist.browseId}>
 					<p className="artist-name">{artist.name}</p>
@@ -32,11 +34,11 @@ function SearchRender(searchResult) {
 				}
 			</ul>
 		</div>
-		<div className="albumResContainer">
+		<div className="album-result-container">
 			<h2>Albums</h2>
-			<ul className="albumResults">
+			<ul className="album-list">
 				{
-				searchResult.searchResult.filter(content => content.type == "album")
+				searchResult.filter(content => content.type == "album")
 				.map(album => (
 				<li key={album.browseId}>
 					<p className="album-name">{album.name}</p>
@@ -45,6 +47,8 @@ function SearchRender(searchResult) {
 				}
 			</ul>
 		</div>
+
+		{/* HERE, we might put a div with playlist-results later */}
 	</>)
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react'
+import React from 'react'
 
 function SearchBar(props) {
 
@@ -7,32 +7,13 @@ function SearchBar(props) {
 		<input 
 			className="search-input" 
 			type="text" 
-			placeholder="Search..."
+			placeholder="Search"
 			onChange={props.onChange}
 			/>
-		<button type="button" onClick={props.onClick}>
+		<button className="search-button" type="button" onClick={props.onClick}>
 			Search
 		</button>	
 		</>
 	)
 }
-/* maybe put in the searchresult-component
-
-if (error) {
-        return <div>Error: {error.message}</div>;
-      } else if (!isLoaded) {
-        return <div>Loading...</div>;
-      } else {
-        return (
-          <ul>
-            {songs.map(song => (
-              <li key={song.id}>
-                {song.name} {song.artist.name}
-              </li>
-            ))}
-          </ul>
-        );
-	}
-*/
-
 export default SearchBar
