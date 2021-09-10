@@ -8,8 +8,9 @@ function Home() {
 	const [searchResult, setSearchResult] = useState();
 	const [searchTerm, setSearchTerm] = useState('');
 
-	async function fetchSearchResult(){
-
+	async function fetchSearchResult(e){
+		e.preventDefault();
+		
 		const response = await fetch('http://localhost:8000/api/search', {
 			method: 'POST',
 			body: JSON.stringify({

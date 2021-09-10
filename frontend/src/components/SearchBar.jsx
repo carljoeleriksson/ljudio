@@ -1,19 +1,22 @@
 import React from 'react'
 
+import { Button, Grid, TextField, IconButton } from '@material-ui/core'
+import { MdPlayCircleOutline, MdPauseCircleOutline, MdSearch } from 'react-icons/md'
+
 function SearchBar(props) {
 
 	return (
-		<>
-		<input 
-			className="search-input" 
-			type="text" 
-			placeholder="Search"
-			onChange={props.onChange}
+		<form onSubmit={props.onClick}>
+			<input 
+				className="search-input" 
+				type="text" 
+				placeholder="Search"
+				onChange={props.onChange}
 			/>
-		<button className="search-button" type="button" onClick={props.onClick}>
-			Search
-		</button>	
-		</>
+			<IconButton className="search-button" type="submit">
+				<MdSearch />
+			</IconButton>
+		</form>
 	)
 }
 export default SearchBar
