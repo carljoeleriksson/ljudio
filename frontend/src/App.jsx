@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Form from './components/Form';
 import Login from './components/Login';
 import HomePage from './pages/HomePage';
+import Player from './components/Player';
+
 import './App.css';
 
 function App() {
