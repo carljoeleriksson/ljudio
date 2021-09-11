@@ -66,10 +66,13 @@ module.exports = {
       throw Error("All fields should be filled!")
     }
 
-    const select = 'SELECT * FROM Members WHERE Email = ? AND Password = ?'
+    const select = 'SELECT Id FROM Members WHERE Email = ? AND Password = ?'
 
     const stml = conn.prepare(select)
+
     const user = stml.get([credentials.Email, credentials.Password])
+
+    //console.log(user.Id)
 
     if (!user) {
       throw Error('Wrong Credentials');

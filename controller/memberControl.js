@@ -50,10 +50,11 @@ async function loginCont(request, response) {
 
     let user = await db.login(credentials)
 
-    console.log('A loggged in User:' + user.Email);
+
+    console.log('A loggged in User:' + user.Id);
 
     // Sign loggedIn user using jwt  
-    const token = jwt.sign({ id: user.id }, 'zdt346', {
+    const token = jwt.sign({ id: user.Id }, 'zdt346', {
       expiresIn: 600 //Går ut om 10 minuter 
     });
     // reassign the token of signed user 
