@@ -17,6 +17,8 @@ async function registerMemberCont(request, response) {
 
     result = member
 
+    response.status(201)
+
 
     // catch any throwable error 
   } catch (e) {
@@ -55,7 +57,7 @@ async function loginCont(request, response) {
 
     // Sign loggedIn user using jwt  
     const token = jwt.sign({ id: user.Id }, 'zdt346', {
-      expiresIn: 600 //Går ut om 10 minuter 
+      expiresIn: 6000 //Går ut om 10 minuter // SET BACK TO 60 
     });
     // reassign the token of signed user 
     result = token;
