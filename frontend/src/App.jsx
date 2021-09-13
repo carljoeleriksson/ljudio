@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Form from './components/Form';
 import Login from './components/Login';
+import Player from './components/Player';
+
 import './App.css';
 
 function App() {

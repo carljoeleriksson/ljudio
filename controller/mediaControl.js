@@ -18,7 +18,7 @@ async function searchMedia(request, response) {
     let req = request.body;
 
 
-    console.log(req.searchType)
+    // console.log(req.searchType)
 
     // check if search type is missing in the request json body then the default is search 
     fetchInfoObj.paramName = (!req.searchType) ? "search" : req.searchType
@@ -27,15 +27,15 @@ async function searchMedia(request, response) {
     console.log("Search Type: " + fetchInfoObj.paramName)
 
     if (!req.keyWord)
-      throw Error("Keyword is required!")
+      throw Error("keyWord is required!")
 
     fetchInfoObj.paramValue = req.keyWord
 
-    console.log(fetchInfoObj)
+    //console.log(fetchInfoObj)
 
     let data = await connectTopApi(fetchInfoObj)
 
-    console.log('Search result: ' + data)
+    //console.log('Search result: ' + data)
 
     result = data
 
