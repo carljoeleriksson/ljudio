@@ -6,8 +6,8 @@ function SearchRender(result) {
 	const searchResult = result.result;
 	console.log(searchResult)
 
-	return 	(<>
-		<div className="song-result-container">
+	return (<>
+		<div className="song-result-container" >
 			<h2>Songs</h2>
 			<ul className="song-list">
 				{
@@ -27,12 +27,12 @@ function SearchRender(result) {
 			<h2>Artists</h2>
 			<ul className="artist-list">
 				{
-				searchResult.filter(content => content.type == "artist")
-				.map(artist => (
-				<li key={artist.browseId}>
-					<p className="artist-name">{artist.name}</p>
-				</li>
-				))
+					searchResult.length > 0 && searchResult.filter(content => content.type == "artist")
+						.map(artist => (
+							<li key={artist.browseId}>
+								<p className="artist-name">{artist.name}</p>
+							</li>
+						))
 				}
 			</ul>
 		</div>
@@ -40,12 +40,12 @@ function SearchRender(result) {
 			<h2>Albums</h2>
 			<ul className="album-list">
 				{
-				searchResult.filter(content => content.type == "album")
-				.map(album => (
-				<li key={album.browseId}>
-					<p className="album-name">{album.name}</p>
-				</li>
-				))
+					searchResult.length > 0 && searchResult.filter(content => content.type == "album")
+						.map(album => (
+							<li key={album.browseId}>
+								<p className="album-name">{album.name}</p>
+							</li>
+						))
 				}
 			</ul>
 		</div>
