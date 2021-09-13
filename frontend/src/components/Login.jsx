@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import validate from './validateLogin';
-import Axios from 'axios';
+
 function Login() {
    const [values, setValues] = useState({
       email: '',
