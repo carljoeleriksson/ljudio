@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, createContext } from 'react'
 
 import SearchBar from '../components/SearchBar';
 import SearchRender from '../components/SearchRender';
-import Player from '../components/Player';
 
 function Home() {
 
@@ -33,6 +32,12 @@ function Home() {
 		}
 
 	}
+
+	function playSong(videoId){
+		console.log("playSong function");
+	}
+
+
 	return (
 		<div>
 			<SearchBar onChange={e => {
@@ -50,8 +55,11 @@ function Home() {
 
 			}
 			} onClick={fetchSearchResult} />
+			
 			{searchResult && <SearchRender result={searchResult} />}
+			
 
+			
 		</div>
 	)
 }

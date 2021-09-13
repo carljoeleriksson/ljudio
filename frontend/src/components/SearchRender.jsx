@@ -1,12 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
+import { IoAddCircleSharp } from "react-icons/io5";
+import Player from '../components/Player';
 
 function SearchRender(result) {
+	//Add to playlist button kör POST till databasen och ny playlist.
+
 	//Getting prop (result) as object form some reason, so I redirect to the array that it contains.
+	console.log(result)
 	const searchResult = result.result;
+
 	console.log(searchResult)
 
+	const [songPlaying, setSongPlaying] = useState("");
+
+	function playSong(videoId) {
+
+		console.log(videoId)
+		setSongPlaying(videoId)
+	}
+
 	return (<>
+		{songPlaying !=="" && <Player videoId={songPlaying} />}
+		
 		<div className="song-result-container" >
 			<h2>Songs</h2>
 			<ul className="song-list">
@@ -16,7 +32,8 @@ function SearchRender(result) {
 				<li key={song.videoId}>
 					<p className="song-title">{song.name}</p>
 					<p className="artist-name">{song.artist.name}</p>
-					<button type="button"><FaPlayCircle /></button>
+					<button type="button" onClick={() => playSong(song.videoId)}><FaPlayCircle /></button>				
+					<button type="button"><IoAddCircleSharp /></button>
 				</li>
 				))
 				}
@@ -49,6 +66,8 @@ function SearchRender(result) {
 				}
 			</ul>
 		</div>
+	
+		
 		{/* HERE, we might put a div with playlist-results later */}
 	</>)
 }
