@@ -1,40 +1,107 @@
-import React from 'react';
-import useForm from './useForm';
-import validate from './validateInfo';
+import React, { useRef, useState } from 'react';
+import validate from './validateLogin';
+import Axios from 'axios';
+function Login() {
+   const [values, setValues] = useState({
+      email: '',
+      password: '',
+   });
 
-export default function Login() {
-   const { handleChange, values, handleSubmit, errors } = useForm(validate);
+   const [errors, setErrors] = useState({});
+
+   function handleFormInput(e) {
+      let newdata = { ...values };
+      newdata[e.target.id] = e.target.value;
+      setValues(newdata);
+      console.log(newdata);
+   }
+   //saveToken = (token) => {
+   function saveToken(token) {
+      return new Promise((resolve, reject) => {
+         sessionStorage.setItem('auth', token);
+
+         resolve('Done');
+      });
+   }
+   async function handleFormSubmit(e) {
+      e.preventDefault();
+      setErrors(validate(values));
+      const response = await fetch('/api/login', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+            Email: values.email,
+            Password: values.password,
+         }),
+      });
+      const data = await response.json();
+      console.log(data);
+
+      if (data) {
+         saveToken(data);
+      }
+   }
+
+   // get token from session storage
+   // getToken = () => {
+   //    let token = null;
+
+   //    if (sessionStorage.getItem('auth')) {
+   //       token = sessionStorage.getItem('auth');
+   //    }
+
+   //    return token;
+   // };
+
+   // // delete token from session storage
+   // deleteToken = () => {
+   //    sessionStorage.removeItem('auth');
+   // };
+
+   // function handleFormSubmit(e) {
+   //    e.preventDefault();
+   //    setErrors(validate(values));
+   //    Axios.post('/api/login', {
+   //       headers: { authorization: 'Bearer ' + user.id },
+   //       Email: values.email.trim(),
+   //       Password: values.password.trim(),
+   //    }).then((res) => {
+   //       console.log(res);
+   //    });
+   // }
+
    return (
       <div>
-         <form onSubmit={handleSubmit}>
+         <h1>Login</h1>
+         <form onSubmit={(e) => submit(e)}>
             <div>
-               <label htmlFor="email">Email</label>
                <input
-                  id="email"
-                  type="email"
+                  type="text"
+                  placeholder="Email"
                   name="email"
-                  placeholder="Enter Your Email"
                   value={values.email}
-                  onChange={handleChange}
+                  onChange={(e) => handleFormInput(e)}
+                  id="email"
                />
                {errors.email && <p>{errors.email}</p>}
             </div>
             <div>
-               <label htmlFor="password">Password</label>
                <input
-                  id="password"
                   type="password"
+                  placeholder="Password"
                   name="password"
-                  placeholder="Enter Your Password"
                   value={values.password}
-                  onChange={handleChange}
+                  onChange={(e) => handleFormInput(e)}
+                  id="password"
                />
+               {errors.password && <p>{errors.password}</p>}
             </div>
-            {errors.password && <p>{errors.password}</p>}
-            <button type="submit" onSubmit={handleSubmit}>
-               Login
-            </button>
+            <div>
+               <button onClick={handleFormSubmit}>Login</button>
+            </div>
          </form>
       </div>
    );
 }
+
+export default Login;

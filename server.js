@@ -1,4 +1,4 @@
-const db = require('./database')
+const db = require('./database');
 const express = require('express');
 const app = express();
 
@@ -11,15 +11,12 @@ const mediaRouter = require('./routes/media');
 // app.use(express.static('./react/games/dist'));
 
 // our app has two different routes bases: /api/auth/ route base and /api/event route base
-app.use('/api', memberRouter); // 
+app.use('/api', memberRouter); //
 
-app.use(express.static('/frontend'))
+app.use(express.static('/frontend'));
 
-app.use('/api', mediaRouter); 
-
+app.use('/api', mediaRouter);
 
 app.listen(8000, () => {
-  console.log('Server started');
-
-
+   console.log('Server started');
 });

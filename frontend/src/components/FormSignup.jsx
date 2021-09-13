@@ -1,75 +1,111 @@
-import React from 'react';
-import useForm from './useForm';
+import React, { useState } from 'react';
 import validate from './validateInfo';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 function FormSignup() {
-   const { handleChange, values, handleSubmit, errors } = useForm(validate);
+   const [values, setValues] = useState({
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
+   });
+
+   const [errors, setErrors] = useState({});
+   const [redirect, setRedirect] = useState(false);
+
+   function handleFormInput(e) {
+      let newdata = { ...values };
+      newdata[e.target.id] = e.target.value;
+      setValues(newdata);
+      console.log(newdata);
+   }
+
+   // async function handleFormSubmit(e) {
+   //    e.preventDefault();
+   //    setErrors(validate(values));
+   //    Axios.post('/api/registerMemeber', {
+   //       FirstName: values.firstname.trim(),
+   //       LastName: values.lastname.trim(),
+   //       Email: values.email.trim(),
+   //       Password: values.password.trim(),
+   //    }).then((res) => {
+   //       console.log(res);
+   //    });
+   //    setRedirect(true);
+   // }
+
+   async function handleFormSubmit(e) {
+      e.preventDefault();
+      setErrors(validate(values));
+
+      await fetch('/api/registerMemeber', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+            FirstName: values.firstname.trim(),
+            LastName: values.lastname.trim(),
+            Email: values.email.trim(),
+            Password: values.password.trim(),
+         }),
+      });
+      setRedirect(true);
+   }
+
+   if (redirect) {
+      return <Redirect to="/login" />;
+   }
+
    return (
       <div>
-         <form onSubmit={handleSubmit}>
+         <form onSubmit={(e) => submit(e)}>
             <h1>Create account</h1>
             <div>
-               <label htmlFor="firstname">First Name</label>
                <input
                   id="firstname"
                   type="text"
                   name="firstname"
                   placeholder="Enter Your First Name"
+                  onChange={(e) => handleFormInput(e)}
                   value={values.firstname}
-                  onChange={handleChange}
                />
+
                {errors.firstname && <p>{errors.firstname}</p>}
             </div>
             <div>
-               <label htmlFor="lastname">Last name</label>
                <input
                   id="lastname"
                   type="text"
                   name="lastname"
                   placeholder="Enter Your Last Name"
+                  onChange={(e) => handleFormInput(e)}
                   value={values.lastname}
-                  onChange={handleChange}
                />
                {errors.lastname && <p>{errors.lastname}</p>}
             </div>
             <div>
-               <label htmlFor="email">Email</label>
                <input
                   id="email"
                   type="email"
                   name="email"
                   placeholder="Enter Your Email"
+                  onChange={(e) => handleFormInput(e)}
                   value={values.email}
-                  onChange={handleChange}
                />
                {errors.email && <p>{errors.email}</p>}
             </div>
             <div>
-               <label htmlFor="password">Password</label>
                <input
                   id="password"
                   type="password"
                   name="password"
                   placeholder="Enter Your Password"
+                  onChange={(e) => handleFormInput(e)}
                   value={values.password}
-                  onChange={handleChange}
                />
+               {errors.password && <p>{errors.password}</p>}
             </div>
-            {errors.password && <p>{errors.password}</p>}
-            <div>
-               <label htmlFor="password2">Confirm password</label>
-               <input
-                  id="password2"
-                  type="password"
-                  name="password2"
-                  placeholder="Confirm Password"
-                  value={values.password2}
-                  onChange={handleChange}
-               />
-               {errors.password2 && <p>{errors.password2}</p>}
-            </div>
-            <button type="submit">Sign up</button>
+
+            <button onClick={handleFormSubmit}>Sign up</button>
             <span>
                Already have an account? Login <Link to="/login">Here</Link>
             </span>
