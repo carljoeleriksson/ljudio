@@ -1,8 +1,10 @@
 import React from 'react'
+import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 
 function SearchRender(result) {
 	//Getting prop (result) as object form some reason, so I redirect to the array that it contains.
 	const searchResult = result.result;
+	console.log(searchResult)
 
 	return 	(<>
 		<div className="song-result-container">
@@ -14,7 +16,7 @@ function SearchRender(result) {
 				<li key={song.videoId}>
 					<p className="song-title">{song.name}</p>
 					<p className="artist-name">{song.artist.name}</p>
-					{/* playSong-button HERE */}
+					<button type="button"><FaPlayCircle /></button>
 				</li>
 				))
 				}
@@ -47,7 +49,6 @@ function SearchRender(result) {
 				}
 			</ul>
 		</div>
-
 		{/* HERE, we might put a div with playlist-results later */}
 	</>)
 }

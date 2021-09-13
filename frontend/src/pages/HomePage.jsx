@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import SearchBar from '../components/SearchBar';
 import SearchRender from '../components/SearchRender';
+import Player from '../components/Player';
 
 function Home() {
 
@@ -32,8 +33,10 @@ function Home() {
 
 	return (
 		<div>
+			
 			<SearchBar onChange={e => setSearchTerm(e.target.value)} onClick={fetchSearchResult} />
 			{searchResult && <SearchRender result={searchResult} />}
+
 		</div>
 	)
 }

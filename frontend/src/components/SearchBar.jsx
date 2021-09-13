@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { Button, Grid, TextField, IconButton } from '@material-ui/core'
 import { MdPlayCircleOutline, MdPauseCircleOutline, MdSearch } from 'react-icons/md'
 
 function SearchBar(props) {
@@ -13,9 +12,9 @@ function SearchBar(props) {
 				placeholder="Search"
 				onChange={props.onChange}
 			/>
-			<IconButton className="search-button" type="submit">
+			<button className="search-button" type="submit">
 				<MdSearch />
-			</IconButton>
+			</button>
 		</form>
 	)
 }
