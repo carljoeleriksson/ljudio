@@ -1,28 +1,36 @@
-import React, { useState } from 'react'
+import React, { useState, createContext } from 'react'
+import context from 'react-bootstrap/esm/AccordionContext';
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { IoAddCircleSharp } from "react-icons/io5";
 import Player from '../components/Player';
+import PlaylistModal from '../components/PlaylistModal'
+
+export const Context = createContext()
 
 function SearchRender(result) {
-	//Add to playlist button kör POST till databasen och ny playlist.
-
-	//Getting prop (result) as object form some reason, so I redirect to the array that it contains.
-	console.log(result)
 	const searchResult = result.result;
 
-	console.log(searchResult)
+	const [showContext, setShowContext] = useState(false);
 
 	const [songPlaying, setSongPlaying] = useState("");
+	const [addSong, setAddSong] = useState();
+
+	function addToPlaylist(songObj) {
+		console.log("songObj i searchrender", songObj)
+		setAddSong(songObj)
+		setShowContext(true);
+	}
 
 	function playSong(videoId) {
-
 		console.log(videoId)
 		setSongPlaying(videoId)
 	}
 
-	return (<>
+	return (<Context.Provider value={[showContext, setShowContext]} >
 		{songPlaying !=="" && <Player videoId={songPlaying} />}
+		{addSong !== undefined && <PlaylistModal {...addSong} />}
 		
+
 		<div className="song-result-container" >
 			<h2>Songs</h2>
 			<ul className="song-list">
@@ -33,7 +41,7 @@ function SearchRender(result) {
 					<p className="song-title">{song.name}</p>
 					<p className="artist-name">{song.artist.name}</p>
 					<button type="button" onClick={() => playSong(song.videoId)}><FaPlayCircle /></button>				
-					<button type="button"><IoAddCircleSharp /></button>
+					<button type="button" onClick={() => addToPlaylist(song)}><IoAddCircleSharp /></button>
 				</li>
 				))
 				}
@@ -69,7 +77,7 @@ function SearchRender(result) {
 	
 		
 		{/* HERE, we might put a div with playlist-results later */}
-	</>)
+		</Context.Provider>)
 }
 
 export default SearchRender

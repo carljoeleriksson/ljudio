@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react'
+import React, { useState } from 'react'
 
 import SearchBar from '../components/SearchBar';
 import SearchRender from '../components/SearchRender';
@@ -8,6 +8,7 @@ function Home() {
 	const [searchResult, setSearchResult] = useState();
 	const [searchTerm, setSearchTerm] = useState('');
 	const [searchType, setSearchType] = useState('search');
+
 
 	async function fetchSearchResult(e) {
 		e.preventDefault();
@@ -41,18 +42,15 @@ function Home() {
 	return (
 		<div>
 			<SearchBar onChange={e => {
-				console.log(e.target.value);
+				console.log("searchType", e.target.value);
 
 				if (e.target.type == "text") {
-
 					setSearchTerm(e.target.value)
 
 				} else {
-
 					setSearchType(e.target.value)
-
+					setSearchTerm(e.target.value)
 				}
-
 			}
 			} onClick={fetchSearchResult} />
 			
