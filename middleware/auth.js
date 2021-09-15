@@ -15,7 +15,7 @@ const jwt = require('jsonwebtoken');
     //verigy the token using jwt;
     const data = jwt.verify(token, 'zdt346');
     // log the verified user 
-    console.log('User middleware', data);
+    console.log('User middleware', data.id);
     // assign a new property to request obj with user id of verified user
       request.userId = data.id;
       // call the controller that is atttached with this middleware

@@ -80,4 +80,4 @@ function SearchRender(result) {
 		</Context.Provider>)
 }
 
-export default SearchRender
+export default SearchRender;
