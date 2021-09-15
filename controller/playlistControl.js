@@ -54,8 +54,8 @@ async function createPlaylistCont(request, response) {
 
 /* request body :JSON
 {
-"playlist_id" : "",
- "content" : media json obj
+"Playlist_id" : "",
+ "Content" : media json obj
 }
 */
 
@@ -72,13 +72,14 @@ async function addToPlaylistCont(request, response) {
 
     let reqData = request.body;
 
-    let playlist_id = reqData.playlist_id
+    let playlist_id = reqData.Playlist_id
 
-    let rawContent = reqData.content
+    let rawContent = reqData.Content
 
     let content = JSON.stringify(rawContent)
 
-    let insert = await db.addToPlaylist(playlist_id, content)
+    let insert = await db.addToPlaylist(user_id, playlist_id, content)
+
     console.log(insert)
 
     // let db_change = update.changes
