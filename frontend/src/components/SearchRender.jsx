@@ -1,10 +1,16 @@
 import React from 'react';
-import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
+import { FaPlayCircle } from 'react-icons/fa';
+import { IoMdAddCircle } from 'react-icons/io';
+import Player from './Player';
 
 function SearchRender(result) {
    //Getting prop (result) as object form some reason, so I redirect to the array that it contains.
    const searchResult = result.result;
    console.log(searchResult);
+
+   function playSong() {
+      console.log('hej');
+   }
 
    return (
       <>
@@ -17,8 +23,11 @@ function SearchRender(result) {
                      <li key={song.videoId}>
                         <p className="song-title">{song.name}</p>
                         <p className="artist-name">{song.artist.name}</p>
-                        <button type="button">
+                        <button onClick={playSong} type="button">
                            <FaPlayCircle />
+                        </button>
+                        <button>
+                           <IoMdAddCircle />
                         </button>
                      </li>
                   ))}
