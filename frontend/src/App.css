@@ -1,56 +1,84 @@
-.App {
-   text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Spartan:wght@900&display=swap');
+
+body {
+  background-image: url('./assets/bg-img.jpeg');
 }
 
-.App-logo {
-   height: 40vmin;
-   pointer-events: none;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-   .App-logo {
-      animation: App-logo-spin infinite 20s linear;
-   }
+:root {
+  --clr-light: #fff;
+  --clr-dark: #01a5af;
+  --clr-accent: #dadadac7;
+
+  --ff-primary: 'Spartan', sans-serif;
 }
 
-.App-header {
-   background-color: #282c34;
-   min-height: 100vh;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   font-size: calc(10px + 2vmin);
-   color: white;
+.form-title {
+  text-align: center;
+  color: var(--clr-light);
+  font-family: var(--ff-primary);
 }
 
-.App-link {
-   color: #61dafb;
+.form-container {
+  background: rgba(0, 0, 0, 0.705);
+  max-width: 500px;
+  margin: 1rem auto;
+  padding: 1rem 0;
 }
 
-@keyframes App-logo-spin {
-   from {
-      transform: rotate(0deg);
-   }
-   to {
-      transform: rotate(360deg);
-   }
+.logo {
+  display: block;
+  margin: 5rem auto 0;
+  width: 30%;
 }
 
-button {
-   font-size: calc(10px + 2vmin);
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.invalid input {
-   border: 1px solid #b40e0e;
-   background-color: #fddddd;
+input {
+  border: none;
+  width: 60%;
+  height: 55px;
+  padding: 0 20px;
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  border-radius: 25px;
+  background-color: var(--clr-dark);
+  color: var(--clr-light);
 }
 
-.invalid input:focus {
-   border-color: #ff8800;
-   background-color: #fbe8d2;
+::placeholder {
+  color: var(--clr-accent);
 }
 
-.error-text {
-   color: #b40e0e;
+.btn {
+  margin-top: 2rem;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  width: 55%;
+  background-color: black;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  border: 4px solid #01a5af;
+}
+
+form span {
+  color: var(--clr-dark);
+  font-size: 18px;
+  font-family: 'Helvetica';
+}
+
+.error {
+  color: red;
 }
