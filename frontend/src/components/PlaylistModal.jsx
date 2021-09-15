@@ -2,69 +2,85 @@ import React, { useState, useContext }from 'react'
 import {Button, Modal} from 'react-bootstrap/';
 import { Context } from '../components/SearchRender'
 
-
-
 function PlaylistModal(song) {
+	
+	function getToken() {
+		return sessionStorage.getItem('auth');
+	  }
 
 	const [show, setShow] = useContext(Context);
 	const [newPlaylist, setNewPlaylist] = useState("")
-	//const [playlists, setPlaylists] = useState("")
-
-	const playlists = [ //This is just to test, use the line above instead
-		"playlist 1", 
-		"playlist 2", 
-		"playlist 3", 
-		"playlist 4", 
-		"playlist 5", 
-		"playlist 6", 
-		"playlist 7", 
-		"playlist 8"
-	]
+	const [playlists, setPlaylists] = useState("")
+	const [selectedPlaylist, setSelectedPlaylist] = useState("")
 
 	const handleClose = () => setShow(false);
 	//const handleShow = () => setShow(true);
 
 	async function getPlaylistsDb() {
-		const response = await fetch('/api/getAllPlaylists')
+		const response = await fetch('/api/browse_playlists')
 		const data = await response.json();
 
 		if (data) {
-			console.log(data.success);
+			console.log('getPlaylistDb if', data);
 		} else {
-			console.log(data.success);
+			console.log('getPlaylistDb else',data);
 		}
+		console.log("getPlaylists data ", data);
 
 		setPlaylists(data);
 	}
 
+	getPlaylistsDb();
+
 	async function addToPlaylistDb() {
-		
-		const response = await fetch('/api/addToPlaylist', {
-			method: 'POST',
-			body: JSON.stringify({
-				"songObj": song,
-				"newPlaylistName" : newPlaylist
-			}),
-			headers: {
-				'Content-Type': 'application/json'
+		const TokenKey = getToken()
+
+		// CREATE PLAYLIST FUNCTION
+		if(newPlaylist !== "") {
+			const response = await fetch('/api/create_playlist', {
+				method: 'POST',
+				body: JSON.stringify({
+					"Name" : newPlaylist,
+					"Content": song
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${TokenKey}`
+				}
+			})
+			const data = await response.json();
+	
+			if (!data.error === 'Error') {
+				console.log('if data.success', data);
+			} else {
+				console.log('else data.success', data);
 			}
-		})
-		const data = await response.json();
 
-		if (data) {
-			console.log(data.success);
+			//ADD TO EXISTING PLAYLIST FUNCTION
 		} else {
-			console.log(data.success);
+			const response = await fetch('/api/add_to_playlist', {
+				method: 'POST',
+				body: JSON.stringify({
+					"Playlist_id": selectedPlaylist,
+					"Content": song
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${TokenKey}`
+				}
+			})
+			const data = await response.json();
+	
+			if (!data.error === 'Error') {
+				console.log('if data.success', data);
+			} else {
+				console.log('else data.success', data);
+			}
 		}
+
 	}
 
-
-	async function addToPlaylist() {
-		setShow(false)
-	}
-
-	console.log("newPlaylist", newPlaylist);
-
+	//console.log("newPlaylist", newPlaylist);
 	return (
 	  <>
 		{/*<Button variant="primary" onClick={handleShow}>Launch demo modal</Button>*/}
@@ -82,10 +98,10 @@ function PlaylistModal(song) {
 					className="new-playlist-input"
 					onChange={e => setNewPlaylist(e.target.value)}
 			/>
-			<select>
+			<select onChange={e => setSelectedPlaylist(e.target.value)}>
 				<option disabled selected value> -- or select playlist -- </option>
 				{playlists.map(playlist => (
-					<option value={playlist} key={playlist}>{playlist}</option>
+					<option value={playlist.id} key={playlist}>{playlist}</option>
 				))}
 			</select>
 			

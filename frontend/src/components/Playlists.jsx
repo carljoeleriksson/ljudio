@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 
 function Playlists() {
 	//const [playlists, setPlaylists] = useState("")
-	const [redirect, setRedirect] = useState(false);
+	//const [redirect, setRedirect] = useState(false);
+	const history = useHistory()
 
 	const playlists = [ //This is just dummy-data, use the line above instead
 		"playlist 1", 
@@ -28,20 +29,26 @@ function Playlists() {
 
 		setPlaylists(data);
 	}
-	
+
+	function goToSinglePlaylist(id) {
+		history.push('/singlePlaylistPage/' + id)
+	  }
+/*
 	if (redirect) {
 		return <Redirect to="/singleplaylistpage" />;
 	}
-	 
+*/	 
 	//getPlaylistsDb()
+
+	
 
 	return (
 		<ul>
 			{playlists.map(playlist => (
 					<li 
-						value={playlist} 
+						value={playlist.id} 
 						key={playlist} 
-						onClick={() => setRedirect(true)}
+						onClick={e => goToSinglePlaylist(e.target.value)}
 						>{playlist}</li>
 				))}
 		</ul>

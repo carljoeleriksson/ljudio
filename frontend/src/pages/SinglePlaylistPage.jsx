@@ -1,7 +1,23 @@
 import React from 'react'
 
-function SinglePlaylistPage() {
+function SinglePlaylistPage(playlistId) {
+	//This is the fetch that we're gonna use once we can connecto to backend.
 
+	async function getSinglePlaylist() {
+		const response = await fetch(`/api/fetch_playlist_content/${playlistId}`)
+		const data = await response.json();
+
+		if (data) {
+			console.log('getPlaylistDb if', data);
+		} else {
+			console.log('getPlaylistDb else',data);
+		}
+		console.log("getPlaylists data ", data);
+
+		setPlaylists(data);
+	}
+
+	//Dummy data below!
 const playlistContent = {
 	playlistName: "Playlist 1",
 	songs: [
