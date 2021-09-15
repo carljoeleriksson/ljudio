@@ -66,7 +66,7 @@ function FormSignup() {
             id='firstname'
             type='text'
             name='firstname'
-            placeholder='Enter Your First Name'
+            placeholder='First Name'
             onChange={(e) => handleFormInput(e)}
             value={values.firstname}
           />
@@ -76,7 +76,7 @@ function FormSignup() {
             id='lastname'
             type='text'
             name='lastname'
-            placeholder='Enter Your Last Name'
+            placeholder='Last Name'
             onChange={(e) => handleFormInput(e)}
             value={values.lastname}
           />
@@ -85,7 +85,7 @@ function FormSignup() {
             id='email'
             type='email'
             name='email'
-            placeholder='Enter Your Email'
+            placeholder='Email'
             onChange={(e) => handleFormInput(e)}
             value={values.email}
           />
@@ -94,7 +94,7 @@ function FormSignup() {
             id='password'
             type='password'
             name='password'
-            placeholder='Enter Your Password'
+            placeholder='Password'
             onChange={(e) => handleFormInput(e)}
             value={values.password}
           />

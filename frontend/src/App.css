@@ -36,6 +36,11 @@ body {
   width: 30%;
 }
 
+.logo-header {
+  display: block;
+  width: 250px;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -81,4 +86,37 @@ form span {
 
 .error {
   color: red;
+}
+
+.search-bar {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.search-input {
+  width: 60%;
+  margin-top: 0rem;
+}
+
+.search-icon {
+  color: var(--clr-dark);
+  width: 50px;
+  height: 50px;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 550px;
+}
+
+select {
+  height: 50px;
+  width: 100px;
+  background-color: #01a5af;
+  color: white;
+  font-size: 1.1rem;
 }
