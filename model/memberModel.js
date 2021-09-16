@@ -1,6 +1,8 @@
 // import the database module
 const sqlite = require('better-sqlite3')
 
+const validator = require('../utilities/validator')
+
 
 // create a connection to the database
 const conn = sqlite('database.db')
@@ -11,42 +13,13 @@ function run(query, params = {}) {
   return stmt.run(params)
 }
 
-
-// check if an obj has an empty property value 
-function isEmpty(data = {}) {
-
-  let result = false
-
-  Object.keys(data).map((m) => {
-
-    if (data[m] == null || data[m] == "") {
-
-      result = true;
-
-    }
-
-  })
-
-  if (result) {
-
-    return true
-
-  } else {
-
-    return false
-
-  }
-}
-
-
-
 module.exports = {
 
   // register a user
 
   registerMember(member) {
 
-    if (isEmpty(member)) {
+    if (validator.isEmpty(member)) {
       throw Error("All fields should be filled!")
     }
 
@@ -62,14 +35,17 @@ module.exports = {
   // Login 
   login(credentials) {
 
-    if (isEmpty(credentials)) {
+    if (validator.isEmpty(credentials)) {
       throw Error("All fields should be filled!")
     }
 
-    const select = 'SELECT * FROM Members WHERE Email = ? AND Password = ?'
+    const select = 'SELECT Id FROM Members WHERE Email = ? AND Password = ?'
 
     const stml = conn.prepare(select)
+
     const user = stml.get([credentials.Email, credentials.Password])
+
+    //console.log(user.Id)
 
     if (!user) {
       throw Error('Wrong Credentials');
@@ -80,9 +56,3 @@ module.exports = {
 
   },
 }
-
-
-// TO DO
-
-
-// logout 
