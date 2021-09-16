@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
-import validate from './validateLogin';
+import validateLogin from './validateLogin';
+import { Link, Redirect } from 'react-router-dom';
+
 
 function Login() {
    const [values, setValues] = useState({
@@ -9,11 +11,14 @@ function Login() {
 
    const [errors, setErrors] = useState({});
 
+   const [redirect, setRedirect] = useState(false);
+
+
    function handleFormInput(e) {
       let newdata = { ...values };
       newdata[e.target.id] = e.target.value;
       setValues(newdata);
-      console.log(newdata);
+      // console.log(newdata);
    }
    //saveToken = (token) => {
    function saveToken(token) {
@@ -25,53 +30,48 @@ function Login() {
    }
    async function handleFormSubmit(e) {
       e.preventDefault();
-      setErrors(validate(values));
-      const response = await fetch('/api/login', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-            Email: values.email,
-            Password: values.password,
-         }),
-      });
-      const data = await response.json();
-      console.log(data);
+      let errorsObj = validateLogin(values)
+      setErrors(errorsObj);
+      if (errorsObj.email || errorsObj.password) {
+         console.log("validation failed!")
+      } else {
+         const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               Email: values.email,
+               Password: values.password,
+            }),
+         });
+         const data = await response.json();
+         console.log(data);
 
-      if (data) {
-         saveToken(data);
+         if (!data.error) {
+            setRedirect(true)
+            saveToken(data)
+            console.log("Login succeeded!")
+
+         } else {
+            let errors = {}
+            if (data.error == "SqliteError") {
+
+               errors.server = 'Can not login to ur account!'
+
+
+            } else if (data.error) {
+
+               errors.server = data.message
+            }
+
+            setErrors(errors)
+
+         }
+
       }
    }
 
-   // get token from session storage
-   // getToken = () => {
-   //    let token = null;
-
-   //    if (sessionStorage.getItem('auth')) {
-   //       token = sessionStorage.getItem('auth');
-   //    }
-
-   //    return token;
-   // };
-
-   // // delete token from session storage
-   // deleteToken = () => {
-   //    sessionStorage.removeItem('auth');
-   // };
-
-   // function handleFormSubmit(e) {
-   //    e.preventDefault();
-   //    setErrors(validate(values));
-   //    Axios.post('/api/login', {
-   //       headers: { authorization: 'Bearer ' + user.id },
-   //       Email: values.email.trim(),
-   //       Password: values.password.trim(),
-   //    }).then((res) => {
-   //       console.log(res);
-   //    });
-   // }
-
    return (
-      <div>
+      <div> {redirect && <Redirect to="/" />}
          <h1>Login</h1>
          <form onSubmit={(e) => submit(e)}>
             <div>
@@ -100,6 +100,8 @@ function Login() {
                <button onClick={handleFormSubmit}>Login</button>
             </div>
          </form>
+         {errors.server && <p>{errors.server}</p>}
+
       </div>
    );
 }
