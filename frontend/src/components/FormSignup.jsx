@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import validate from './validateInfo';
+import validateInfo from './validateInfo';
 import { Link, Redirect } from 'react-router-dom';
 
 function FormSignup() {
@@ -17,46 +17,64 @@ function FormSignup() {
       let newdata = { ...values };
       newdata[e.target.id] = e.target.value;
       setValues(newdata);
-      console.log(newdata);
+      //  console.log(newdata);
    }
 
-   // async function handleFormSubmit(e) {
-   //    e.preventDefault();
-   //    setErrors(validate(values));
-   //    Axios.post('/api/registerMemeber', {
-   //       FirstName: values.firstname.trim(),
-   //       LastName: values.lastname.trim(),
-   //       Email: values.email.trim(),
-   //       Password: values.password.trim(),
-   //    }).then((res) => {
-   //       console.log(res);
-   //    });
-   //    setRedirect(true);
-   // }
 
    async function handleFormSubmit(e) {
+
       e.preventDefault();
-      setErrors(validate(values));
 
-      await fetch('/api/registerMemeber', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-            FirstName: values.firstname.trim(),
-            LastName: values.lastname.trim(),
-            Email: values.email.trim(),
-            Password: values.password.trim(),
-         }),
-      });
-      setRedirect(true);
-   }
+      let errorsObj = validateInfo(values)
+      setErrors(errorsObj)
+      console.log(errorsObj)
+      if (errorsObj.firstname || errorsObj.lastname || errorsObj.email || errorsObj.password) {
+         console.log("validation failed!")
+      } else {
+         console.log('connect to backend!')
+         const res = await fetch('/api/registerMemeber', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               FirstName: values.firstname.trim(),
+               LastName: values.lastname.trim(),
+               Email: values.email.trim(),
+               Password: values.password.trim(),
+            }),
+         });
 
-   if (redirect) {
-      return <Redirect to="/login" />;
+         const result = await res.json()
+         console.log(result)
+         if (result.id) {
+            console.log("Success! Redirect to login")
+
+            setRedirect(true);
+
+
+         } else {
+            let errors = {}
+            if (result.error == "SqliteError") {
+
+               errors.server = 'Can not register ur account! '
+
+               if (result.message == "UNIQUE constraint failed: Members.Email")
+
+                  errors.server += 'U already had an account'
+
+            } else if (result.error) {
+
+               errors.server = result.message
+            }
+
+            setErrors(errors)
+
+         }
+
+      }
    }
 
    return (
-      <div>
+      <div>  {redirect && <Redirect to="/login" />}
          <form onSubmit={(e) => submit(e)}>
             <h1>Create account</h1>
             <div>
@@ -104,7 +122,7 @@ function FormSignup() {
                />
                {errors.password && <p>{errors.password}</p>}
             </div>
-
+            {errors.server && <p>{errors.server}</p>}
             <button onClick={handleFormSubmit}>Sign up</button>
             <span>
                Already have an account? Login <Link to="/login">Here</Link>
