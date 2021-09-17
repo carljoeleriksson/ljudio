@@ -121,6 +121,7 @@ select {
   font-size: 1.1rem;
 }
 
-button {
-  background-color: none;
+.btn-container {
+  background-color: transparent;
+  border: none;
 }
