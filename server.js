@@ -8,12 +8,17 @@ const memberRouter = require('./routes/member');
 
 const mediaRouter = require('./routes/media');
 
+const playlistRouter = require('./routes/playlist');
+
+
 // app.use(express.static('./react/games/dist'));
 
-// our app has two different routes bases: /api/auth/ route base and /api/event route base
 app.use('/api', memberRouter); //
 
 app.use(express.static('/frontend'));
+
+app.use('/api', playlistRouter); 
+
 
 app.use('/api', mediaRouter);
 
