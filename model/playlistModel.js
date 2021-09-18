@@ -136,7 +136,41 @@ module.exports = {
         }
 
         return playlist_content
-    }
+    },
+    //Delete a media/song from playlist
+    deleteFromPlaylist(user_id, id, playlist_id){
 
+        playlist_db_id = getUserPlaylistId(user_id, playlist_id)
+ 
+        const del = 'DELETE FROM PLaylists_Content WHERE Playlist_id = ? AND Id = ?'
+
+        const stml = conn.prepare(del).run(playlist_db_id, id)
+ 
+        return stml
+
+    },
+    //Delete whole playlist
+    deletePlaylist(user_id, playlist_id){
+
+        playlist_db_id = getUserPlaylistId(user_id, playlist_id)
+
+        const delPlaylistContent = 'DELETE FROM PLaylists_Content WHERE Playlist_id = ?'
+
+        const stml = conn.prepare(delPlaylistContent).run(playlist_db_id)
+
+        const delPlaylist = 'DELETE FROM PLaylists WHERE Id = ?'
+
+        const stml2 = conn.prepare(delPlaylist).run(playlist_db_id)
+
+          
+        console.log("Delete Playlist#Id: "+playlist_db_id )    
+
+        console.log(stml)
+
+        console.log(stml2)       
+ 
+        return stml2
+
+    }
 
 }

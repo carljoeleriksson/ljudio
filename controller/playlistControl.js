@@ -146,6 +146,89 @@ async function browseUserPlaylistsCont(request, response) {
 
 
 
+// A controle to delete a song from playlists
+async function deleteFromPlaylist(request, response) {
+
+  let result = null;
+
+  try {
+
+
+    let user_id = request.userId
+    
+    let playlist_id = request.params.playlistId
+
+    let content_id = request.params.contentId
+
+
+    let del = await db.deleteFromPlaylist(user_id, content_id, playlist_id )
+
+    if(del.changes == 0) {
+    
+      throw Error("Can not find that content in playlist!")
+    
+    }   
+
+
+
+    result = del
+
+
+    // catch any throwable error 
+  } catch (e) {
+    // log error to server  
+    console.log(e.message);
+
+
+    // assign catched error as json obj
+    result = {
+      "error": e.name,
+      "message": e.message
+    };
+
+  }
+  // return result
+  response.json(result);
+
+}
+
+// A controle to delete a whole playlists
+async function deletePlaylist(request, response) {
+
+  let result = null;
+
+  try {
+
+    let user_id = request.userId
+
+    let playlist_id = request.params.playlistId
+
+    console.log(playlist_id)
+
+    let del = await db.deletePlaylist(user_id, playlist_id ) 
+
+
+    result = del
+
+
+    // catch any throwable error 
+  } catch (e) {
+    // log error to server  
+    console.log(e.message);
+
+
+    // assign catched error as json obj
+    result = {
+      "error": e.name,
+      "message": e.message
+    };
+
+  }
+  // return result
+  response.json(result);
+
+}
+
 // A controle to fetch a playlist's content
 async function fetchPlaylistContentCont(request, response) {
 /*
@@ -207,3 +290,5 @@ module.exports.createPlaylistCont = createPlaylistCont;
 module.exports.addToPlaylistCont = addToPlaylistCont;
 module.exports.browseUserPlaylistsCont = browseUserPlaylistsCont
 module.exports.fetchPlaylistContentCont = fetchPlaylistContentCont
+module.exports.deleteFromPlaylist = deleteFromPlaylist
+module.exports.deletePlaylist = deletePlaylist
