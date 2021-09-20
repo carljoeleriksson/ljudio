@@ -47,6 +47,9 @@ function Home() {
             onClick={fetchSearchResult}
          />
          {searchResult && <SearchRender result={searchResult} />}
+         <aside>
+            <Playlists></Playlists>
+         </aside>
       </div>
    );
 }

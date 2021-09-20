@@ -1,127 +1,128 @@
 @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@900&display=swap');
 
 body {
-  background-image: url('./assets/bg-img.jpeg');
+   background-image: url('./assets/bg-img.jpeg');
 }
 
 * {
-  margin: 0;
-  padding: 0;
+   margin: 0;
+   padding: 0;
+   color: white;
 }
 
 :root {
-  --clr-light: #fff;
-  --clr-dark: #01a5af;
-  --clr-accent: #dadadac7;
+   --clr-light: #fff;
+   --clr-dark: #01a5af;
+   --clr-accent: #dadadac7;
 
-  --ff-primary: 'Spartan', sans-serif;
+   --ff-primary: 'Spartan', sans-serif;
 }
 
 .form-title {
-  text-align: center;
-  color: var(--clr-light);
-  font-family: var(--ff-primary);
+   text-align: center;
+   color: var(--clr-light);
+   font-family: var(--ff-primary);
 }
 
 .form-container {
-  background: rgba(0, 0, 0, 0.705);
-  max-width: 500px;
-  margin: 1rem auto;
-  padding: 1rem 0;
+   background: rgba(0, 0, 0, 0.705);
+   max-width: 500px;
+   margin: 1rem auto;
+   padding: 1rem 0;
 }
 
 .logo {
-  display: block;
-  margin: 5rem auto 0;
-  width: 30%;
+   display: block;
+   margin: 5rem auto 0;
+   width: 30%;
 }
 
 .logo-header {
-  display: block;
-  width: 250px;
+   display: block;
+   width: 250px;
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
 }
 
 input {
-  border: none;
-  width: 60%;
-  height: 55px;
-  padding: 0 20px;
-  font-size: 1.2rem;
-  margin-top: 1.5rem;
-  border-radius: 25px;
-  background-color: var(--clr-dark);
-  color: var(--clr-light);
+   border: none;
+   width: 60%;
+   height: 55px;
+   padding: 0 20px;
+   font-size: 1.2rem;
+   margin-top: 1.5rem;
+   border-radius: 25px;
+   background-color: var(--clr-dark);
+   color: var(--clr-light);
 }
 
 ::placeholder {
-  color: var(--clr-accent);
+   color: var(--clr-accent);
 }
 
 .btn {
-  margin-top: 2rem;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  border-radius: 25px;
-  width: 55%;
-  background-color: black;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 1.1px;
-  border: 4px solid #01a5af;
+   margin-top: 2rem;
+   margin-bottom: 20px;
+   padding: 10px 20px;
+   border-radius: 25px;
+   width: 55%;
+   background-color: black;
+   color: white;
+   font-size: 1.2rem;
+   font-weight: 700;
+   letter-spacing: 1.1px;
+   border: 4px solid #01a5af;
 }
 
 form span {
-  color: var(--clr-dark);
-  font-size: 18px;
-  font-family: 'Helvetica';
+   color: var(--clr-dark);
+   font-size: 18px;
+   font-family: 'Helvetica';
 }
 
 .error {
-  color: red;
+   color: red;
 }
 
 .search-bar {
-  margin-top: 30px;
-  display: flex;
-  justify-content: space-around;
+   margin-top: 30px;
+   display: flex;
+   justify-content: space-around;
 }
 
 .search-input {
-  width: 60%;
-  margin-top: 0rem;
+   width: 60%;
+   margin-top: 0rem;
 }
 
 .search-icon {
-  color: var(--clr-dark);
-  width: 50px;
-  height: 50px;
+   color: var(--clr-dark);
+   width: 50px;
+   height: 50px;
 }
 
 .search-form {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 550px;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   width: 550px;
 }
 
 select {
-  height: 50px;
-  width: 100px;
-  background-color: #01a5af;
-  color: white;
-  font-size: 1.1rem;
+   height: 50px;
+   width: 100px;
+   background-color: #01a5af;
+   color: white;
+   font-size: 1.1rem;
 }
 
 .btn-container {
-  background-color: transparent;
-  border: none;
+   background-color: transparent;
+   border: none;
 }
