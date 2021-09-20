@@ -2,6 +2,8 @@
 
 body {
   background-image: url('./assets/bg-img.jpeg');
+  background-size: contain;
+  color: white;
 }
 
 * {

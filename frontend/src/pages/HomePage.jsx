@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import SearchRender from '../components/SearchRender';
 import Player from '../components/Player';
+import PlayerContextProvider from '../contexts/PlayerContext';
 
 function Home() {
   const [searchResult, setSearchResult] = useState();
@@ -32,8 +33,7 @@ function Home() {
     }
   }
   return (
-    <div className='search-bar'>
-      <img className='logo-header' src='../../assets/logo.svg' alt='Logo' />
+  <PlayerContextProvider>
       <SearchBar
         onChange={(e) => {
           console.log(e.target.value);
@@ -47,7 +47,8 @@ function Home() {
         onClick={fetchSearchResult}
       />
       {searchResult && <SearchRender result={searchResult} />}
-    </div>
+    <Player></Player>
+    </PlayerContextProvider>
   );
 }
 
