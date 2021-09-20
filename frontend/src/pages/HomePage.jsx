@@ -9,6 +9,7 @@ function Home() {
    const [searchTerm, setSearchTerm] = useState('');
    const [searchType, setSearchType] = useState('search');
 
+
    async function fetchSearchResult(e) {
       e.preventDefault();
       console.log('searchType: ' + searchType);

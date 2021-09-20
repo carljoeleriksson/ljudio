@@ -33,6 +33,11 @@ function PlaylistModal(song, { getPlaylist }) {
       console.log(data);
    }
 
+   // first soultion
+   useEffect(() => {
+     getPlaylistsDb();
+   }, []);
+
    async function addToPlaylistDb() {
       const TokenKey = getToken();
       console.log('TOKENKEY', TokenKey);
@@ -55,6 +60,8 @@ function PlaylistModal(song, { getPlaylist }) {
             console.log('Please enter a playlist name', data);
          } else {
             console.log('Created a new playlist');
+            //console.log(data)
+            setPlaylists(data)
          }
 
          //ADD TO EXISTING PLAYLIST FUNCTION
@@ -118,7 +125,7 @@ function PlaylistModal(song, { getPlaylist }) {
                <Button
                   variant="primary"
                   onClick={() => {
-                     getPlaylistsDb();
+                    /* getPlaylistsDb();*/
                      addToPlaylistDb();
                   }}
                >

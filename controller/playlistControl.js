@@ -20,9 +20,12 @@ async function createPlaylistCont(request, response) {
 
     //console.log(insert)
 
-    let playlist_id = insert.lastInsertRowid
+    //let playlist_id = insert.lastInsertRowid
 
-    result = playlist_id
+    let playlist = await db.browseUserPlaylists(user_id)
+
+    result = playlist
+   // result = playlist_id
 
     response.status(201)
 

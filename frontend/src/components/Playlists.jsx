@@ -5,7 +5,7 @@ function Playlists() {
    function getToken() {
       return sessionStorage.getItem('auth');
    }
-   const [playlists, setPlaylists] = useState();
+   const [playlists, setPlaylists] = useState({});
    //const [redirect, setRedirect] = useState(false);
    const history = useHistory();
 
@@ -55,7 +55,7 @@ function Playlists() {
    return (
       <ul>
          {/* If you put playlists == {} you can search songs */}
-         {playlists &&
+         {playlists.length > 0 &&
             playlists.map((playlist) => (
                <li
                   value={playlist.Id}
