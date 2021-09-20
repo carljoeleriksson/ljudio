@@ -16,7 +16,7 @@ router.post('/add_to_playlist', user, addToPlaylistCont);
 router.get('/browse_playlists', user, browseUserPlaylistsCont);
 
 // a route for fetching a user's playlist content
-router.get('/fetch_playlist_content/:id', user, fetchPlaylistContentCont);
+router.get('/fetch_playlist/:id', user, fetchPlaylistContentCont);
 
 // a route for delete a song/media from playlist content
 router.get('/delete_from_playlist/playlist/:playlistId/contentid/:contentId', user, deleteFromPlaylist);

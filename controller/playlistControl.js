@@ -11,7 +11,7 @@ async function createPlaylistCont(request, response) {
 
 
     let user_id = request.userId
-    
+
     let reqData = request.body
 
     let playlist_name = reqData.Name
@@ -118,7 +118,7 @@ async function browseUserPlaylistsCont(request, response) {
 
 
     let user_id = request.userId
-    
+
     //let playlist_id = request.params.id
 
     let playlist = await db.browseUserPlaylists(user_id)
@@ -155,19 +155,19 @@ async function deleteFromPlaylist(request, response) {
 
 
     let user_id = request.userId
-    
+
     let playlist_id = request.params.playlistId
 
     let content_id = request.params.contentId
 
 
-    let del = await db.deleteFromPlaylist(user_id, content_id, playlist_id )
+    let del = await db.deleteFromPlaylist(user_id, content_id, playlist_id)
 
-    if(del.changes == 0) {
-    
+    if (del.changes == 0) {
+
       throw Error("Can not find that content in playlist!")
-    
-    }   
+
+    }
 
 
 
@@ -205,7 +205,7 @@ async function deletePlaylist(request, response) {
 
     console.log(playlist_id)
 
-    let del = await db.deletePlaylist(user_id, playlist_id ) 
+    let del = await db.deletePlaylist(user_id, playlist_id)
 
 
     result = del
@@ -231,46 +231,35 @@ async function deletePlaylist(request, response) {
 
 // A controle to fetch a playlist's content
 async function fetchPlaylistContentCont(request, response) {
-/*
+
   let result = null;
 
   try {
 
 
     let user_id = request.userId
-    
+
     let playlist_id = request.params.id
 
     let playlist_content_json = await db.fetchPlaylistContent(user_id, playlist_id)
 
-    //console.log(JSON.parse(playlist_content_json.Content))
-  
-    //let content_arr =JSON.parse(playlist_content_json.Content)
-    // TO DO 
-    // map the content with api youtube source 
-    //let fetchInfoObj = fetchInfo()
+    let reformat_content = []
 
-    const getContent = async () => {
-      for (const el of content_arr) {
-      //content_arr.forEach(el => {      
-    
-    console.log(el.playlistId, el.videoId)
-    fetchInfoObj.paramName = 'playlist'
-    fetchInfoObj.paramValue = el.playlistId
-    let data = await connectTopApi(fetchInfoObj)
-    console.log(data)
+    for (const el of playlist_content_json) {
+
+      // console.log(JSON.parse(el.Content))
+      let elContentToObj = JSON.parse(el.Content)
+
+      reformat_content.push(elContentToObj)
 
     }
-  }
-  getContent()
-   // result = playlist_content
 
+    result = reformat_content
 
     // catch any throwable error 
   } catch (e) {
     // log error to server  
     console.log(e.message);
-
 
     // assign catched error as json obj
     result = {
@@ -281,7 +270,7 @@ async function fetchPlaylistContentCont(request, response) {
   }
   // return result
   response.json(result);
-*/
+
 }
 
 

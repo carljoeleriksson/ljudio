@@ -122,11 +122,14 @@ module.exports = {
 
     fetchPlaylistContent(user_id, playlist_id) {
 
-        const select = 'SELECT Content FROM PLaylists WHERE User_id = ? AND Id = ?'
+        playlist_db_id = getUserPlaylistId(user_id, playlist_id)
+
+
+        const select = 'SELECT Content FROM PLaylists_Content WHERE Playlist_id = ?'
 
         const stml = conn.prepare(select)
 
-        const playlist_content = stml.get([user_id, playlist_id])
+        const playlist_content = stml.all([playlist_db_id])
 
 
         if (!playlist_content) {
