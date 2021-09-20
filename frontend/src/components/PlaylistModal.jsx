@@ -2,10 +2,11 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap/';
 import { Context } from '../components/SearchRender';
 
-function PlaylistModal(song) {
+function PlaylistModal(song, { getPlaylist }) {
    function getToken() {
       return sessionStorage.getItem('auth');
    }
+   console.log('PLAYLISTS AS PROPS', getPlaylist);
 
    const [show, setShow] = useContext(Context);
    const [newPlaylist, setNewPlaylist] = useState('');
@@ -31,10 +32,6 @@ function PlaylistModal(song) {
       setPlaylists(data);
       console.log(data);
    }
-
-   // useEffect(() => {
-   //    getPlaylistsDb();
-   // }, []);
 
    async function addToPlaylistDb() {
       const TokenKey = getToken();

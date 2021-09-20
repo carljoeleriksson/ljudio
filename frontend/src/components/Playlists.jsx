@@ -54,6 +54,7 @@ function Playlists() {
 
    return (
       <ul>
+         {/* If you put playlists == {} you can search songs */}
          {playlists &&
             playlists.map((playlist) => (
                <li

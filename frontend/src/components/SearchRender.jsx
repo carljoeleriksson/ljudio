@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
 import { IoAddCircleSharp } from 'react-icons/io5';
 import Player from '../components/Player';
@@ -13,6 +13,7 @@ function SearchRender(result) {
 
    const [songPlaying, setSongPlaying] = useState('');
    const [addSong, setAddSong] = useState();
+   // const [getPlaylist, setGetplaylist] = useState({});
 
    function addToPlaylist(songObj) {
       console.log('songObj i searchrender', songObj);
@@ -24,6 +25,28 @@ function SearchRender(result) {
       console.log(videoId);
       setSongPlaying(videoId);
    }
+
+   // function getToken() {
+   //    return sessionStorage.getItem('auth');
+   // }
+
+   // async function getPlayListDb() {
+   //    const TokenKey = getToken();
+   //    const response = await fetch('/api/browse_playlists', {
+   //       headers: { Authorization: `Bearer ${TokenKey}` },
+   //    });
+
+   //    const data = await response.json();
+   //    if (data) {
+   //       setGetplaylist(data);
+
+   //       console.log(('GETPLAYLIST FROM SEARCHANDRENDER', getPlaylist));
+   //    }
+   // }
+
+   // useEffect(() => {
+   //    getPlayListDb();
+   // }, []);
 
    return (
       <Context.Provider value={[showContext, setShowContext]}>
@@ -42,7 +65,12 @@ function SearchRender(result) {
                         <button type="button" onClick={() => playSong(song.videoId)}>
                            <FaPlayCircle />
                         </button>
-                        <button type="button" onClick={() => addToPlaylist(song)}>
+                        <button
+                           type="button"
+                           onClick={() => {
+                              addToPlaylist(song);
+                           }}
+                        >
                            <IoAddCircleSharp />
                         </button>
                      </li>
