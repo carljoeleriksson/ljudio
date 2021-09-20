@@ -21,7 +21,7 @@ router.get('/fetch_playlist_content/:id', user, fetchPlaylistContentCont);
 // a route for delete a song/media from playlist content
 router.get('/delete_from_playlist/playlist/:playlistId/contentid/:contentId', user, deleteFromPlaylist);
 
-// a route for delete a song/media from playlist content
+// a route for the whole playlist 
 router.get('/delete_playlist/playlist/:playlistId/', user, deletePlaylist);
 
 module.exports = router;
