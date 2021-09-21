@@ -17,7 +17,7 @@ function run(query, params = {}) {
 // check if user owns a playlist then return its Id
 function getUserPlaylistId(user_id, playlist_id) {
 
-    console.log("User#Id"+ user_id +" wants to add to playlist#Id: "+ playlist_id)
+    console.log("User#Id"+ user_id +" wants to add/delete to/from playlist#Id: "+ playlist_id)
 
 
     const select = 'SELECT Id FROM PLaylists WHERE User_id = ? AND Id = ?'
@@ -125,7 +125,7 @@ module.exports = {
         playlist_db_id = getUserPlaylistId(user_id, playlist_id)
 
 
-        const select = 'SELECT Content FROM PLaylists_Content WHERE Playlist_id = ?'
+        const select = 'SELECT * FROM PLaylists_Content WHERE Playlist_id = ?'
 
         const stml = conn.prepare(select)
 

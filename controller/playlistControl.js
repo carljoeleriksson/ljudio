@@ -25,7 +25,7 @@ async function createPlaylistCont(request, response) {
     let playlist = await db.browseUserPlaylists(user_id)
 
     result = playlist
-   // result = playlist_id
+    // result = playlist_id
 
     response.status(201)
 
@@ -172,8 +172,6 @@ async function deleteFromPlaylist(request, response) {
 
     }
 
-
-
     result = del
 
 
@@ -246,6 +244,8 @@ async function fetchPlaylistContentCont(request, response) {
 
     let playlist_content_json = await db.fetchPlaylistContent(user_id, playlist_id)
 
+    console.log(playlist_content_json)
+
     let reformat_content = []
 
     for (const el of playlist_content_json) {
@@ -253,12 +253,13 @@ async function fetchPlaylistContentCont(request, response) {
       // console.log(JSON.parse(el.Content))
       let elContentToObj = JSON.parse(el.Content)
 
-      reformat_content.push(elContentToObj)
+      reformat_content.push({Id:el.Id , Playlist_id: el.Playlist_id,Content: elContentToObj})
 
     }
 
     result = reformat_content
 
+    //result = playlist_content_json
     // catch any throwable error 
   } catch (e) {
     // log error to server  
