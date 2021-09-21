@@ -32,11 +32,12 @@ function Home() {
       console.log('Failed to fetch. Got no data from backend.');
     }
   }
+
   return (
   <PlayerContextProvider>
       <SearchBar
         onChange={(e) => {
-          console.log(e.target.value);
+          
 
           if (e.target.type == 'text') {
             setSearchTerm(e.target.value);

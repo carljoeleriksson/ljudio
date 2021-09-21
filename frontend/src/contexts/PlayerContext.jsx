@@ -5,7 +5,8 @@ export const PlayerContext = createContext();
 function PlayerContextProvider(props) {
 	const [playerState, setPlayerState] = useState({
 		isPlaying: false,
-		songPlaying: '' //pass in the whole song object.
+		songPlaying: '', //pass in the whole song object.
+		player: '' //this is the event.target from the player so we can call methods on the player (as .playVideo())
 		})
 
 		function updatePlayerState(updates) {
@@ -14,7 +15,7 @@ function PlayerContextProvider(props) {
 				...updates
 			})
 		}
-	console.log(playerState);
+	console.log('PlayerContext playerState: ', playerState);
 
 	return (
 		<div>

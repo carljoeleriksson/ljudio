@@ -5,21 +5,22 @@ import { PlayerContext } from '../contexts/PlayerContext';
 function SearchRender(result) {
    //Getting prop (result) as object form some reason, so I redirect to the array that it contains.
    const searchResult = result.result;
-   console.log(searchResult);
 
    const [ playerState, updatePlayerState ] = useContext(PlayerContext)
 
-   function playSong(songObj) {
+   function playPause(songObj) {
       //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
       if(playerState.isPlaying && playerState.songPlaying.videoId === songObj.videoId){
          updatePlayerState({
             isPlaying: false
          })
+         playerState.player && playerState.player.pauseVideo()
       } else {
          updatePlayerState({
             isPlaying: true,
             songPlaying: songObj
          }) 
+         playerState.player && playerState.player.playVideo()
       }
    }
 
@@ -34,7 +35,7 @@ function SearchRender(result) {
                      <li key={song.videoId}>
                         <p className="song-title">{song.name}</p>
                         <p className="artist-name">{song.artist.name}</p>
-                        <button type="button" onClick={() => playSong(song)}>
+                        <button type="button" onClick={() => playPause(song)}>
                            {playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
                         </button>
                      </li>

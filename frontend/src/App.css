@@ -2,7 +2,7 @@
 
 body {
   background-image: url('./assets/bg-img.jpeg');
-  background-size: contain;
+  background-size: cover;
   color: white;
 }
 
@@ -126,4 +126,9 @@ select {
 .btn-container {
   background-color: transparent;
   border: none;
+}
+
+.player-thumb {
+  width: 120px;
+  height: 120px;
 }
