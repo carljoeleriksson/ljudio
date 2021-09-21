@@ -11,7 +11,7 @@ async function createPlaylistCont(request, response) {
 
 
     let user_id = request.userId
-    
+
     let reqData = request.body
 
     let playlist_name = reqData.Name
@@ -121,7 +121,7 @@ async function browseUserPlaylistsCont(request, response) {
 
 
     let user_id = request.userId
-    
+
     //let playlist_id = request.params.id
 
     let playlist = await db.browseUserPlaylists(user_id)
@@ -149,41 +149,32 @@ async function browseUserPlaylistsCont(request, response) {
 
 
 
-// A controle to fetch a playlist's content
-async function fetchPlaylistContentCont(request, response) {
-/*
+// A controle to delete a song from playlists
+async function deleteFromPlaylist(request, response) {
+
   let result = null;
 
   try {
 
 
     let user_id = request.userId
-    
-    let playlist_id = request.params.id
 
-    let playlist_content_json = await db.fetchPlaylistContent(user_id, playlist_id)
+    let playlist_id = request.params.playlistId
 
-    //console.log(JSON.parse(playlist_content_json.Content))
-  
-    //let content_arr =JSON.parse(playlist_content_json.Content)
-    // TO DO 
-    // map the content with api youtube source 
-    //let fetchInfoObj = fetchInfo()
+    let content_id = request.params.contentId
 
-    const getContent = async () => {
-      for (const el of content_arr) {
-      //content_arr.forEach(el => {      
-    
-    console.log(el.playlistId, el.videoId)
-    fetchInfoObj.paramName = 'playlist'
-    fetchInfoObj.paramValue = el.playlistId
-    let data = await connectTopApi(fetchInfoObj)
-    console.log(data)
+
+    let del = await db.deleteFromPlaylist(user_id, content_id, playlist_id)
+
+    if (del.changes == 0) {
+
+      throw Error("Can not find that content in playlist!")
 
     }
-  }
-  getContent()
-   // result = playlist_content
+
+
+
+    result = del
 
 
     // catch any throwable error 
@@ -201,7 +192,88 @@ async function fetchPlaylistContentCont(request, response) {
   }
   // return result
   response.json(result);
-*/
+
+}
+
+// A controle to delete a whole playlists
+async function deletePlaylist(request, response) {
+
+  let result = null;
+
+  try {
+
+    let user_id = request.userId
+
+    let playlist_id = request.params.playlistId
+
+    console.log(playlist_id)
+
+    let del = await db.deletePlaylist(user_id, playlist_id)
+
+
+    result = del
+
+
+    // catch any throwable error 
+  } catch (e) {
+    // log error to server  
+    console.log(e.message);
+
+
+    // assign catched error as json obj
+    result = {
+      "error": e.name,
+      "message": e.message
+    };
+
+  }
+  // return result
+  response.json(result);
+
+}
+
+// A controle to fetch a playlist's content
+async function fetchPlaylistContentCont(request, response) {
+
+  let result = null;
+
+  try {
+
+
+    let user_id = request.userId
+
+    let playlist_id = request.params.id
+
+    let playlist_content_json = await db.fetchPlaylistContent(user_id, playlist_id)
+
+    let reformat_content = []
+
+    for (const el of playlist_content_json) {
+
+      // console.log(JSON.parse(el.Content))
+      let elContentToObj = JSON.parse(el.Content)
+
+      reformat_content.push(elContentToObj)
+
+    }
+
+    result = reformat_content
+
+    // catch any throwable error 
+  } catch (e) {
+    // log error to server  
+    console.log(e.message);
+
+    // assign catched error as json obj
+    result = {
+      "error": e.name,
+      "message": e.message
+    };
+
+  }
+  // return result
+  response.json(result);
+
 }
 
 
@@ -210,3 +282,5 @@ module.exports.createPlaylistCont = createPlaylistCont;
 module.exports.addToPlaylistCont = addToPlaylistCont;
 module.exports.browseUserPlaylistsCont = browseUserPlaylistsCont
 module.exports.fetchPlaylistContentCont = fetchPlaylistContentCont
+module.exports.deleteFromPlaylist = deleteFromPlaylist
+module.exports.deletePlaylist = deletePlaylist
