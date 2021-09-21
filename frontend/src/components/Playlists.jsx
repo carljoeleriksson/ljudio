@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect, useHistory, Link } from 'react-router-dom';
 
 function Playlists() {
    function getToken() {
@@ -38,13 +38,17 @@ function Playlists() {
       console.log(data);
    }
 
-   function goToSinglePlaylist(id) {
-      history.push('/singlePlaylistPage/' + id);
+   function goToSinglePlaylist(id, playlistName) {
+      history.push({
+         pathname: '/singlePlaylistPage/' + id,
+         // search: id,
+         state: { playlistId: id, playlistName: playlistName }
+      });
    }
    /*
-	if (redirect) {
-		return <Redirect to="/singleplaylistpage" />;
-	}
+   if (redirect) {
+      return <Redirect to="/singleplaylistpage" />;
+   }
 */
 
    console.log('playlists from PLAYLISTS', playlists);
@@ -58,13 +62,16 @@ function Playlists() {
          {playlists.length > 0 &&
             playlists.map((playlist) => (
                <li
-                  value={playlist.Id}
-                  key={playlist.Id}
-                  onClick={(e) => goToSinglePlaylist(e.target.value)}
-               >
-                  {playlist.Name}
-               </li>
-            ))}
+                     value={playlist.Id}
+                     key={playlist.Id}
+                     onClick={(e) => goToSinglePlaylist(e.target.value, playlist.Name)}
+                  > 
+                 
+                 {playlist.Name}
+                </li>
+
+            )
+            )}
       </ul>
    );
 }

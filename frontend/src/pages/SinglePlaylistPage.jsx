@@ -1,24 +1,41 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
-function SinglePlaylistPage(playlistId) {
+function SinglePlaylistPage(playlistHistory) {
+   const [playlistContent, setPlaylistContent, error, setError] = useState({})
    //This is the fetch that we're gonna use once we can connecto to backend.
-
-   async function getSinglePlaylist() {
-      const response = await fetch(`/api/fetch_playlist_content/${playlistId}`);
-      const data = await response.json();
-
-      if (data) {
-         console.log('getPlaylistDb if', data);
-      } else {
-         console.log('getPlaylistDb else', data);
-      }
-      console.log('getPlaylists data ', data);
-
-      setPlaylists(data);
+   function getToken() {
+      return sessionStorage.getItem('auth');
    }
 
+   async function getSinglePlaylist() {
+      const TokenKey = getToken()
+      const playlistId = playlistHistory.location.state.playlistId
+      const response = await fetch(`/api/fetch_playlist/${playlistId}`,
+         { headers: { Authorization: `Bearer ${TokenKey}` }, });
+      const data = await response.json();
+// console.log('getPlaylists data ', data);
+      if (data.length > 0 ) {
+         
+         setPlaylistContent(data);
+
+      } else if(data.Error) {
+         setError(data.message)
+
+        }
+     
+
+   }
+   useEffect(() => {
+      //console.log(playlistHistory)
+      //console.log("Playlist Id"+    playlistHistory.location.state.playlistId
+     // );
+   getSinglePlaylist()
+//setPlaylistContent(data)
+      
+   }, [])
+
    //Dummy data below!
-   const playlistContent = {
+  /* const playlistContent = {
       playlistName: 'Playlist 1',
       songs: [
          {
@@ -51,12 +68,12 @@ function SinglePlaylistPage(playlistId) {
          },
       ],
    };
-
+*/
    return (
       <>
-         <h2>{playlistContent.name}</h2>
+         <h2>{playlistHistory.location.state.playlistName}</h2>
          <ul className="playlist-container">
-            {playlistContent.songs.map((song) => (
+            {playlistContent.length > 0 && playlistContent.map((song) => ( 
                <li key={song.videoId}>
                   <p className="song-title">{song.name}</p>
                   <p className="artist-name">{song.artist.name}</p>
@@ -67,6 +84,7 @@ function SinglePlaylistPage(playlistId) {
                //Button here
             ))}
          </ul>
+         {error != undefined && error}
       </>
    );
 }
