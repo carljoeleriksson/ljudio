@@ -57,7 +57,7 @@ function PlaylistModal(song, { getPlaylist }) {
          });
          const data = await response.json();
 
-         if (data.error === 'Error') {
+         if (data.error) {
             console.log(data.message);
          } else {
             console.log('Created a new playlist');
@@ -85,7 +85,7 @@ function PlaylistModal(song, { getPlaylist }) {
       const data = await response.json();
       console.log(data);
 
-      if (data.error === 'Error') {
+      if (data.error) {
          console.log('Please select a playlist', data);
       } else {
          console.log('Song was added to playlist', data);

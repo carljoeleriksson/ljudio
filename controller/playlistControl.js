@@ -20,9 +20,11 @@ async function createPlaylistCont(request, response) {
 
     //console.log(insert)
 
-    //let playlist_id = insert.lastInsertRowid
+    let playlist_id = insert.lastInsertRowid
 
     let playlist = await db.browseUserPlaylists(user_id)
+
+    console.log("New playlist is created #Id "+ playlist_id)
 
     result = playlist
     // result = playlist_id
@@ -88,6 +90,9 @@ async function addToPlaylistCont(request, response) {
     // let db_change = update.changes
 
     let content_id = insert.lastInsertRowid
+
+    console.log("New media/content#Id "+content_id +" added to playlist#Id "+ playlist_id)
+
 
     result = content_id
 
@@ -172,6 +177,8 @@ async function deleteFromPlaylist(request, response) {
 
     }
 
+    console.log("Content#Id:"+content_id +" deleted from playlist#"+ playlist_id)
+
     result = del
 
 
@@ -204,10 +211,9 @@ async function deletePlaylist(request, response) {
 
     let playlist_id = request.params.playlistId
 
-    console.log(playlist_id)
-
     let del = await db.deletePlaylist(user_id, playlist_id)
 
+    console.log("Playlist is deleted #Id "+ playlist_id)
 
     result = del
 

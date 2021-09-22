@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap/';
 
 function SinglePlaylistPage(playlistHistory) {
-   const [playlistContent, setPlaylistContent, error, setError] = useState({})
+   const [playlistContent, setPlaylistContent] = useState([])
+   const [error, setError] = useState()
    //This is the fetch that we're gonna use once we can connecto to backend.
    function getToken() {
       return sessionStorage.getItem('auth');
@@ -19,7 +20,7 @@ function SinglePlaylistPage(playlistHistory) {
 
          setPlaylistContent(data);
 
-      } else if (data.Error) {
+      } else if (data.error) {
          setError(data.message)
 
       }
@@ -39,7 +40,7 @@ function SinglePlaylistPage(playlistHistory) {
          var element = e.target.parentNode
          element.parentNode.removeChild(element);
 
-      } else if (data.Error) {
+      } else if (data.error) {
          setError(data.message)
 
       }
