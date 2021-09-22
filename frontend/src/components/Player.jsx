@@ -47,7 +47,8 @@ const PrettoSlider = styled(Slider)({
 
 export default function Player(props) {
     const [playerState, setPlayerState] = useContext(PlayerContext)
-    const [videoDuration, setVideoDuration] = useState('');
+    const [currentTime, setCurrentTime] = useState();
+    const [duration, setDuration] = useState(0);
 
     
 
@@ -65,12 +66,6 @@ export default function Player(props) {
         })
       }
     }
-
-    const padTime = time => {
-      return String(time).length === 1 ? `0${time}` : `${time}`;
-    };
-
-    
     const opts = {
         height: '0',
         width: '0',
@@ -79,12 +74,40 @@ export default function Player(props) {
           autoplay: 1,
         },
       };
+     
+  const padTime = time => {
+    return String(time).length === 1 ? `0${time}` : `${time}`;
+  };
 
+  function formatTime() {
+    const time = currentTime;
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.round(time % 60);
+    const formattedTime = `${minutes} : ${padTime(seconds)}`
+    
+    return (formattedTime)
+  }
+
+  function formatDuration(time) {
+
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.round(time % 60);
+    const formattedTime = `${minutes} : ${padTime(seconds)}`
+    
+    return formattedTime;
+  }
+
+  
   function videoOnPlay(event) {
     setPlayerState({
       isPlaying: true,
       player: event.target
     })
+    
+    console.log('Current Time On Play: ', event.target.getCurrentTime());
+    setInterval(() => {
+      setCurrentTime(event.target.getCurrentTime())
+    }, 1000)
   }
   function videoOnPause(event) {
     setPlayerState({
@@ -93,22 +116,7 @@ export default function Player(props) {
     })
   }
   
-  function formatDuration(props) {
-    const time = props / 1000;
-    console.log('unformatted time', time);
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.round(time % 60);
-    const formattedDuration = `${minutes}:${seconds}`
-    console.log('TIME:', formattedDuration);
-    
-    return (formattedDuration)
-  }
-
-  function videoOnReady() {
-      //console.log('playerState.player', playerState.player);
-
-      //formatDuration(playerState.player.getDuration());
-  }
+  function videoOnReady() {}
 
   return (
     
@@ -118,10 +126,12 @@ export default function Player(props) {
         opts={opts} 
         onReady={videoOnReady}
         onPlay={videoOnPlay} 
-        onPause={videoOnPause} />
-    <span>{playerState.songPlaying && playerState.player.getCurrentTime()}</span>  {/**This we will set dynamically later */}
+        onPause={videoOnPause} 
+      />
+      
+    <span id='current-time'>{playerState.songPlaying && formatTime()}</span>  {/**This we will set dynamically later */}
     <PrettoSlider min={0} max={70} defaultValue={20} />
-    <span>{playerState.songPlaying && formatDuration(playerState.songPlaying.duration)}</span> 
+    <span>{playerState.songPlaying && formatDuration(playerState.songPlaying.duration / 1000)}</span> 
     <div className="song-playing-details">
         <h5 className="player-title">{playerState.songPlaying ? playerState.songPlaying.name : "---"}</h5>
         <h6 className="player-artist">{playerState.songPlaying ? playerState.songPlaying.artist.name : "---"}</h6>
