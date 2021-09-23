@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = new Router();
 
 const { createPlaylistCont, addToPlaylistCont, browseUserPlaylistsCont, 
-    fetchPlaylistContentCont, deleteFromPlaylist, deletePlaylist } = require('../controller/playlistControl.js');
+    fetchPlaylistContentCont, deleteFromPlaylist, deletePlaylist, sharePlaylistCont, fetchSharedPlaylistContentCont } = require('../controller/playlistControl.js');
 const { user } = require('../middleware/auth.js');
 
 
@@ -23,5 +23,11 @@ router.get('/delete_from_playlist/playlist/:playlistId/contentid/:contentId', us
 
 // a route for the whole playlist 
 router.get('/delete_playlist/:playlistId/', user, deletePlaylist);
+
+// share a playlist 
+router.get('/share_playlist/:id/', user, sharePlaylistCont);
+
+// fetch a playlist content
+router.get('/fetch_shared_playlist/:code/', fetchSharedPlaylistContentCont);
 
 module.exports = router;

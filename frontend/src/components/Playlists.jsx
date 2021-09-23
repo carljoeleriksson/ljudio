@@ -3,6 +3,7 @@ import { Redirect, useHistory, Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap/';
 
 
+
 function Playlists() {
    function getToken() {
       return sessionStorage.getItem('auth');
@@ -71,8 +72,11 @@ function Playlists() {
             playlists.map((playlist) => (
                <li key={playlist.Id} value={playlist.Id}>
 
-                  <div key={playlist.Id} value={playlist.Id}
-                     onClick={() => goToSinglePlaylist(playlist.Id, playlist.Name)}>       {playlist.Name} </div>
+ 
+              
+              <Link to={"/singlePlaylistPage?playlistId="+playlist.Id+"&playlistName="+playlist.Name} >
+              {playlist.Name}
+              </Link>
 
                   <Button
                      variant="primary" size="sm"

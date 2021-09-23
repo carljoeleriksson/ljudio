@@ -2,6 +2,7 @@
 const db = require('../model/playlistModel')
 //const { fetchInfo, connectTopApi } = require('../model/mediaModel')
 
+
 // a controle to create a new playlist
 async function createPlaylistCont(request, response) {
 
@@ -83,7 +84,10 @@ async function addToPlaylistCont(request, response) {
 
     let content = JSON.stringify(rawContent)
 
-    let insert = await db.addToPlaylist(user_id, playlist_id, content)
+    let playlist_db_id = await db.getUserPlaylistId(user_id, playlist_id)
+
+
+    let insert = await db.addToPlaylist(user_id, playlist_db_id, content)
 
     console.log(insert)
 
@@ -168,8 +172,10 @@ async function deleteFromPlaylist(request, response) {
 
     let content_id = request.params.contentId
 
+    let playlist_db_id = await db.getUserPlaylistId(user_id, playlist_id)
 
-    let del = await db.deleteFromPlaylist(user_id, content_id, playlist_id)
+
+    let del = await db.deleteFromPlaylist(user_id, content_id, playlist_db_id)
 
     if (del.changes == 0) {
 
@@ -211,7 +217,9 @@ async function deletePlaylist(request, response) {
 
     let playlist_id = request.params.playlistId
 
-    let del = await db.deletePlaylist(user_id, playlist_id)
+    let playlist_db_id = await db.getUserPlaylistId(user_id, playlist_id)
+
+    let del = await db.deletePlaylist(user_id, playlist_db_id)
 
     console.log("Playlist is deleted #Id "+ playlist_id)
 
@@ -248,7 +256,9 @@ async function fetchPlaylistContentCont(request, response) {
 
     let playlist_id = request.params.id
 
-    let playlist_content_json = await db.fetchPlaylistContent(user_id, playlist_id)
+    let playlist_db_id = await db.getUserPlaylistId(user_id, playlist_id)
+
+    let playlist_content_json = await db.fetchPlaylistContent(playlist_db_id)
 
     console.log(playlist_content_json)
 
@@ -283,7 +293,96 @@ async function fetchPlaylistContentCont(request, response) {
 
 }
 
+// A controle to share a playlist
+async function sharePlaylistCont(request, response) {
 
+  let result = null;
+
+  try {
+
+
+    let user_id = request.userId
+
+    let playlist_id = request.params.id
+
+    let playlist_db_id = await db.getUserPlaylistId(user_id, playlist_id)
+
+    console.log(playlist_db_id)
+
+    let sharing_code = await db.sharePlaylist(user_id, playlist_db_id)
+
+    console.log(sharing_code)
+
+   // let reformat_content = []
+
+    
+
+    result = sharing_code
+    // catch any throwable error 
+  } catch (e) {
+    // log error to server  
+    console.log(e.message);
+
+    // assign catched error as json obj
+    result = {
+      "error": e.name,
+      "message": e.message
+    };
+
+  }
+  // return result
+  response.json(result);
+
+}
+
+//A controle to browse shared playlist content
+async function fetchSharedPlaylistContentCont(request, response) {
+
+  let result = null;
+
+  try {
+
+
+    //let playlistId =  request.params.playlistId
+
+    let code = request.params.code
+
+
+    let playlist_content_json = await db.fetchSharedPlaylistContent(code)
+
+   // console.log(playlist_content_json)
+
+    let reformat_content = []
+
+    for (const el of playlist_content_json) {
+
+      // console.log(JSON.parse(el.Content))
+      console.log(el.Id)
+      let elContentToObj = JSON.parse(el.Content)
+
+      reformat_content.push({Id:el.Id , Playlist_id: el.Playlist_id,Content: elContentToObj})
+
+    }
+
+    result = reformat_content
+
+    //result = playlist_content_json
+    // catch any throwable error 
+  } catch (e) {
+    // log error to server  
+    console.log(e.message);
+
+    // assign catched error as json obj
+    result = {
+      "error": e.name,
+      "message": e.message
+    };
+
+  }
+  // return result
+  response.json(result);
+
+}
 
 module.exports.createPlaylistCont = createPlaylistCont;
 module.exports.addToPlaylistCont = addToPlaylistCont;
@@ -291,3 +390,5 @@ module.exports.browseUserPlaylistsCont = browseUserPlaylistsCont
 module.exports.fetchPlaylistContentCont = fetchPlaylistContentCont
 module.exports.deleteFromPlaylist = deleteFromPlaylist
 module.exports.deletePlaylist = deletePlaylist
+module.exports.sharePlaylistCont = sharePlaylistCont
+module.exports.fetchSharedPlaylistContentCont = fetchSharedPlaylistContentCont
