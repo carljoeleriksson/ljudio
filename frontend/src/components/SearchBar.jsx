@@ -4,7 +4,6 @@ import { FaSistrix } from 'react-icons/fa';
 function SearchBar(props) {
   return (
     <div className='search-bar'>
-      <img className='logo-header' src='../../assets/logo.svg' alt='Logo' />
       <form className='search-form' onSubmit={props.onClick}>
         <button className='btn-container' type='submit'>
           <FaSistrix className='search-icon' />
