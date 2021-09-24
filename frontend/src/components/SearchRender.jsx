@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, createContext, useEffect } from 'react';
 import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
 import { IoAddCircleSharp } from 'react-icons/io5';
@@ -5,10 +6,16 @@ import Player from '../components/Player';
 import PlaylistModal from '../components/PlaylistModal';
 
 export const Context = createContext();
+=======
+import React, { useContext } from 'react';
+import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
+import { PlayerContext } from '../contexts/PlayerContext';
+>>>>>>> 6a044e2dcd46ab80135d7ddd0541e0b6559b6a6c
 
 function SearchRender(result) {
    const searchResult = result.result;
 
+<<<<<<< HEAD
    const [showContext, setShowContext] = useState(false);
 
    const [songPlaying, setSongPlaying] = useState('');
@@ -47,6 +54,25 @@ function SearchRender(result) {
    // useEffect(() => {
    //    getPlayListDb();
    // }, []);
+=======
+   const [ playerState, updatePlayerState ] = useContext(PlayerContext)
+
+   function playPause(songObj) {
+      //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
+      if(playerState.isPlaying && playerState.songPlaying.videoId === songObj.videoId){
+         updatePlayerState({
+            isPlaying: false
+         })
+         playerState.player && playerState.player.pauseVideo()
+      } else {
+         updatePlayerState({
+            isPlaying: true,
+            songPlaying: songObj
+         }) 
+         playerState.player && playerState.player.playVideo()
+      }
+   }
+>>>>>>> 6a044e2dcd46ab80135d7ddd0541e0b6559b6a6c
 
    return (
       <Context.Provider value={[showContext, setShowContext]}>
@@ -62,8 +88,13 @@ function SearchRender(result) {
                      <li key={song.videoId}>
                         <p className="song-title">{song.name}</p>
                         <p className="artist-name">{song.artist.name}</p>
+<<<<<<< HEAD
                         <button type="button" onClick={() => playSong(song.videoId)}>
                            <FaPlayCircle />
+=======
+                        <button type="button" onClick={() => playPause(song)}>
+                           {playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
+>>>>>>> 6a044e2dcd46ab80135d7ddd0541e0b6559b6a6c
                         </button>
                         <button
                            type="button"

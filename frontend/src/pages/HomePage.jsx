@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import SearchRender from '../components/SearchRender';
 import Playlists from '../components/Playlists';
+import Player from '../components/Player';
+import PlayerContextProvider from '../contexts/PlayerContext';
 
 function Home() {
    const [searchResult, setSearchResult] = useState();
@@ -33,6 +35,8 @@ function Home() {
       }
    }
    return (
+      <PlayerContextProvider>
+
       <div className="search-bar">
          <img className="logo-header" src="../../assets/logo.svg" alt="Logo" />
          <SearchBar
@@ -51,7 +55,11 @@ function Home() {
          <aside>
             <Playlists></Playlists>
          </aside>
+         
       </div>
+      <Player></Player>
+    </PlayerContextProvider>
+
    );
 }
 

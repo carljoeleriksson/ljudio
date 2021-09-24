@@ -7,9 +7,15 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
     "@material-ui/core": "^4.12.3",
+<<<<<<< HEAD
     "bootstrap": "^5.1.0",
     "query-string": "^7.0.1",
+=======
+    "@mui/material": "^5.0.0",
+>>>>>>> 6a044e2dcd46ab80135d7ddd0541e0b6559b6a6c
     "react": "^17.0.0",
     "react-bootstrap": "^2.0.0-beta.6",
     "react-copy-to-clipboard": "^5.0.4",
