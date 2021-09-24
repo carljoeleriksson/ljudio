@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect } from 'react';
+import React, { useContext, useState, createContext, useEffect } from 'react';
 import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
 import { IoAddCircleSharp } from 'react-icons/io5';
 import Player from '../components/Player';
@@ -6,8 +6,12 @@ import PlaylistModal from '../components/PlaylistModal';
 
 export const Context = createContext();
 
+import { PlayerContext } from '../contexts/PlayerContext';
+
 function SearchRender(result) {
    const searchResult = result.result;
+   const [ playerState, updatePlayerState ] = useContext(PlayerContext)
+
 
    const [showContext, setShowContext] = useState(false);
 
@@ -15,6 +19,21 @@ function SearchRender(result) {
    const [addSong, setAddSong] = useState();
    // const [getPlaylist, setGetplaylist] = useState({});
 
+   function playPause(songObj) {
+      //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
+      if(playerState.isPlaying && playerState.songPlaying.videoId === songObj.videoId){
+         updatePlayerState({
+            isPlaying: false
+         })
+         playerState.player && playerState.player.pauseVideo()
+      } else {
+         updatePlayerState({
+            isPlaying: true,
+            songPlaying: songObj
+         }) 
+         playerState.player && playerState.player.playVideo()
+      }
+   }
    function addToPlaylist(songObj) {
       console.log('songObj i searchrender', songObj);
       setAddSong(songObj);
@@ -62,8 +81,8 @@ function SearchRender(result) {
                      <li key={song.videoId}>
                         <p className="song-title">{song.name}</p>
                         <p className="artist-name">{song.artist.name}</p>
-                        <button type="button" onClick={() => playSong(song.videoId)}>
-                           <FaPlayCircle />
+                        <button type="button" onClick={() => playPause(song)}>
+                           {playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
                         </button>
                         <button
                            type="button"

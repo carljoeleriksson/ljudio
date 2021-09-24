@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@900&display=swap');
 
+body {
+  background-image: url('/assets/bg-img.jpeg');
+  background-size: cover;
+  color: white;
+}
+
 * {
    margin: 0;
    padding: 0;
@@ -200,4 +206,9 @@ select {
 .btn-container {
    background-color: transparent;
    border: none;
+}
+
+.player-thumb {
+  width: 60px;
+  height: 60px;
 }
