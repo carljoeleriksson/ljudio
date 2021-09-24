@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-import React from 'react';
-
-=======
 import React, { useContext, useState } from 'react';
->>>>>>> 6a044e2dcd46ab80135d7ddd0541e0b6559b6a6c
 import YouTube from 'react-youtube';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
 import { PlayerContext } from '../contexts/PlayerContext';
@@ -51,28 +46,6 @@ const PrettoSlider = styled(Slider)({
 });
 
 export default function Player(props) {
-<<<<<<< HEAD
-   const videoId = props.videoId;
-
-   const opts = {
-      height: '390',
-      width: '640',
-      playerVars: {
-         // https://developers.google.com/youtube/player_parameters
-         autoplay: 0,
-      },
-   };
-   const _onReady = (event) => {
-      // access to player in all event handlers via event.target
-      //  event.target.pauseVideo();
-   };
-
-   return (
-      //""2g811Eo7K8U"
-      videoId && <YouTube videoId={videoId} opts={opts} onReady={_onReady} />
-   );
-}
-=======
     const [playerState, setPlayerState] = useContext(PlayerContext)
     const [currentTime, setCurrentTime] = useState();
     const [duration, setDuration] = useState(0);
@@ -173,4 +146,3 @@ export default function Player(props) {
   </div>);
   
 }
->>>>>>> 6a044e2dcd46ab80135d7ddd0541e0b6559b6a6c

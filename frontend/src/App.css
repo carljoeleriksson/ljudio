@@ -1,13 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@900&display=swap');
 
 body {
-<<<<<<< HEAD
-   background-image: url('/assets/bg-img.jpeg');
-=======
-  background-image: url('./assets/bg-img.jpeg');
+  background-image: url('/assets/bg-img.jpeg');
   background-size: cover;
   color: white;
->>>>>>> 6a044e2dcd46ab80135d7ddd0541e0b6559b6a6c
 }
 
 * {
