@@ -33,8 +33,9 @@ function Home() {
       }
    }
    return (
-      <div className="search-bar">
-         <img className="logo-header" src="../../assets/logo.svg" alt="Logo" />
+   <div id="wrapper">
+      <header>
+      <img className="logo-header" src="../../assets/logo.svg" alt="Logo" />
          <SearchBar
             onChange={(e) => {
                console.log(e.target.value);
@@ -47,11 +48,14 @@ function Home() {
             }}
             onClick={fetchSearchResult}
          />
+      </header>
+      <main>
          {searchResult && <SearchRender result={searchResult} />}
-         <aside>
-            <Playlists></Playlists>
-         </aside>
-      </div>
+      </main>
+      <aside id="playlist-sidebar">
+         <Playlists></Playlists>
+      </aside>
+   </div>
    );
 }
 

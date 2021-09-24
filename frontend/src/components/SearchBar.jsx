@@ -3,6 +3,7 @@ import { FaSistrix } from 'react-icons/fa';
 
 function SearchBar(props) {
   return (
+    <div className="search-bar">
     <form className='search-form' onSubmit={props.onClick}>
       <button className='btn-container' type='submit'>
         <FaSistrix className='search-icon' />
@@ -20,6 +21,7 @@ function SearchBar(props) {
         <option value='artists'>Artists</option>
       </select>
     </form>
+    </div>
   );
 }
 export default SearchBar;

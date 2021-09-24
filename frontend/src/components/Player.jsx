@@ -6,8 +6,8 @@ export default function Player(props) {
    const videoId = props.videoId;
 
    const opts = {
-      height: '390',
-      width: '640',
+      height: '0',
+      width: '0',
       playerVars: {
          // https://developers.google.com/youtube/player_parameters
          autoplay: 0,
@@ -20,6 +20,8 @@ export default function Player(props) {
 
    return (
       //""2g811Eo7K8U"
-      videoId && <YouTube videoId={videoId} opts={opts} onReady={_onReady} />
+      <div id="player">
+         videoId && <YouTube videoId={videoId} opts={opts} onReady={_onReady} />
+      </div>
    );
 }
