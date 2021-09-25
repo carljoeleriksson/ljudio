@@ -2,53 +2,17 @@ import React, { useContext, useState } from 'react';
 import YouTube from 'react-youtube';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
 import { PlayerContext } from '../contexts/PlayerContext';
-import Slider, { SliderThumb } from '@mui/material/Slider';
-import { styled } from '@mui/material/styles';
+import { ProgressBar } from 'react-bootstrap';
 
 
-const PrettoSlider = styled(Slider)({
-  color: '#01A5AF',
-  height: 8,
-  '& .MuiSlider-track': {
-    border: 'none',
-  },
-  '& .MuiSlider-thumb': {
-    height: 24,
-    width: 24,
-    backgroundColor: '#fff',
-    border: '2px solid currentColor',
-    '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
-      boxShadow: 'inherit',
-    },
-    '&:before': {
-      display: 'none',
-    },
-  },
-  '& .MuiSlider-valueLabel': {
-    lineHeight: 1.2,
-    fontSize: 12,
-    background: 'unset',
-    padding: 0,
-    width: 32,
-    height: 32,
-    borderRadius: '50% 50% 50% 0',
-    backgroundColor: '#52af77',
-    transformOrigin: 'bottom left',
-    transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
-    '&:before': { display: 'none' },
-    '&.MuiSlider-valueLabelOpen': {
-      transform: 'translate(50%, -100%) rotate(-45deg) scale(1)',
-    },
-    '& > *': {
-      transform: 'rotate(45deg)',
-    },
-  },
-});
+
 
 export default function Player(props) {
     const [playerState, setPlayerState] = useContext(PlayerContext)
     const [currentTime, setCurrentTime] = useState();
     const [duration, setDuration] = useState(0);
+    const [progressBar, setProgressBar] = useState(0);
+
 
     
 
@@ -115,8 +79,93 @@ export default function Player(props) {
       player: event.target
     })
   }
+
+  // play a list of songs
+  // to be called later
+  function playAplaylist(){
+    playerState.player.loadVideoById({'videoId': playerState.songPlaying.videoId,
+    'startSeconds': 5,
+    'endSeconds': 60})
+  }
   
   function videoOnReady() {}
+
+
+  function progress_interval(playerTotalTime, playerCurrentTime){
+   return setInterval(function() {
+  //   console.log("playerCurrentTime: "+ playerCurrentTime)
+
+     
+     var playingPercentage = (playerCurrentTime / playerTotalTime) * 100;
+
+    // console.log("playerTimeDifference: "+ playingPercentage)                 
+
+
+     setProgressBar(playingPercentage)
+
+
+   }, 1000);        
+ }
+  
+  function onPlayerStateChange(event) {
+   // console.log(event)
+  // console.log(playerState.isPlaying)
+  var progress_bar = null
+      if(playerState.isPlaying === true){
+       // $('#progressBar').show();
+        
+
+        //progress_interval(playerTotalTime, playerCurrentTime)
+         progress_bar = setInterval(function() {
+          //   console.log("playerCurrentTime: "+ playerCurrentTime)
+        
+          var playerTotalTime = event.target.getDuration()
+
+          //console.log("playerTotalTime: "+ playerTotalTime)
+  
+          var playerCurrentTime = event.target.getCurrentTime();
+          
+             var playingPercentage = (playerCurrentTime / playerTotalTime) * 100;
+        
+            // console.log("playerTimeDifference: "+ playingPercentage)                 
+        
+        
+             setProgressBar(playingPercentage)
+        
+        
+           }, 1000);    
+
+     } else {
+        
+        clearTimeout(progress_bar);
+      //  $('#progressBar').hide();
+      }
+    
+  }
+
+      
+    /*
+      if (event.data == playerState.PlayerState.PLAYING) {
+  
+        $('#progressBar').show();
+        var playerTotalTime = playerState.player.getDuration();
+  
+        mytimer = setInterval(function() {
+          var playerCurrentTime = playerState.player.getCurrentTime();
+  
+          var playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100;
+  
+  
+          progress(playerTimeDifference, $('#progressBar'));
+        }, 1000);        
+      } else {
+        
+        clearTimeout(mytimer);
+        $('#progressBar').hide();
+      }
+      */
+  
+  
 
   return (
     
@@ -127,10 +176,16 @@ export default function Player(props) {
         onReady={videoOnReady}
         onPlay={videoOnPlay} 
         onPause={videoOnPause} 
+        onStateChange={onPlayerStateChange}
       />
       
     <span id='current-time'>{playerState.songPlaying && formatTime()}</span>  {/**This we will set dynamically later */}
-    <PrettoSlider min={0} max={70} defaultValue={20} />
+    {/** <PrettoSlider min={50} max={70} defaultValue={20} />
+    <div id="progressBar" className="progressBar" >
+     <div>{progressBar}</div>
+    </div>
+     */}
+     <ProgressBar now={progressBar} />
     <span>{playerState.songPlaying && formatDuration(playerState.songPlaying.duration / 1000)}</span> 
     <div className="song-playing-details">
         <h5 className="player-title">{playerState.songPlaying ? playerState.songPlaying.name : "---"}</h5>

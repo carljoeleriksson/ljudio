@@ -133,3 +133,13 @@ select {
   width: 60px;
   height: 60px;
 }
+.progressBar{
+   width: 960px;
+   height: 6px;
+   margin: 1px;
+   background-color: black;
+}
+.progressBar > div {
+   height: 100%;
+    background-color: #ffffff;
+}
