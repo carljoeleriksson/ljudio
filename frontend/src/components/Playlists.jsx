@@ -76,9 +76,8 @@ function Playlists() {
  
               
               <Link to={"/singlePlaylistPage?playlistId="+playlist.Id+"&playlistName="+playlist.Name} >
-              {playlist.Name}
+               {playlist.Name}
               </Link>
-
                   <button
                      className="delete-playlist-btn icon-btn"
                      variant="primary" size="sm"

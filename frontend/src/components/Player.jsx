@@ -8,15 +8,19 @@ import { styled } from '@mui/material/styles';
 
 const PrettoSlider = styled(Slider)({
   color: '#01A5AF',
-  height: 8,
+  height: 5,
   '& .MuiSlider-track': {
     border: 'none',
+    color: '#000'
+  },
+  '& .MuiSlider-rail': {
+    color: '#000'
   },
   '& .MuiSlider-thumb': {
-    height: 24,
-    width: 24,
-    backgroundColor: '#fff',
-    border: '2px solid currentColor',
+    height: 15,
+    width: 15,
+    backgroundColor: '#000',
+    border: '2px solid rgba(0, 0, 0, 0.5)',
     '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
       boxShadow: 'inherit',
     },
@@ -83,7 +87,7 @@ export default function Player(props) {
     const time = currentTime;
     const minutes = Math.floor(time / 60);
     const seconds = Math.round(time % 60);
-    const formattedTime = `${minutes} : ${padTime(seconds)}`
+    const formattedTime = `${minutes}:${padTime(seconds)}`
     
     return (formattedTime)
   }
@@ -92,7 +96,7 @@ export default function Player(props) {
 
     const minutes = Math.floor(time / 60);
     const seconds = Math.round(time % 60);
-    const formattedTime = `${minutes} : ${padTime(seconds)}`
+    const formattedTime = `${minutes}:${padTime(seconds)}`
     
     return formattedTime;
   }
@@ -118,6 +122,10 @@ export default function Player(props) {
   
   function videoOnReady() {}
 
+  function addDefaultThumb(e){
+    e.target.src = '../assets/default-thumb.png'
+  }
+
   return (
     
     <div className="player-wrapper">
@@ -128,21 +136,24 @@ export default function Player(props) {
         onPlay={videoOnPlay} 
         onPause={videoOnPause} 
       />
-      
-    <span id='current-time'>{playerState.songPlaying && formatTime()}</span>  {/**This we will set dynamically later */}
-    <PrettoSlider min={0} max={70} defaultValue={20} />
-    <span>{playerState.songPlaying && formatDuration(playerState.songPlaying.duration / 1000)}</span> 
+    <div className='progress-bar-wrapper'>
+      <span id='current-time'>{playerState.songPlaying ? formatTime() : '0:00'}</span>  {/**This we will set dynamically later */}
+      <PrettoSlider id='progress-bar' min={0} max={70} defaultValue={20} />
+      <span id='duration'>{playerState.songPlaying ? formatDuration(playerState.songPlaying.duration / 1000) : '0:00'}</span> 
+    </div>  
+
     <div className="song-playing-details">
-        <h5 className="player-title">{playerState.songPlaying ? playerState.songPlaying.name : "---"}</h5>
-        <h6 className="player-artist">{playerState.songPlaying ? playerState.songPlaying.artist.name : "---"}</h6>
-        <img className="player-thumb" src={playerState.songPlaying ? playerState.songPlaying.thumbnails[1].url : ''} />
-        
+        <span className="player-title">{playerState.songPlaying ? playerState.songPlaying.name : "---"}</span>
+        <span className="player-artist">{playerState.songPlaying ? playerState.songPlaying.artist.name : "---"}</span>
+        <img className="player-thumb" src={playerState.songPlaying && playerState.songPlaying.thumbnails[1].url} onError={addDefaultThumb} />
     </div>
+
     <div className="controls-wrapper">
         <button className="previous-btn"><FaStepBackward /></button>
         <button className="play-pause-btn" onClick={playPause}>{playerState.isPlaying ? <FaPause /> : <FaPlay />}</button>
         <button className="next-btn"><FaStepForward /></button>
     </div>   
+
   </div>);
   
 }
