@@ -268,11 +268,6 @@ main {
    opacity: 60%;
 }
 
-.previous-btn {}
-.play-pause-btn {}
-.next-btn {}
-
-
 .form-title {
    text-align: center;
    color: var(--clr-light);
@@ -332,4 +327,17 @@ form span {
    color: red;
 }
 
-
+.player-thumb {
+  width: 60px;
+  height: 60px;
+}
+.progressBar{
+   width: 960px;
+   height: 6px;
+   margin: 1px;
+   background-color: black;
+}
+.progressBar > div {
+   height: 100%;
+    background-color: #ffffff;
+}

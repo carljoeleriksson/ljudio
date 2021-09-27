@@ -2,8 +2,19 @@ import React, { useContext, useState } from 'react';
 import YouTube from 'react-youtube';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
 import { PlayerContext } from '../contexts/PlayerContext';
+import { ProgressBar } from 'react-bootstrap';
 import Slider, { SliderThumb } from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
+
+
+
+
+export default function Player(props) {
+    const [playerState, setPlayerState] = useContext(PlayerContext)
+    const [currentTime, setCurrentTime] = useState();
+    const [duration, setDuration] = useState(0);
+    const [progressBar, setProgressBar] = useState(0);
+
 
 
 const PrettoSlider = styled(Slider)({
@@ -48,11 +59,6 @@ const PrettoSlider = styled(Slider)({
     },
   },
 });
-
-export default function Player(props) {
-    const [playerState, setPlayerState] = useContext(PlayerContext)
-    const [currentTime, setCurrentTime] = useState();
-    const [duration, setDuration] = useState(0);
 
     
 
@@ -119,12 +125,74 @@ export default function Player(props) {
       player: event.target
     })
   }
+
+  // play a list of songs
+  // to be called later
+  function playAplaylist(){
+    playerState.player.loadVideoById({'videoId': playerState.songPlaying.videoId,
+    'startSeconds': 5,
+    'endSeconds': 60})
+  }
   
   function videoOnReady() {}
 
   function addDefaultThumb(e){
     e.target.src = '../assets/default-thumb.png'
   }
+  
+  function onPlayerStateChange(event) {
+   // console.log(event)
+  // console.log(playerState.isPlaying)
+  var progress_bar = null
+      if(playerState.isPlaying === true){
+       // $('#progressBar').show();
+        
+
+        //progress_interval(playerTotalTime, playerCurrentTime)
+         progress_bar = setInterval(function() {
+          //   console.log("playerCurrentTime: "+ playerCurrentTime)
+        
+          var playerTotalTime = event.target.getDuration()
+
+          //console.log("playerTotalTime: "+ playerTotalTime)
+  
+          var playerCurrentTime = event.target.getCurrentTime();
+          
+             var playingPercentage = (playerCurrentTime / playerTotalTime) * 100;
+        
+            // console.log("playerTimeDifference: "+ playingPercentage)                 
+        
+        
+             setProgressBar(playingPercentage)
+        
+        
+           }, 1000);    
+
+     } else {
+        
+        clearTimeout(progress_bar);
+      //  $('#progressBar').hide();
+      }
+    
+  }
+function handlePlayMove(e){
+  console.log("handleplaymove")
+  
+
+  console.log(e.target.value)
+  let moveRange_percenatge = e.target.value / 100
+  console.log(playerState.player.getCurrentTime())
+  console.log(playerState.player.getDuration())
+
+  let moveInSek = moveRange_percenatge * playerState.player.getDuration()
+
+  console.log(moveInSek)
+  playerState.player.seekTo(moveInSek)
+}
+      
+
+  
+  
 
   return (
     
@@ -135,13 +203,14 @@ export default function Player(props) {
         onReady={videoOnReady}
         onPlay={videoOnPlay} 
         onPause={videoOnPause} 
-      />
-    <div className='progress-bar-wrapper'>
-      <span id='current-time'>{playerState.songPlaying ? formatTime() : '0:00'}</span>  {/**This we will set dynamically later */}
-      <PrettoSlider id='progress-bar' min={0} max={70} defaultValue={20} />
-      <span id='duration'>{playerState.songPlaying ? formatDuration(playerState.songPlaying.duration / 1000) : '0:00'}</span> 
-    </div>  
+        onStateChange={onPlayerStateChange}
+      />    
 
+    <div className='progress-bar-wrapper'>
+        <span id='current-time'>{playerState.songPlaying && formatTime()}</span>  {/**This we will set dynamically later */}
+        <PrettoSlider min={0} max={100} defaultValue={progressBar} onChange={handlePlayMove} />
+        <span id='duration'>{playerState.songPlaying && formatDuration(playerState.songPlaying.duration / 1000)}</span> 
+    </div>  
     <div className="song-playing-details">
         <span className="player-title">{playerState.songPlaying ? playerState.songPlaying.name : "---"}</span>
         <span className="player-artist">{playerState.songPlaying ? playerState.songPlaying.artist.name : "---"}</span>

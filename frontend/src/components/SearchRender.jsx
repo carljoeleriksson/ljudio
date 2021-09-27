@@ -7,9 +7,18 @@ export const Context = createContext();
 
 import { PlayerContext } from '../contexts/PlayerContext';
 
+
 function SearchRender(result) {
+
+
+
+
+   
+   if(result.result){
    const searchResult = result.result;
+   
    const [ playerState, updatePlayerState ] = useContext(PlayerContext)
+   
 
 
    const [showContext, setShowContext] = useState(false);
@@ -130,6 +139,9 @@ function SearchRender(result) {
          {/* HERE, we might put a div with playlist-results later */}
       </Context.Provider>
    );
+} else {
+   return(<></>)
+}
 }
 
 export default SearchRender;

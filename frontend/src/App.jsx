@@ -45,9 +45,9 @@ function App() {
    return (
       <PlayerContextProvider>
          <Router>
-         <div id="wrapper">
-            <Route path="/registerMember" component={Form} />
             <Route path="/login" component={Login} />
+            <Route path="/registerMember" component={Form} />
+         <div id="wrapper">   
             <Route path="/" exact component={HomePage} />
 
          <header>
@@ -66,7 +66,7 @@ function App() {
             />
          </header>
          <main>
-            {searchResult && <SearchRender result={searchResult} />}
+            <SearchRender result={searchResult} />
             <Route path="/singleplaylistpage" component={SinglePlaylistPage} />
          </main>
          <aside id="playlist-sidebar">
