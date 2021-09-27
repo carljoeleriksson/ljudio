@@ -3,6 +3,8 @@ import YouTube from 'react-youtube';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
 import { PlayerContext } from '../contexts/PlayerContext';
 import { ProgressBar } from 'react-bootstrap';
+import Slider, { SliderThumb } from '@mui/material/Slider';
+import { styled } from '@mui/material/styles';
 
 
 
@@ -13,6 +15,46 @@ export default function Player(props) {
     const [duration, setDuration] = useState(0);
     const [progressBar, setProgressBar] = useState(0);
 
+
+
+const PrettoSlider = styled(Slider)({
+  color: '#01A5AF',
+  height: 8,
+  '& .MuiSlider-track': {
+    border: 'none',
+  },
+  '& .MuiSlider-thumb': {
+    height: 24,
+    width: 24,
+    backgroundColor: '#fff',
+    border: '2px solid currentColor',
+    '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
+      boxShadow: 'inherit',
+    },
+    '&:before': {
+      display: 'none',
+    },
+  },
+  '& .MuiSlider-valueLabel': {
+    lineHeight: 1.2,
+    fontSize: 12,
+    background: 'unset',
+    padding: 0,
+    width: 32,
+    height: 32,
+    borderRadius: '50% 50% 50% 0',
+    backgroundColor: '#52af77',
+    transformOrigin: 'bottom left',
+    transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
+    '&:before': { display: 'none' },
+    '&.MuiSlider-valueLabelOpen': {
+      transform: 'translate(50%, -100%) rotate(-45deg) scale(1)',
+    },
+    '& > *': {
+      transform: 'rotate(45deg)',
+    },
+  },
+});
 
     
 
@@ -91,21 +133,7 @@ export default function Player(props) {
   function videoOnReady() {}
 
 
-  function progress_interval(playerTotalTime, playerCurrentTime){
-   return setInterval(function() {
-  //   console.log("playerCurrentTime: "+ playerCurrentTime)
 
-     
-     var playingPercentage = (playerCurrentTime / playerTotalTime) * 100;
-
-    // console.log("playerTimeDifference: "+ playingPercentage)                 
-
-
-     setProgressBar(playingPercentage)
-
-
-   }, 1000);        
- }
   
   function onPlayerStateChange(event) {
    // console.log(event)
@@ -142,28 +170,22 @@ export default function Player(props) {
       }
     
   }
+function handlePlayMove(e){
+  console.log("handleplaymove")
+  
 
+  console.log(e.target.value)
+  let moveRange_percenatge = e.target.value / 100
+  console.log(playerState.player.getCurrentTime())
+  console.log(playerState.player.getDuration())
+
+  let moveInSek = moveRange_percenatge * playerState.player.getDuration()
+
+  console.log(moveInSek)
+  playerState.player.seekTo(moveInSek)
+}
       
-    /*
-      if (event.data == playerState.PlayerState.PLAYING) {
-  
-        $('#progressBar').show();
-        var playerTotalTime = playerState.player.getDuration();
-  
-        mytimer = setInterval(function() {
-          var playerCurrentTime = playerState.player.getCurrentTime();
-  
-          var playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100;
-  
-  
-          progress(playerTimeDifference, $('#progressBar'));
-        }, 1000);        
-      } else {
-        
-        clearTimeout(mytimer);
-        $('#progressBar').hide();
-      }
-      */
+
   
   
 
@@ -185,8 +207,9 @@ export default function Player(props) {
      <div>{progressBar}</div>
     </div>
      */}
-     <ProgressBar now={progressBar} />
-    <span>{playerState.songPlaying && formatDuration(playerState.songPlaying.duration / 1000)}</span> 
+ {  /*  <ProgressBar now={progressBar} /> */ } 
+ <PrettoSlider min={0} max={100} defaultValue={progressBar} onChange={handlePlayMove} />
+   <span>{playerState.songPlaying && formatDuration(playerState.songPlaying.duration / 1000)}</span> 
     <div className="song-playing-details">
         <h5 className="player-title">{playerState.songPlaying ? playerState.songPlaying.name : "---"}</h5>
         <h6 className="player-artist">{playerState.songPlaying ? playerState.songPlaying.artist.name : "---"}</h6>
