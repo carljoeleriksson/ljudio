@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap/';
+import { FaPlus } from 'react-icons/fa';
 import { Context } from '../components/SearchRender';
 
 function PlaylistModal(song, { getPlaylist }) {
@@ -98,13 +99,13 @@ function PlaylistModal(song, { getPlaylist }) {
       <>
          {/*<Button variant="primary" onClick={handleShow}>Launch demo modal</Button>*/}
 
-         <Modal show={show} onHide={handleClose}>
+         <Modal show={show} onHide={handleClose} dialogClassName="modal-add-to-playlist">
             <Modal.Header closeButton>
                <Modal.Title>Add to playlist</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-               <div>
-                  <label htmlFor="new-playlist-input">Create playlist</label>
+               <div className="add-to-playlist-wrapper">
+                  <h5>Create New</h5>
                   <input
                      type="text"
                      placeholder="New playlist name..."
@@ -112,39 +113,32 @@ function PlaylistModal(song, { getPlaylist }) {
                      className="new-playlist-input"
                      onChange={(e) => setNewPlaylist(e.target.value)}
                   />
-                  <Button
+                  <button
+                  className="btn modal-btn"
                      variant="primary" size="sm"
                      onClick={() => {
                         createNewPlaylist();
                      }}
                   >
-                     +
-                  </Button>
+                     <FaPlus />
+                  </button>
+                  <h5>or add to existing</h5>
+                  <select className='select-dropdown' onChange={(e) => setSelectedPlaylist(e.target.value)}>
+                     <option> --select playlist-- </option>
+                     {playlists &&
+                        playlists.map((playlist) => (
+                           <option value={playlist.Id} key={playlist.Id}>
+                              {playlist.Name}
+                           </option>
+                        ))}
+                  </select>
+                  <button
+                     className="btn modal-btn"
+                     onClick={() => {addToPlaylistDb()}}>
+                     ADD
+                  </button>
                </div>
-               <select onChange={(e) => setSelectedPlaylist(e.target.value)}>
-                  <option> -- select playlist -- </option>
-                  {playlists &&
-                     playlists.map((playlist) => (
-                        <option value={playlist.Id} key={playlist.Id}>
-                           {playlist.Name}
-                        </option>
-                     ))}
-               </select>
-               <Button
-                  variant="primary"
-                  onClick={() => {
-                     addToPlaylistDb();
-                  }}
-               >
-                  Add to playlist
-               </Button>
             </Modal.Body>
-            <Modal.Footer>
-               <Button variant="secondary" onClick={handleClose}>
-                  Close
-               </Button>
-               
-            </Modal.Footer>
          </Modal>
       </>
    );

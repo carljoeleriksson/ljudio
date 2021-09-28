@@ -52,9 +52,12 @@ body {
    filter: invert(45%) sepia(91%) saturate(2422%) hue-rotate(152deg) brightness(80%) contrast(99%);
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4, h5 {
    font-family: var(--ff-primary);
    text-transform: uppercase;
+}
+h5{
+   text-transform: none;
 }
 
 a {
@@ -199,6 +202,54 @@ main {
    color: var(--clr-accent);
 }
 
+
+.modal-add-to-playlist .modal-content {
+   background: rgba(0, 0, 0, 1);
+   border-radius: 2rem;
+}
+
+
+.modal-add-to-playlist .modal-header {
+   display: grid;
+   grid-template-columns: 32px auto 32px;
+   grid-template-rows: 1fr;
+   font-family: var(--ff-primary);
+   text-transform: uppercase;
+}
+
+.modal-add-to-playlist .modal-title {
+   grid-column: 2 / 3;
+}
+
+
+.modal-add-to-playlist .btn-close {
+   grid-column: 3 / 4;
+   filter: invert();
+}
+.add-to-playlist-wrapper {
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr 1fr;
+   grid-template-rows: 1fr 2fr 1fr 2fr;
+   grid-template-areas: 
+   'create create create create'
+   'nameInput nameInput nameInput create-btn'
+   'add add add add'
+   'select select select add-btn'
+   ;
+}
+
+
+.modal-btn {
+   width: 30%;
+}
+.select-dropdown {
+   grid-area: select;
+   border: none;
+   border-radius: 0.3rem;
+   width: 11rem;
+   text-align: center;
+   font-size: 1rem;
+}
 .player-wrapper * {
    color: #000;
 }
