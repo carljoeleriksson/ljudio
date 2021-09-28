@@ -1,6 +1,5 @@
 import React, { useContext, useState, createContext, useEffect } from 'react';
-import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
-import { IoAddCircleSharp } from 'react-icons/io5';
+import { FaPlayCircle, FaPauseCircle, FaPlus } from 'react-icons/fa';
 import Player from '../components/Player';
 import PlaylistModal from '../components/PlaylistModal';
 
@@ -8,9 +7,18 @@ export const Context = createContext();
 
 import { PlayerContext } from '../contexts/PlayerContext';
 
+
 function SearchRender(result) {
+
+
+
+
+   
+   if(result.result){
    const searchResult = result.result;
+   
    const [ playerState, updatePlayerState ] = useContext(PlayerContext)
+   
 
 
    const [showContext, setShowContext] = useState(false);
@@ -111,12 +119,18 @@ let songs = []
       console.log("Play a playlist:")
       playAplaylist()
    }, []);
+   // useEffect(() => {
+   //    getPlayListDb();
+   // }, []);
+   function addDefaultThumb(e){
+      e.target.src = '../assets/default-thumb.png'
+    }
 
    return (
       <Context.Provider value={[showContext, setShowContext]}>
          {songPlaying !== '' && <Player videoId={songPlaying} />}
          {addSong !== undefined && <PlaylistModal {...addSong} />}
-
+      <div className="search-result-wrapper">
          <div className="song-result-container">
             <h2>Songs</h2>
             <ul className="song-list">
@@ -124,24 +138,27 @@ let songs = []
                   .filter((content) => content.type == 'song')
                   .map((song) => (
                      <li key={song.videoId}>
-                        <p className="song-title">{song.name}</p>
-                        <p className="artist-name">{song.artist.name}</p>
-                        <button type="button" onClick={() => playPause(song)}>
-                           {playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
+                        <img className="thumb-li" src={song.thumbnails[0].url} onError={addDefaultThumb} />
+                        <span className="song-title-li">{song.name}</span>
+                        <span className="artist-name-li">{song.artist.name}</span>
+                        <button 
+                           className="play-pause-li-btn icon-btn" 
+                           type="button" 
+                           onClick={() => playPause(song)}>
+                              {playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
                         </button>
                         <button
+                           className="add-to-playlist-li-btn icon-btn"
                            type="button"
-                           onClick={() => {
-                              addToPlaylist(song);
-                           }}
-                        >
-                           <IoAddCircleSharp />
+                           onClick={() => {addToPlaylist(song)}}>
+                              <FaPlus />
                         </button>
                      </li>
                   ))}
             </ul>
          </div>
-
+      </div>
+{/* 
          <div className="artist-result-container">
             <h2>Artists</h2>
             <ul className="artist-list">
@@ -168,10 +185,14 @@ let songs = []
                      ))}
             </ul>
          </div>
+         */}
 
          {/* HERE, we might put a div with playlist-results later */}
       </Context.Provider>
    );
+} else {
+   return(<></>)
+}
 }
 
 export default SearchRender;
