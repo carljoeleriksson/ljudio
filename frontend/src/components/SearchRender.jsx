@@ -33,6 +33,7 @@ function SearchRender(result) {
          }) 
          playerState.player && playerState.player.playVideo()
       }
+     
    }
    function addToPlaylist(songObj) {
       console.log('songObj i searchrender', songObj);
@@ -44,7 +45,50 @@ function SearchRender(result) {
       console.log(videoId);
       setSongPlaying(videoId);
    }
+  // play a list of songs
+  // to be called later
+  function playAplaylist(){
+   //playerState.playlist = arr
+  // arr.forEach(element => {
+let arr = []
+let songs = []
+      console.log(arr)
+      searchResult.filter((content) => content.type == 'song')
+    .map((song) => {
+       console.log(song)
+       arr.push(song.videoId)
+       songs.push(song)
 
+
+    })
+    updatePlayerState({
+      isPlaying: true,
+      playlist: songs,
+      songPlaying:songs[0],
+      playedSongIndex:0
+   })
+   // setPlayerState({
+      // songPlaying: 
+     // }) 
+  console.log(arr)
+
+  // playerState.songPlaying.videoId = 'e1FN047_LT0'
+  const oo = playerState.player.loadPlaylist(
+      { playlist:arr
+     }
+      ,
+   3)
+   console.log("Auto Paylist")
+
+  console.log(arr[0])
+
+  //playerState.player.loadVideoById(arr[0]);
+
+
+  
+}     
+  
+ 
    // function getToken() {
    //    return sessionStorage.getItem('auth');
    // }
@@ -63,9 +107,10 @@ function SearchRender(result) {
    //    }
    // }
 
-   // useEffect(() => {
-   //    getPlayListDb();
-   // }, []);
+    useEffect(() => {
+      console.log("Play a playlist:")
+      playAplaylist()
+   }, []);
 
    return (
       <Context.Provider value={[showContext, setShowContext]}>

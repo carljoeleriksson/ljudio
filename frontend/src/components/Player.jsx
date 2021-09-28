@@ -107,6 +107,7 @@ const PrettoSlider = styled(Slider)({
   function videoOnPlay(event) {
     setPlayerState({
       isPlaying: true,
+   //   songPlaying: event.target
       player: event.target
     })
     
@@ -130,7 +131,12 @@ const PrettoSlider = styled(Slider)({
     'endSeconds': 60})
   }
   
-  function videoOnReady() {}
+  function videoOnReady(event) {
+    console.log("videoOnReady")
+    setPlayerState({
+      player: event.target
+    })
+  }
 
 
 
@@ -164,10 +170,58 @@ const PrettoSlider = styled(Slider)({
            }, 1000);    
 
      } else {
+ 
+     /*  let currentVideoId = 0
+       console.log("Event state:")
+       console.log(event.data)
         
+        if(event.data == 0){ // song play end
+          console.log("Ended")
+          currentVideoId++;
+          if (currentVideoId < playerState.playlist.length) {
+            console.log(playerState.playlist[currentVideoId])
+
+            playerState.player.loadVideoById(playerState.playlist[currentVideoId]);
+          }
+        } */
         clearTimeout(progress_bar);
-      //  $('#progressBar').hide();
+
+      
       }
+
+      if(event.data != null && event.data === 0) {          
+        console.log('done');
+        console.log(playerState.songPlaying.videoId)
+        //let index = 0
+        playerState.playlist.map((el, index) => {
+          if(el.videoId == playerState.songPlaying.videoId){           
+            let currentVideoId = ++index
+            if(currentVideoId < playerState.playlist.length){
+            console.log(playerState.playlist[currentVideoId])
+            setPlayerState({
+              isPlaying: true,
+              songPlaying:playerState.playlist[currentVideoId]
+           })
+            }
+          }
+        })
+
+        //let currentVideoId = 0
+        // let currentVideoId = ++playerState.playedSongIndex
+        //if (currentVideoId < playerState.playlist.length) {
+        //  console.log(playerState.playlist[currentVideoId])
+
+          //  playerState.playlist map to find playlist song by event.target.videoId
+          // move to next index when u found it 
+
+
+        // let currentPlayingSong = playerState.playlist.filter((el) => el.videoId == playerState.playlist[currentVideoId])
+        //   console.log(currentPlayingSong)
+        //  playerState.player.loadVideoById(playerState.playlist[currentVideoId]);
+
+    
+     //   }
+    }
     
   }
 function handlePlayMove(e){
@@ -176,12 +230,12 @@ function handlePlayMove(e){
 
   console.log(e.target.value)
   let moveRange_percenatge = e.target.value / 100
-  console.log(playerState.player.getCurrentTime())
-  console.log(playerState.player.getDuration())
+  console.log("Current Time: " +playerState.player.getCurrentTime())
+  console.log("Total Time: " +playerState.player.getDuration())
 
   let moveInSek = moveRange_percenatge * playerState.player.getDuration()
 
-  console.log(moveInSek)
+  console.log("Move to sek: " +moveInSek)
   playerState.player.seekTo(moveInSek)
 }
       
