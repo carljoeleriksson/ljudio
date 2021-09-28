@@ -118,7 +118,7 @@ let songs = []
     useEffect(() => {
       console.log("Play a playlist:")
       playAplaylist()
-   }, []);
+   }, [searchResult]);
    // useEffect(() => {
    //    getPlayListDb();
    // }, []);
