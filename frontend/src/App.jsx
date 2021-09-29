@@ -9,7 +9,6 @@ import SinglePlaylistPage from './pages/SinglePlaylistPage';
 //import SearchRender from './components/SearchRender';
 import PlayerContextProvider from './contexts/PlayerContext';
 //import Playlists from './components/Playlists';
-import IsLoggedIn from './components/IsLoggedIn';
 
 import './App.css';
 
@@ -24,7 +23,6 @@ return (
          <Route path="/registerMember" component={Form} />
          <Route path="/" exact component={HomePage} />
          <Route path="/singleplaylistpage" component={SinglePlaylistPage} />
-         <IsLoggedIn />
       </Router>
    </PlayerContextProvider>
 );

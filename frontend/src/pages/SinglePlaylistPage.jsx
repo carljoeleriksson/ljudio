@@ -114,7 +114,7 @@ function SinglePlaylistPage(props) {
 
    return (
       <>
-         <IsLoggedIn />
+        {!sharing_code &&  <IsLoggedIn/>}
 
          <h2>{playlistName}</h2>
 
