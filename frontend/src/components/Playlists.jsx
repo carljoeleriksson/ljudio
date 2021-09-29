@@ -72,7 +72,7 @@ function Playlists() {
    }, [playlistsCxt]);
 
    return (
-      <ul>
+      <ul className="playlists-ul">
          {/* If you put playlists == {} you can search songs */}
          {playlists.length > 0 &&
             playlists.map((playlist) => (
@@ -92,10 +92,9 @@ function Playlists() {
                   >
                      <FaTrashAlt />
                   </button>
-
+                  <hr></hr>
                </li>
-
-
+               
             )
             )}
          {error != undefined && error}

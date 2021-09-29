@@ -2,11 +2,9 @@ import React, { useState, createContext} from 'react';
 
 import SearchBar from '../components/SearchBar';
 import SearchRender from '../components/SearchRender';
-import Playlists from '../components/Playlists';
 import Player from '../components/Player';
-import PlayerContextProvider from '../contexts/PlayerContext';
+import BurgerMenu from '../components/BurgerMenu'
 import IsLoggedIn from '../components/IsLoggedIn';
-//import SinglePlaylistPage from '/SinglePlaylistPage';
 
 export const GeneralContext = createContext();
 
@@ -14,7 +12,7 @@ export const GeneralContext = createContext();
 function Home() {
    const [searchResult, setSearchResult] = useState();
    const [searchTerm, setSearchTerm] = useState('');
-   const [searchType, setSearchType] = useState('search');
+   const [searchType, setSearchType] = useState('songs');
    const [playlists, setPlaylists] = useState([]);
 
 
@@ -44,10 +42,9 @@ function Home() {
 
    return (
       <GeneralContext.Provider value={[playlists, setPlaylists]}>
-
+      
          <IsLoggedIn />
          <div id="wrapper">
-
             <header>
                <img className="logo-header" src="../../assets/logo.svg" alt="Logo" />
                <SearchBar
@@ -63,22 +60,14 @@ function Home() {
                   onClick={fetchSearchResult}
                />
             </header>
-
             <main>
                {searchResult && <SearchRender result={searchResult} />}
             </main>
-
-            <aside id="playlist-sidebar">
-               <Playlists></Playlists>
-            </aside>
-
+            <BurgerMenu />
             <Player></Player>
-
          </div>
       </GeneralContext.Provider>
-
-
-   );
+   )
 }
 
 export default Home;
