@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap/';
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import * as QueryString from "query-string"
+import IsLoggedIn from '../components/IsLoggedIn';
+
 
 
 
@@ -112,6 +114,8 @@ function SinglePlaylistPage(props) {
 
    return (
       <>
+         <IsLoggedIn />
+
          <h2>{playlistName}</h2>
 
          {!sharing_code &&

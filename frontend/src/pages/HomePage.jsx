@@ -5,6 +5,7 @@ import SearchRender from '../components/SearchRender';
 import Playlists from '../components/Playlists';
 import Player from '../components/Player';
 import PlayerContextProvider from '../contexts/PlayerContext';
+import IsLoggedIn from '../components/IsLoggedIn';
 //import SinglePlaylistPage from '/SinglePlaylistPage';
 
 function Home() {
@@ -37,7 +38,7 @@ function Home() {
    }
    
    return (<>
-   
+   <IsLoggedIn/>
    <div id="wrapper">
    
       <header>
