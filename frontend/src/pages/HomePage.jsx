@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-//import SearchBar from '../components/SearchBar';
-//import SearchRender from '../components/SearchRender';
+import SearchBar from '../components/SearchBar';
+import SearchRender from '../components/SearchRender';
 import Playlists from '../components/Playlists';
 import Player from '../components/Player';
 import PlayerContextProvider from '../contexts/PlayerContext';
@@ -38,7 +38,6 @@ function Home() {
    
    return (<>
    
-   {/*      
    <div id="wrapper">
    
       <header>
@@ -68,7 +67,6 @@ function Home() {
          <Player></Player>
          
    </div>
-   */}
       </>   
 
 

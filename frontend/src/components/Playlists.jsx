@@ -50,8 +50,10 @@ function Playlists() {
 
 
       if (data.changes > 0) {
-         var element = e.target.parentNode
-         element.parentNode.removeChild(element);
+         //var element = e.target.parentNode
+         //console.log('element', element);
+         //element.parentNode.removeChild(element);
+         document.getElementById(playlistId).remove();
       } else if (data.error) {
          setError(data.message)
       }
@@ -71,7 +73,7 @@ function Playlists() {
          {/* If you put playlists == {} you can search songs */}
          {playlists.length > 0 &&
             playlists.map((playlist) => (
-               <li key={playlist.Id} value={playlist.Id}>
+               <li id={playlist.Id} key={playlist.Id} value={playlist.Id}>
 
  
               
