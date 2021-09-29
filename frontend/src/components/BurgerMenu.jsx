@@ -21,14 +21,14 @@ const styles = {
 	  width: '24px'
 	},
 	bmCross: {
-	  background: '#01a5af'
+	  background: '#fff'
 	},
 	bmMenuWrap: {
 	  position: 'fixed',
 	  height: '100%'
 	},
 	bmMenu: {
-	  background: 'rgba(0, 0, 0, 0.75)',
+	  background: 'rgba(0, 0, 0, 0.9)',
 	  padding: '0 1.5em 0 0',
 	  fontSize: '1.15em'
 	},
@@ -54,6 +54,7 @@ function BurgerMenu() {
 	}
 	return (
 		<Menu styles={ styles } width={'280px'} >
+			<h5 className="burger-menu-title">Playlists</h5>
 			<Playlists></Playlists>
       	</Menu>
 	)
