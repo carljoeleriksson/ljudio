@@ -159,9 +159,9 @@ deletePlaylist(user_id, playlist_id){
 
     //playlist_db_id = getUserPlaylistId(user_id, playlist_id)
 
-    const delPlaylistContent = 'DELETE FROM PLaylists_Content WHERE Playlist_id = ?'
+    //const delPlaylistContent = 'DELETE FROM PLaylists_Content WHERE Playlist_id = ?'
 
-    const stml = conn.prepare(delPlaylistContent).run(playlist_id)
+    //const stml = conn.prepare(delPlaylistContent).run(playlist_id)
 
     const delPlaylist = 'DELETE FROM PLaylists WHERE Id = ?'
 
@@ -170,7 +170,7 @@ deletePlaylist(user_id, playlist_id){
 
     console.log("Delete Playlist#Id: " + playlist_id)
 
-    console.log(stml)
+   // console.log(stml)
 
     console.log(stml2)
 

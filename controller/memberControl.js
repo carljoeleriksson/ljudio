@@ -57,8 +57,8 @@ async function loginCont(request, response) {
 
     // Sign loggedIn user using jwt  
     const token = jwt.sign({ id: user.Id }, 'zdt346', {
-      expiresIn: 6000 //Går ut om 10 minuter // SET BACK TO 60 
-    });
+      expiresIn: "10h" //Går ut om 10 h 
+        });
     // reassign the token of signed user 
     result = token;
 
@@ -82,11 +82,39 @@ async function loginCont(request, response) {
 
 }
 
-// TO DO
 
-// A CTL to logout user
+// a CTL to logged in user 
+async function isLoggedIn(request, response) {
+
+  let result = null;
+
+  try {
+
+    let user_id = request.userId
+
+    result = user_id
+
+
+    // catch any throwable error 
+  } catch (e) {
+    // log error to server  
+    console.log(e.message);
+
+    // assign catched error as json obj
+    result = {
+      "error": e.name,
+      "message": e.message
+    };
+
+  }
+  // return result
+  response.json(result);
+
+}
 
 
 module.exports.registerMemberCont = registerMemberCont;
 module.exports.loginCont = loginCont;
+module.exports.isLoggedIn = isLoggedIn;
+
 
