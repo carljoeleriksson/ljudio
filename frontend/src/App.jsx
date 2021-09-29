@@ -9,6 +9,7 @@ import SearchBar from './components/SearchBar';
 import SearchRender from './components/SearchRender';
 import PlayerContextProvider from './contexts/PlayerContext';
 import Playlists from './components/Playlists';
+import BurgerMenu from './components/BurgerMenu';
 
 import './App.css';
 
@@ -17,7 +18,7 @@ function App() {
 
    const [searchResult, setSearchResult] = useState();
    const [searchTerm, setSearchTerm] = useState('');
-   const [searchType, setSearchType] = useState('search');
+   const [searchType, setSearchType] = useState('songs');
 
    async function fetchSearchResult(e) {
       e.preventDefault();
@@ -69,9 +70,13 @@ function App() {
             <SearchRender result={searchResult} />
             <Route path="/singleplaylistpage" component={SinglePlaylistPage} />
          </main>
+         <BurgerMenu></BurgerMenu>
+         {/*
          <aside id="playlist-sidebar">
+         
          <Playlists></Playlists>
          </aside>
+         */}
          <Player></Player>
       </div>
       </Router>
