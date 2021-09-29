@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Redirect, useHistory, Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap/';
 import { FaTrashAlt } from 'react-icons/fa';
+import { GeneralContext } from '../pages/HomePage';
 
 
 
 function Playlists() {
+   const [playlistsCxt, setPlaylistsCxt] = useContext(GeneralContext);
+
    function getToken() {
       return sessionStorage.getItem('auth');
    }
@@ -66,7 +69,7 @@ function Playlists() {
    console.log('playlists from PLAYLISTS', playlists);
    useEffect(() => {
       getPlaylistsDb();
-   }, []);
+   }, [playlistsCxt]);
 
    return (
       <ul>

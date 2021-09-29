@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createContext} from 'react';
 
 import SearchBar from '../components/SearchBar';
 import SearchRender from '../components/SearchRender';
@@ -8,10 +8,15 @@ import PlayerContextProvider from '../contexts/PlayerContext';
 import IsLoggedIn from '../components/IsLoggedIn';
 //import SinglePlaylistPage from '/SinglePlaylistPage';
 
+export const GeneralContext = createContext();
+
+
 function Home() {
    const [searchResult, setSearchResult] = useState();
    const [searchTerm, setSearchTerm] = useState('');
    const [searchType, setSearchType] = useState('search');
+   const [playlists, setPlaylists] = useState([]);
+
 
 
    async function fetchSearchResult(e) {
@@ -36,39 +41,41 @@ function Home() {
          console.log('Failed to fetch. Got no data from backend.');
       }
    }
-   
-   return (<>
-   <IsLoggedIn/>
-   <div id="wrapper">
-   
-      <header>
-         <img className="logo-header" src="../../assets/logo.svg" alt="Logo" />
-         <SearchBar
-            onChange={(e) => {
-               console.log(e.target.value);
 
-               if (e.target.type == 'text') {
-                  setSearchTerm(e.target.value);
-               } else {
-                  setSearchType(e.target.value);
-               }
-            }}
-            onClick={fetchSearchResult}
-         />
-      </header>
+   return (
+      <GeneralContext.Provider value={[playlists, setPlaylists]}>
 
-      <main>
-         {searchResult && <SearchRender result={searchResult} />}
-      </main>
+         <IsLoggedIn />
+         <div id="wrapper">
 
-      <aside id="playlist-sidebar">
-         <Playlists></Playlists>
-      </aside>
-      
-         <Player></Player>
-         
-   </div>
-      </>   
+            <header>
+               <img className="logo-header" src="../../assets/logo.svg" alt="Logo" />
+               <SearchBar
+                  onChange={(e) => {
+                     console.log(e.target.value);
+
+                     if (e.target.type == 'text') {
+                        setSearchTerm(e.target.value);
+                     } else {
+                        setSearchType(e.target.value);
+                     }
+                  }}
+                  onClick={fetchSearchResult}
+               />
+            </header>
+
+            <main>
+               {searchResult && <SearchRender result={searchResult} />}
+            </main>
+
+            <aside id="playlist-sidebar">
+               <Playlists></Playlists>
+            </aside>
+
+            <Player></Player>
+
+         </div>
+      </GeneralContext.Provider>
 
 
    );

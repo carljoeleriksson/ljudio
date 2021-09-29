@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap/';
 import { Context } from '../components/SearchRender';
+import { GeneralContext } from '../pages/HomePage';
 
 function PlaylistModal(song, { getPlaylist }) {
    function getToken() {
@@ -9,6 +10,9 @@ function PlaylistModal(song, { getPlaylist }) {
    console.log('PLAYLISTS AS PROPS', getPlaylist);
 
    const [show, setShow] = useContext(Context);
+
+   const [playlistsCxt, setPlaylistsCxt] = useContext(GeneralContext);
+
    const [newPlaylist, setNewPlaylist] = useState('');
    const [playlists, setPlaylists] = useState();
    const [selectedPlaylist, setSelectedPlaylist] = useState('');
@@ -61,8 +65,12 @@ function PlaylistModal(song, { getPlaylist }) {
             console.log(data.message);
          } else {
             console.log('Created a new playlist');
-            //console.log(data)
+          //  console.log(data)
             setPlaylists(data)
+            setPlaylistsCxt(data)
+        //    console.log('setPlaylistsCxt')
+         //   console.log(playlistsCxt)
+
          }
 
       }
@@ -97,7 +105,6 @@ function PlaylistModal(song, { getPlaylist }) {
    return (
       <>
          {/*<Button variant="primary" onClick={handleShow}>Launch demo modal</Button>*/}
-
          <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                <Modal.Title>Add to playlist</Modal.Title>
