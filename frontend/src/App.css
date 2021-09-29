@@ -45,6 +45,7 @@ body {
    font-weight: 700;
    letter-spacing: 1.1px;
    border: 4px solid #01a5af;
+   text-transform: uppercase;
 }
 
 .icon-btn {
@@ -84,7 +85,7 @@ form {
 
 input {
    border: none;
-   width: 60%;
+   width: 70%;
    height: 2.4rem;
    padding: 0 1rem;
    font-size: 1rem;
@@ -169,7 +170,7 @@ select {
    font-size: 1.3rem;
 }
 .song-list{
-   padding:0 0 0 1rem;
+   padding:0;
 }
 .song-list li {
    display: grid;
@@ -180,7 +181,8 @@ select {
    'thumb artist play plus'
    ;
    align-items: center;
-   margin: 0 1rem 0.6rem 0;
+   margin: 0 1rem 0 0;
+   padding: 0 0 0.6rem 0.5rem;
 }
 .thumb-li {
    grid-area: thumb;
@@ -287,7 +289,7 @@ main {
 .add-to-playlist-wrapper input {
    margin-top:0;
    width: 100%;
-   background-color: #000;
+   background-color: rgb(56, 56, 56);
 }
 
 .modal-btn {
@@ -299,21 +301,26 @@ main {
    letter-spacing: 1.1px;
    border: 4px solid #fff;
    background-color: #5bc2c7;
-
-   width: 70%;
+   width: 4rem;
    margin:0 0 0 0.5rem;
    font-size: 1em;
    text-align: center;
    padding: 0.7rem 0.7rem;
 }
+
+.modal-btn:hover{
+   background-color: var(--clr-dark);
+   color: #FFF;
+}
 .select-dropdown {
    border: none;
-   border-radius: 0.3rem;
+   border-radius: 0.5rem;
    width: 11rem;
+   height: 2.4rem;
    text-align: center;
    font-size: 1rem;
    color: var(--clr-accent);
-   background-color: #000;
+   background-color: rgb(56, 56, 56);
 }
 .player-wrapper * {
    color: #000;
@@ -408,8 +415,9 @@ main {
 .form-container {
    background: rgba(0, 0, 0, 0.705);
    max-width: 500px;
+   width: 90%;
    margin: 1rem auto;
-   padding: 1rem 0;
+   padding: 2rem 0;
 }
 
 .logo {
