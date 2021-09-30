@@ -67,11 +67,16 @@ function Playlists() {
    }, [playlistsCxt]);
 
    return (
-      <ul className="playlists-ul">
+      <ul className="playlists-ul song-list">
          {/* If you put playlists == {} you can search songs */}
          {playlists.length > 0 &&
             playlists.map((playlist) => (
-               <li id={playlist.Id} key={playlist.Id} value={playlist.Id}>
+               <li
+                  className="playlists-li"
+                  id={playlist.Id}
+                  key={playlist.Id}
+                  value={playlist.Id}
+               >
                   <Link
                      to={
                         '/singlePlaylistPage?playlistId=' +
@@ -83,7 +88,7 @@ function Playlists() {
                      {playlist.Name}
                   </Link>
                   <button
-                     className="delete-playlist-btn icon-btn"
+                     className="delete-btn icon-btn"
                      variant="primary"
                      size="sm"
                      onClick={(e) => {
