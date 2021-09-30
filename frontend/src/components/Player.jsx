@@ -91,11 +91,16 @@ const PrettoSlider = styled(Slider)({
 
   function formatTime() {
     const time = currentTime;
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.round(time % 60);
-    const formattedTime = `${minutes}:${padTime(seconds)}`
+    if(currentTime){
+      const minutes = Math.floor(time / 60);
+      const seconds = Math.round(time % 60);
+      const formattedTime = `${minutes}:${padTime(seconds)}`
+      
+      return (formattedTime)
+    } else {
+      return ('0:00')
+    }
     
-    return (formattedTime)
   }
 
   function formatDuration(time) {
