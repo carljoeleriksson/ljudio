@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
 import Playlists from './Playlists';
+import { FaDoorOpen } from 'react-icons/fa';
 
 const styles = {
    bmBurgerButton: {
@@ -39,6 +40,8 @@ const styles = {
    bmItemList: {
       color: '#b8b7ad',
       padding: '0.8em',
+      display: 'flex',
+      'flex-direction': 'column'
    },
    bmItem: {
       display: 'inline-block',
@@ -64,7 +67,7 @@ function BurgerMenu() {
       <Menu styles={styles} width={'280px'}>
          <h5 className="burger-menu-title">Playlists</h5>
          <Playlists></Playlists>
-         <button onClick={logout}>Logout</button>
+         <button className="logout-btn icon-btn" onClick={logout}><FaDoorOpen/><span>Logout</span></button>
          {redirect && <Redirect to="/Login" />}
       </Menu>
    );
