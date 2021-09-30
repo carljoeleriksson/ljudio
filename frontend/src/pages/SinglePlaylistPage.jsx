@@ -86,8 +86,9 @@ function SinglePlaylistPage(props) {
     const data = await response.json();
     console.log('Delete response: ', data);
     if (data.changes > 0) {
-      var element = e.target.parentNode;
-      element.parentNode.removeChild(element);
+      //var element = e.target.parentNode;
+      //element.parentNode.removeChild(element);
+      document.getElementById(contentId).remove();
     } else if (data.error) {
       setError(data.message);
     }
