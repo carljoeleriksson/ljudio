@@ -17,6 +17,8 @@ function PlaylistModal(song, { getPlaylist }) {
    const [newPlaylist, setNewPlaylist] = useState('');
    const [playlists, setPlaylists] = useState();
    const [selectedPlaylist, setSelectedPlaylist] = useState('');
+   const [message, setMessage] = useState()
+
 
    const handleClose = () => setShow(false);
    //const handleShow = () => setShow(true);
@@ -95,9 +97,11 @@ function PlaylistModal(song, { getPlaylist }) {
       console.log(data);
 
       if (data.error) {
-         console.log('Please select a playlist', data);
+         console.log(data.message);
+         setMessage(data.message)
       } else {
-         console.log('Song was added to playlist', data);
+         console.log('Song is added to playlist', data);
+         setMessage('Song is added to playlist')
       }
    }
 
@@ -145,6 +149,7 @@ function PlaylistModal(song, { getPlaylist }) {
                      onClick={() => {addToPlaylistDb()}}>
                      ADD
                   </button>
+                  {message}
                </div>
             </Modal.Body>
          </Modal>
