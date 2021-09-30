@@ -71,6 +71,27 @@ createPlaylist(user_id, playlist_name) {
     return insert
 
 },
+// check if song already in playlist
+checkPlaylistContent (playlist_id, content){
+
+    const select = 'SELECT Id FROM Playlists_Content WHERE Playlist_id = ? AND Content =?'
+
+    const stml = conn.prepare(select)
+
+    const content_id = stml.get([playlist_id, content])
+
+    console.log(content_id)
+
+
+    if (content_id) {
+
+        throw Error('this song is already in this playlist!');
+
+    }
+
+    return true
+},
+
 
 // Add a song to playlist
 

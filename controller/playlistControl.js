@@ -86,6 +86,7 @@ async function addToPlaylistCont(request, response) {
 
     let playlist_db_id = await db.getUserPlaylistId(user_id, playlist_id)
 
+    let isNotInPlaylist  = await db.checkPlaylistContent(playlist_db_id, content)
 
     let insert = await db.addToPlaylist(user_id, playlist_db_id, content)
 
