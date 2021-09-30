@@ -69,6 +69,7 @@ function SinglePlaylistPage(props) {
       setError(data.message);
     }
   }
+
   async function getSharedPlaylist(code) {
     const TokenKey = getToken();
     const response = await fetch(`/api/fetch_shared_playlist/${code}`);
@@ -80,6 +81,7 @@ function SinglePlaylistPage(props) {
       setError(data.message);
     }
   }
+
   async function deleteFromPlaylist(e, contentId) {
     e.preventDefault();
     console.log('Delete Content#ID:' + contentId);
