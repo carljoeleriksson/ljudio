@@ -137,7 +137,7 @@ let songs = []
                {searchResult
                   .filter((content) => content.type == 'song')
                   .map((song) => (
-                     <li key={song.videoId}>
+                     <li className="search-li" key={song.videoId}>
                         <img className="thumb-li" src={song.thumbnails[0].url} onError={addDefaultThumb} />
                         <span className="song-title-li">{song.name}</span>
                         <span className="artist-name-li">{song.artist.name}</span>

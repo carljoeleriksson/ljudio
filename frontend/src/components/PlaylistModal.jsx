@@ -123,7 +123,6 @@ function PlaylistModal(song, { getPlaylist }) {
                   />
                   <button
                   className="btn modal-btn"
-                     variant="primary" size="sm"
                      onClick={() => {
                         createNewPlaylist();
                      }}
