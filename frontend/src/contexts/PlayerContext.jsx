@@ -8,6 +8,7 @@ function PlayerContextProvider(props) {
 		songPlaying: '', //pass in the whole song object.
 		player: '', //this is the event.target from the player so we can call methods on the player (as .playVideo())
 	    playlist: [],
+		playlistVideoIds: [],
 		playedSongIndex: 0 	
 	})
 

@@ -13,6 +13,8 @@ function SinglePlaylistPage(props) {
   const [playlistContent, setPlaylistContent] = useState([]);
   const [error, setError] = useState();
   const [sharelink, setSharelink] = useState();
+  const [refreshPlaylist, setRefreshPlaylist] = useState(false);
+
   const url = window.location.href;
   //const playlistId = props.location.state.playlistId
   console.log(props.location.search);
@@ -58,17 +60,24 @@ function SinglePlaylistPage(props) {
     console.log('getPlaylists data ', data);
     if (data.length > 0) {
       setPlaylistContent(data);
+      playAplaylist(data)
+    } else if (data.length == 0) {
+      setPlaylistContent([]);
     } else if (data.error) {
       setError(data.message);
     }
   }
   async function getSharedPlaylist(code) {
-    const TokenKey = getToken();
+    //  const TokenKey = getToken();
     const response = await fetch(`/api/fetch_shared_playlist/${code}`);
     const data = await response.json();
     console.log('get shared Playlists data ', data);
     if (data.length > 0) {
       setPlaylistContent(data);
+      playAplaylist(data)
+
+    } else if (data.length == 0) {
+      setPlaylistContent([]);
     } else if (data.error) {
       setError(data.message);
     }
@@ -85,9 +94,17 @@ function SinglePlaylistPage(props) {
     const data = await response.json();
     console.log('Delete response: ', data);
     if (data.changes > 0) {
-      var element = e.target.parentNode;
-      element.parentNode.removeChild(element);
+
+      if (!sharing_code) {
+        getSinglePlaylist();
+  
+  
+      } else {
+        getSharedPlaylist(sharing_code);
+      }
+
     } else if (data.error) {
+
       setError(data.message);
     }
   }
@@ -108,18 +125,63 @@ function SinglePlaylistPage(props) {
       setSharelink(url + '&code=' + data);
     }
   }
+  // play a list of songs
+  // to be called later
+  function playAplaylist(data, playCurrent = false) {
+
+    let arr = []
+    let songs = []
+    console.log(data)
+    if (data.length > 0) {
+      data.map((song) => {
+        console.log(song)
+        arr.push(song.Content.videoId)
+        songs.push(song.Content)
+
+
+      })
+      updatePlayerState({
+        isPlaying: true,
+        playlist: songs,
+        songPlaying: songs[0],
+        playedSongIndex: 0,
+        playlistVideoIds: arr
+      })
+
+      console.log(arr)
+    //  console.log("player")
+     // console.log(playerState.player)
+    /*  const oo = playerState.player.loadPlaylist(
+        {
+          playlist: arr
+        }
+        ,
+        3)*/
+      console.log("Auto Paylist")
+
+      console.log(arr[0])
+
+      //playerState.player.loadVideoById(arr[0]);
+    }
+  }
+
   useEffect(() => {
     if (!sharing_code) {
       getSinglePlaylist();
+
+
     } else {
       getSharedPlaylist(sharing_code);
     }
+    setRefreshPlaylist(false)
+
+    // playAplaylist()
   }, []);
 
   return (
     <>
-    {!sharing_code &&  <IsLoggedIn/>}
-    
+      {!sharing_code && <IsLoggedIn />}
+
       <h2>{playlistName}</h2>
 
       {!sharing_code && (
@@ -141,7 +203,7 @@ function SinglePlaylistPage(props) {
       <ul className='playlist-container'>
         {playlistContent.length > 0 &&
           playlistContent.map((el) => (
-            <li id={el.Id} value={el.Content.videoId} key={el.Content.videoId}>
+            <li id={el.Id} value={el.Content.videoId} key={el.Id}>
               <p className='song-title'>{el.Content.name}</p>
               <p className='artist-name'>{el.Content.artist.name}</p>
               {!sharing_code && (
@@ -158,7 +220,7 @@ function SinglePlaylistPage(props) {
 
               <Button type='button' onClick={() => playPause(el.Content)}>
                 {playerState.isPlaying &&
-                playerState.songPlaying.videoId === el.Content.videoId ? (
+                  playerState.songPlaying.videoId === el.Content.videoId ? (
                   <FaPauseCircle />
                 ) : (
                   <FaPlayCircle />
