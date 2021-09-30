@@ -1,10 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap/';
 import IsLoggedIn from '../components/IsLoggedIn';
-import { FaPlayCircle, FaPauseCircle, FaPlus } from 'react-icons/fa';
+import {
+  FaPlayCircle,
+  FaPauseCircle,
+  FaTrashAlt,
+  FaShare,
+  FaArrowLeft,
+} from 'react-icons/fa';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as QueryString from 'query-string';
 import Player from '../components/Player';
+import { Link } from 'react-router-dom';
 
 import { PlayerContext } from '../contexts/PlayerContext';
 
@@ -12,9 +19,7 @@ function SinglePlaylistPage(props) {
   const [playerState, updatePlayerState] = useContext(PlayerContext);
   const [playlistContent, setPlaylistContent] = useState([]);
   const [error, setError] = useState();
-  const [sharelink, setSharelink] = useState();
-  const [refreshPlaylist, setRefreshPlaylist] = useState(false);
-
+  const [sharelink, setSharelink] = useState(false);
   const url = window.location.href;
   //const playlistId = props.location.state.playlistId
   console.log(props.location.search);
@@ -67,6 +72,7 @@ function SinglePlaylistPage(props) {
       setError(data.message);
     }
   }
+
   async function getSharedPlaylist(code) {
     //  const TokenKey = getToken();
     const response = await fetch(`/api/fetch_shared_playlist/${code}`);
@@ -82,6 +88,7 @@ function SinglePlaylistPage(props) {
       setError(data.message);
     }
   }
+
   async function deleteFromPlaylist(e, contentId) {
     e.preventDefault();
     console.log('Delete Content#ID:' + contentId);
@@ -111,7 +118,7 @@ function SinglePlaylistPage(props) {
 
   async function sharePlaylist(e) {
     e.preventDefault();
-    console.log('Delete from Playlist#ID:' + playlistId);
+    // console.log('Delete from Playlist#ID:' + playlistId);
     const TokenKey = getToken();
     const response = await fetch(`/api/share_playlist/${playlistId}`, {
       headers: { Authorization: `Bearer ${TokenKey}` },
@@ -122,7 +129,8 @@ function SinglePlaylistPage(props) {
       setError(data.message);
     } else if (data) {
       console.log('Share code' + data);
-      setSharelink(url + '&code=' + data);
+      navigator.clipboard.writeText(url + '&code=' + data);
+      setSharelink(true);
     }
   }
   // play a list of songs
@@ -178,61 +186,84 @@ function SinglePlaylistPage(props) {
     // playAplaylist()
   }, []);
 
+  function addDefaultThumb(e) {
+    e.target.src = '../assets/default-thumb.png';
+  }
+
   return (
     <>
       {!sharing_code && <IsLoggedIn />}
+      <div className='single-playlist-wrapper'>
+        <div className='single-playlist-header'>
+          <h2>{playlistName}</h2>
+          <button className='back-btn icon-btn'>
+            <Link to={'/'}>
+              <FaArrowLeft />
+            </Link>
+          </button>
 
-      <h2>{playlistName}</h2>
+          {!sharing_code && (
+            <button
+              className='share-playlist-btn icon-btn'
+              onClick={(e) => {
+                sharePlaylist(e);
+              }}
+            >
+              <FaShare />
+              Share
+            </button>
+          )}
+          <span className='hideMe'>{sharelink && 'Copied to clipboard'}</span>
+        </div>
 
-      {!sharing_code && (
-        <Button
-          variant='primary'
-          size='sm'
-          onClick={(e) => {
-            sharePlaylist(e);
-          }}
-        >
-          Share this playlist
-        </Button>
-      )}
-      {sharelink && (
-        <CopyToClipboard text={sharelink}>
-          <button>Copy URL to the clipboard</button>
-        </CopyToClipboard>
-      )}
-      <ul className='playlist-container'>
-        {playlistContent.length > 0 &&
-          playlistContent.map((el) => (
-            <li id={el.Id} value={el.Content.videoId} key={el.Id}>
-              <p className='song-title'>{el.Content.name}</p>
-              <p className='artist-name'>{el.Content.artist.name}</p>
-              {!sharing_code && (
-                <Button
-                  variant='primary'
-                  size='sm'
-                  onClick={(e) => {
-                    deleteFromPlaylist(e, el.Id);
-                  }}
+        <ul className='playlist-container song-list'>
+          {playlistContent.length > 0 &&
+            playlistContent.map((el) => (
+              <li
+                className='playlist-li'
+                id={el.Id}
+                value={el.Content.videoId}
+                key={el.Content.videoId}
+              >
+                <img
+                  className='thumb-li'
+                  src={el.Content.thumbnails[0].url}
+                  onError={addDefaultThumb}
+                />
+                <span className='song-title-li'>{el.Content.name}</span>
+                <span className='artist-name-li'>{el.Content.artist.name}</span>
+
+                <button
+                  className='play-pause-li-btn icon-btn'
+                  type='button'
+                  onClick={() => playPause(el.Content)}
                 >
-                  Delete
-                </Button>
-              )}
-
-              <Button type='button' onClick={() => playPause(el.Content)}>
-                {playerState.isPlaying &&
+                  {playerState.isPlaying &&
                   playerState.songPlaying.videoId === el.Content.videoId ? (
-                  <FaPauseCircle />
-                ) : (
-                  <FaPlayCircle />
-                )}
-              </Button>
-            </li>
-            //Button here
-          ))}
-      </ul>
-      {error != undefined && error}
+                    <FaPauseCircle />
+                  ) : (
+                    <FaPlayCircle />
+                  )}
+                </button>
 
-      <Player></Player>
+                {!sharing_code && (
+                  <button
+                    className='delete-btn icon-btn'
+                    onClick={(e) => {
+                      deleteFromPlaylist(e, el.Id);
+                    }}
+                  >
+                    <FaTrashAlt />
+                  </button>
+                )}
+              </li>
+              //Button here
+            ))}
+        </ul>
+        {error != undefined && error}
+
+        <Player></Player>
+      </div>
     </>
   );
 }

@@ -89,6 +89,10 @@ function Login() {
           <button className='btn' onClick={handleFormSubmit}>
             Login
           </button>
+          <span>
+            Do not have an account? Register{' '}
+            <Link to='/registerMember'>here</Link>
+          </span>
         </form>
         {errors.server && <p className='error'>{errors.server}</p>}
       </div>
