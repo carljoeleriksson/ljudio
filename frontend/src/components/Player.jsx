@@ -76,6 +76,38 @@ export default function Player(props) {
       })
     }
   }
+
+  function playNext(){
+    //console.log("Play next:")
+    playerState.playlist.map((el, index) => {
+      if (el.videoId == playerState.songPlaying.videoId) {
+        let currentVideoId = ++index
+        if (currentVideoId < playerState.playlist.length) {
+          console.log(playerState.playlist[currentVideoId])
+          setPlayerState({
+            isPlaying: true,
+            songPlaying: playerState.playlist[currentVideoId]
+          })
+        }
+      }
+    })
+  }
+
+  function playBack (){
+    //console.log("Play back:")
+    playerState.playlist.map((el, index) => {
+      if (el.videoId == playerState.songPlaying.videoId) {
+        let currentVideoId = --index
+        if (currentVideoId < playerState.playlist.length && currentVideoId >= 0) {
+          console.log(playerState.playlist[currentVideoId])
+          setPlayerState({
+            isPlaying: true,
+            songPlaying: playerState.playlist[currentVideoId]
+          })
+        }
+      }
+    })
+  }
   const opts = {
     height: '0',
     width: '0',
@@ -273,9 +305,9 @@ export default function Player(props) {
       </div>
 
       <div className="controls-wrapper">
-        <button className="previous-btn"><FaStepBackward /></button>
+        <button className="previous-btn" onClick={playBack}><FaStepBackward /></button>
         <button className="play-pause-btn" onClick={playPause}>{playerState.isPlaying ? <FaPause /> : <FaPlay />}</button>
-        <button className="next-btn"><FaStepForward /></button>
+        <button className="next-btn" onClick={playNext}><FaStepForward /></button>
       </div>
 
     </div>);
