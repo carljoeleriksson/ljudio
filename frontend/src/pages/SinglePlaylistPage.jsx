@@ -153,7 +153,7 @@ function SinglePlaylistPage(props) {
               Share
             </button>
           )}
-          <span>{sharelink && 'Copied to clipboard'}</span>
+          <span className='hideMe'>{sharelink && 'Copied to clipboard'}</span>
         </div>
 
         <ul className='playlist-container song-list'>
