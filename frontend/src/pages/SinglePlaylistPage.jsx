@@ -11,7 +11,7 @@ import {
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as QueryString from 'query-string';
 import Player from '../components/Player';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import { PlayerContext } from '../contexts/PlayerContext';
 
@@ -20,6 +20,8 @@ function SinglePlaylistPage(props) {
   const [playlistContent, setPlaylistContent] = useState([]);
   const [error, setError] = useState();
   const [sharelink, setSharelink] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+  
   const url = window.location.href;
   //const playlistId = props.location.state.playlistId
   console.log(props.location.search);
@@ -181,7 +183,7 @@ function SinglePlaylistPage(props) {
     } else {
       getSharedPlaylist(sharing_code);
     }
-    setRefreshPlaylist(false)
+    //setRefreshPlaylist(false)
 
     // playAplaylist()
   }, []);
@@ -190,14 +192,26 @@ function SinglePlaylistPage(props) {
     e.target.src = '../assets/default-thumb.png';
   }
 
+  function resetPlayerContext() {
+    updatePlayerState({
+      isPlaying: false,
+      playlist: [],
+      playedSongIndex: 0,
+      playlistVideoIds: []
+    })
+    
+    setRedirect(true);
+  }
+
   return (
     <>
       {!sharing_code && <IsLoggedIn />}
+      {redirect && <Redirect to='/' />}
       <div className='single-playlist-wrapper'>
         <div className='single-playlist-header'>
           <h2>{playlistName}</h2>
           <button className='back-btn icon-btn'>
-            <Link to={'/'}>
+            <Link onClick={resetPlayerContext} to={'/'}>
               <FaArrowLeft />
             </Link>
           </button>
