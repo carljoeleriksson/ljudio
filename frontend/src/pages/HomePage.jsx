@@ -8,14 +8,11 @@ import IsLoggedIn from '../components/IsLoggedIn';
 
 export const GeneralContext = createContext();
 
-
 function Home() {
    const [searchResult, setSearchResult] = useState();
    const [searchTerm, setSearchTerm] = useState('');
    const [searchType, setSearchType] = useState('songs');
    const [playlists, setPlaylists] = useState([]);
-
-
 
    async function fetchSearchResult(e) {
       e.preventDefault();

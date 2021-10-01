@@ -22,9 +22,6 @@ export default function IsLoggedIn() {
 
             const data = await response.json();
 
-            console.log("Is logged In:") 
-            console.log(data)
-
             if (data.error == "tokenVerifyError") {
 
                 setRedirect(true);

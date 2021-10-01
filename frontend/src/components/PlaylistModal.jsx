@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, Modal } from 'react-bootstrap/';
+import { Modal } from 'react-bootstrap/';
 import { FaPlus } from 'react-icons/fa';
 import { Context } from '../components/SearchRender';
 import { GeneralContext } from '../pages/HomePage';
@@ -8,7 +8,6 @@ function PlaylistModal(song, { getPlaylist }) {
    function getToken() {
       return sessionStorage.getItem('auth');
    }
-   console.log('PLAYLISTS AS PROPS', getPlaylist);
 
    const [show, setShow] = useContext(Context);
 
@@ -21,7 +20,6 @@ function PlaylistModal(song, { getPlaylist }) {
 
 
    const handleClose = () => setShow(false);
-   //const handleShow = () => setShow(true);
 
    async function getPlaylistsDb() {
       const TokenKey = getToken();
@@ -40,7 +38,6 @@ function PlaylistModal(song, { getPlaylist }) {
       console.log(data);
    }
 
-   // first soultion
    useEffect(() => {
       getPlaylistsDb();
    }, []);
@@ -67,13 +64,10 @@ function PlaylistModal(song, { getPlaylist }) {
          if (data.error) {
             console.log(data.message);
          } else {
-            console.log('Created a new playlist');
-          //  console.log(data)
+   
             setPlaylists(data)
             setPlaylistsCxt(data)
-        //    console.log('setPlaylistsCxt')
-         //   console.log(playlistsCxt)
-
+      
          }
 
       }
@@ -100,7 +94,6 @@ function PlaylistModal(song, { getPlaylist }) {
          console.log(data.message);
          setMessage(data.message)
       } else {
-         console.log('Song is added to playlist', data);
          setMessage('Song is added to playlist')
       }
    }

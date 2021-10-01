@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Redirect, useHistory, Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap/';
+import { useHistory, Link } from 'react-router-dom';
 import { FaTrashAlt } from 'react-icons/fa';
 import { GeneralContext } from '../pages/HomePage';
 
@@ -21,22 +20,12 @@ function Playlists() {
          headers: { Authorization: `Bearer ${TokenKey}` },
       });
       const data = await response.json();
-      console.log(data);
 
       if (data.length > 0) {
          setPlaylists(data);
       } else if (data.error) {
          setError(data.message);
       }
-   }
-
-   function goToSinglePlaylist(id, playlistName) {
-      console.log(id);
-      history.push({
-         pathname: '/singlePlaylistPage/' + id,
-         // search: id,
-         state: { playlistId: id, playlistName: playlistName },
-      });
    }
 
    async function deletePlaylist(e, playlistId) {
@@ -46,29 +35,20 @@ function Playlists() {
          headers: { Authorization: `Bearer ${TokenKey}` },
       });
       const data = await response.json();
-      console.log('DATA from playlist', data);
 
       if (data.changes > 0) {
-         //var element = e.target.parentNode
-         //console.log('element', element);
-         //element.parentNode.removeChild(element);
          document.getElementById(playlistId).remove();
       } else if (data.error) {
          setError(data.message);
       }
-
-      // setPlaylists(data);
-      // console.log(data);
    }
 
-   console.log('playlists from PLAYLISTS', playlists);
    useEffect(() => {
       getPlaylistsDb();
    }, [playlistsCxt]);
 
    return (
       <ul className="playlists-ul song-list">
-         {/* If you put playlists == {} you can search songs */}
          {playlists.length > 0 &&
             playlists.map((playlist) => (
                <li

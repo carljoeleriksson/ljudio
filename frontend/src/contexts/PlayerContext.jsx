@@ -18,7 +18,6 @@ function PlayerContextProvider(props) {
 				...updates
 			})
 		}
-	console.log('PlayerContext playerState: ', playerState);
 
 	return (
 		<div>

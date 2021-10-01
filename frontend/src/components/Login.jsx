@@ -3,22 +3,20 @@ import validateLogin from './validateLogin';
 import { Link, Redirect } from 'react-router-dom';
 
 function Login() {
+
   const [values, setValues] = useState({
     email: '',
     password: '',
   });
 
   const [errors, setErrors] = useState({});
-
   const [redirect, setRedirect] = useState(false);
 
   function handleFormInput(e) {
     let newdata = { ...values };
     newdata[e.target.id] = e.target.value;
     setValues(newdata);
-    // console.log(newdata);
   }
-  //saveToken = (token) => {
   function saveToken(token) {
     return new Promise((resolve, reject) => {
       sessionStorage.setItem('auth', token);
@@ -26,6 +24,7 @@ function Login() {
       resolve('Done');
     });
   }
+
   async function handleFormSubmit(e) {
     e.preventDefault();
     let errorsObj = validateLogin(values);
@@ -47,7 +46,6 @@ function Login() {
       if (!data.error) {
         setRedirect(true);
         saveToken(data);
-        console.log('Login succeeded!');
       } else {
         let errors = {};
         if (data.error == 'SqliteError') {

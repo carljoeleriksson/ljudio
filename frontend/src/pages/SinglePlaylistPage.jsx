@@ -8,7 +8,6 @@ import {
   FaShare,
   FaArrowLeft,
 } from 'react-icons/fa';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as QueryString from 'query-string';
 import Player from '../components/Player';
 import { Link, Redirect } from 'react-router-dom';
@@ -23,11 +22,7 @@ function SinglePlaylistPage(props) {
   const [redirect, setRedirect] = useState(false);
   
   const url = window.location.href;
-  //const playlistId = props.location.state.playlistId
-  console.log(props.location.search);
   const params = QueryString.parse(props.location.search);
-  console.log(params.playlistId);
-  console.log(params.playlistName);
 
   const playlistId = params.playlistId;
   const playlistName = params.playlistName;
@@ -35,7 +30,6 @@ function SinglePlaylistPage(props) {
   const sharing_code = params.code !== undefined ? params.code : null;
 
   function playPause(songObj) {
-    //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
     if (
       playerState.isPlaying &&
       playerState.songPlaying.videoId === songObj.videoId
@@ -76,7 +70,6 @@ function SinglePlaylistPage(props) {
   }
 
   async function getSharedPlaylist(code) {
-    //  const TokenKey = getToken();
     const response = await fetch(`/api/fetch_shared_playlist/${code}`);
     const data = await response.json();
     console.log('get shared Playlists data ', data);
@@ -120,7 +113,6 @@ function SinglePlaylistPage(props) {
 
   async function sharePlaylist(e) {
     e.preventDefault();
-    // console.log('Delete from Playlist#ID:' + playlistId);
     const TokenKey = getToken();
     const response = await fetch(`/api/share_playlist/${playlistId}`, {
       headers: { Authorization: `Bearer ${TokenKey}` },
@@ -147,9 +139,8 @@ function SinglePlaylistPage(props) {
         console.log(song)
         arr.push(song.Content.videoId)
         songs.push(song.Content)
-
-
       })
+
       updatePlayerState({
         isPlaying: true,
         playlist: songs,
@@ -157,35 +148,15 @@ function SinglePlaylistPage(props) {
         playedSongIndex: 0,
         playlistVideoIds: arr
       })
-
-      console.log(arr)
-    //  console.log("player")
-     // console.log(playerState.player)
-    /*  const oo = playerState.player.loadPlaylist(
-        {
-          playlist: arr
-        }
-        ,
-        3)*/
-      console.log("Auto Paylist")
-
-      console.log(arr[0])
-
-      //playerState.player.loadVideoById(arr[0]);
     }
   }
 
   useEffect(() => {
     if (!sharing_code) {
       getSinglePlaylist();
-
-
     } else {
       getSharedPlaylist(sharing_code);
     }
-    //setRefreshPlaylist(false)
-
-    // playAplaylist()
   }, []);
 
   function addDefaultThumb(e) {
@@ -271,7 +242,6 @@ function SinglePlaylistPage(props) {
                   </button>
                 )}
               </li>
-              //Button here
             ))}
         </ul>
         {error != undefined && error}

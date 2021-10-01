@@ -1,4 +1,3 @@
-import { color } from '@mui/system';
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
@@ -58,7 +57,6 @@ function BurgerMenu() {
    };
 
    function logout() {
-      console.log('Hello');
       sessionStorage.removeItem('auth');
       setRedirect(true);
    }

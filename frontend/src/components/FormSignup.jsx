@@ -32,9 +32,7 @@ function FormSignup() {
       errorsObj.email ||
       errorsObj.password
     ) {
-      console.log('validation failed!');
     } else {
-      console.log('connect to backend!');
       const res = await fetch('/api/registerMemeber', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -47,9 +45,7 @@ function FormSignup() {
       });
 
       const result = await res.json();
-      console.log(result);
       if (result.id) {
-        console.log('Success! Redirect to login');
 
         setRedirect(true);
       } else {
