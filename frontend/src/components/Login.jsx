@@ -60,7 +60,7 @@ function Login() {
   }
 
   return (
-    <main>
+    <main className="login-wrapper">
       <img className='logo' src='../../assets/logo.svg' alt='Logo' />
       <div className='form-container'>
         {redirect && <Redirect to='/' />}

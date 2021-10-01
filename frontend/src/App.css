@@ -201,6 +201,10 @@ header {
   max-height: 100px;
 }
 
+.login-wrapper{
+  height:100vh;
+}
+
 .search-bar {
   grid-column: 3 / 4;
   display: flex;
