@@ -178,7 +178,9 @@ export default function Player(props) {
       } else {
          clearTimeout(progress_bar);
       }
-
+      
+      //When the song is ended (event.data === 0) play the next index in playlist.
+      
       if (event.data != null && event.data === 0) {
          playerState.playlist.map((el, index) => {
             if (el.videoId == playerState.songPlaying.videoId) {
