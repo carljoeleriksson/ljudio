@@ -3,29 +3,19 @@ import { FaPlayCircle, FaPauseCircle, FaPlus } from 'react-icons/fa';
 import Player from '../components/Player';
 import PlaylistModal from '../components/PlaylistModal';
 
-export const Context = createContext();
-
 import { PlayerContext } from '../contexts/PlayerContext';
+import { SearchContext } from '../contexts/SearchContext';
 
+export const ModalContext = createContext();
 
-function SearchRender(result) {
-
-
-
-
-   
-   if(result.result){
-   const searchResult = result.result;
-   
+function SearchRender() {
+   const { searchState, updateSearchState } = useContext(SearchContext)
    const [ playerState, updatePlayerState ] = useContext(PlayerContext)
-   
-
-
+   console.log('searchState.searchResult', searchState.searchResult);
    const [showContext, setShowContext] = useState(false);
 
    const [songPlaying, setSongPlaying] = useState('');
    const [addSong, setAddSong] = useState();
-   // const [getPlaylist, setGetplaylist] = useState({});
 
    function playPause(songObj) {
       //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
@@ -61,7 +51,7 @@ function SearchRender(result) {
    let arr = []
    let songs = []
    console.log(arr)
-   searchResult.filter((content) => content.type == 'song')
+   searchState.searchResult.filter((content) => content.type == 'song')
       .map((song) => {
          console.log(song)
          arr.push(song.videoId)
@@ -120,7 +110,7 @@ function SearchRender(result) {
     useEffect(() => {
       console.log("Play a playlist:")
       playAplaylist()
-   }, [searchResult]);
+   }, [searchState.searchResult]);
    // useEffect(() => {
    //    getPlayListDb();
    // }, []);
@@ -129,14 +119,14 @@ function SearchRender(result) {
     }
 
    return (
-      <Context.Provider value={[showContext, setShowContext]}>
+      <ModalContext.Provider value={[showContext, setShowContext]}>
          {songPlaying !== '' && <Player videoId={songPlaying} />}
          {addSong !== undefined && <PlaylistModal {...addSong} />}
       <div className="search-result-wrapper">
          <div className="song-result-container">
             <h2>Songs</h2>
             <ul className="song-list">
-               {searchResult
+               {searchState.searchResult
                   .filter((content) => content.type == 'song')
                   .map((song) => (
                      <li className="search-li" key={song.videoId}>
@@ -190,11 +180,8 @@ function SearchRender(result) {
          */}
 
          {/* HERE, we might put a div with playlist-results later */}
-      </Context.Provider>
+      </ModalContext.Provider>
    );
-} else {
-   return(<></>)
-}
 }
 
 export default SearchRender;

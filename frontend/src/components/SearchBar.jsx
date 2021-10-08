@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { FaSistrix } from 'react-icons/fa';
 import { SearchContext } from '../contexts/SearchContext';
+import { Redirect} from 'react-router-dom'
 
 function SearchBar(props) {
-  const {searchState, updateSearchState, fetchSearchResults} = useContext(SearchContext);
-
+  const [ redirect, setRedirect ] = useState(false)
+  const {searchState, updateSearchState, fetchSearchResult} = useContext(SearchContext);
 
 function updateSearchTerm(input) {
   updateSearchState({
@@ -12,9 +13,15 @@ function updateSearchTerm(input) {
   })
 }
 
+function updateSearchType(input) {
+  updateSearchState({
+    searchType: input
+  })
+}
+
   return (
     <div className='search-bar'>
-      <form className='search-form' onSubmit={props.onClick}>
+      <form className='search-form' onSubmit={fetchSearchResult}>
         <button className='btn-container' type='submit'>
           <FaSistrix className='search-icon' />
         </button>
@@ -22,18 +29,17 @@ function updateSearchTerm(input) {
           className='search-input'
           type='text'
           placeholder='Search'
-          onChange={() => updateSearchTerm(target.value)}
+          onChange={(e) => updateSearchTerm(e.target.value)}
         />
-        {/* 
-        <select className='select' value={props.value} onChange={props.onChange}>
-          <option value='search'>All</option>
-          <option value='songs'>Songs</option>
-          <option value='albums'>Albums</option>
-          <option value='artists'>Artists</option>
-        </select>
+        {/*
+          <select className='select' value={props.value} onChange={props.onChange}>
+            <option value='search'>All</option>
+            <option value='songs'>Songs</option>
+            <option value='albums'>Albums</option>
+            <option value='artists'>Artists</option>
+          </select>
         */}
       </form>
-      
     </div>
   );
 }

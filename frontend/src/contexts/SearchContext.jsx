@@ -1,13 +1,15 @@
 import React, { useState, createContext } from 'react'
+import { Redirect} from 'react-router-dom'
 
 export const SearchContext = createContext();
 
-function SearchContextProvider() {
+function SearchContextProvider(props) {
 	const [searchState, setSearchState] = useState({
-		searchResult: [],
+		searchResult: '',
 		searchTerm: '',
 		searchType: 'search'
 	})
+	
 
 	const updateSearchState = function updateSearch(updates) {
 		setSearchState({
@@ -33,7 +35,7 @@ function SearchContextProvider() {
 		const data = await response.json();
   
 		if (data) {
-		   setSearchResult(data.content);
+		   updateSearchState({searchResult: data.content});
 		} else {
 		   console.log('Failed to fetch. Got no data from backend.');
 		}

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap/';
 import { FaPlus } from 'react-icons/fa';
-import { Context } from '../components/SearchRender';
+import { ModalContext } from '../components/SearchRender';
 import { GeneralContext } from '../pages/HomePage';
 
 function PlaylistModal(song, { getPlaylist }) {
@@ -10,7 +10,7 @@ function PlaylistModal(song, { getPlaylist }) {
    }
    console.log('PLAYLISTS AS PROPS', getPlaylist);
 
-   const [show, setShow] = useContext(Context);
+   const [show, setShow] = useContext(ModalContext);
 
    const [playlistsCxt, setPlaylistsCxt] = useContext(GeneralContext);
 

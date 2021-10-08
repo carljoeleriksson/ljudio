@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import validateInfo from './validateInfo';
+import validateInfo from '../components/validateInfo';
 import { Link, Redirect } from 'react-router-dom';
 
-function FormSignup() {
+function Signup() {
   const [values, setValues] = useState({
     firstname: '',
     lastname: '',
@@ -130,4 +130,4 @@ function FormSignup() {
   );
 }
 
-export default FormSignup;
+export default Signup;
