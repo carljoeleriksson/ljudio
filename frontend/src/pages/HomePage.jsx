@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext } from 'react';
 import { Switch, Link } from 'react-router-dom';
-import RouteWithSubRoutes from './utils/RouteWithSubRoutes';
+import RouteWithSubRoutes from '../utils/RouteWithSubRoutes';
 
 import SearchBar from '../components/SearchBar';
 import SearchRender from '../components/SearchRender';
@@ -16,7 +16,7 @@ export const GeneralContext = createContext();
 
 //CONTINUE FROM https://dev.to/ms_yogii/react-router-a-simple-tutorial-on-nested-routes-1237
 //AT HERE IS OUR HOME COMPONENT:
-function Home() {
+function Home({ routes }) {
    
    const [playlists, setPlaylists] = useState([]);
    const {searchState, updateSearchState} = useContext(SearchContext);
@@ -33,9 +33,13 @@ function Home() {
                <SearchBar />
             </header>
             <main>
-               
-               {mainContent === 'SearchRender' && searchResult && <SearchRender />}
-               {mainContent === 'SinglePlaylistPage' && <SinglePlaylistPage />}
+               <Switch>
+                  {routes.map((route, i) => (
+                        <RouteWithSubRoutes key={i} {...route} />
+                  ))}
+               </Switch>
+               {searchResult && <SearchRender />}
+               {/*mainContent === 'SinglePlaylistPage' && <SinglePlaylistPage />*/}
 
             </main>
             <BurgerMenu />
