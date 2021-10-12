@@ -142,12 +142,11 @@ function SinglePlaylistPage(props) {
     console.log(data)
     if (data.length > 0) {
       data.map((song) => {
-        console.log(song)
+        console.log('playAplaylist song', song)
         arr.push(song.Content.videoId)
         songs.push(song.Content)
-
-
       })
+
       updatePlayerState({
         isPlaying: true,
         playlist: songs,
@@ -156,20 +155,8 @@ function SinglePlaylistPage(props) {
         playlistVideoIds: arr
       })
 
-      console.log(arr)
-    //  console.log("player")
-     // console.log(playerState.player)
-    /*  const oo = playerState.player.loadPlaylist(
-        {
-          playlist: arr
-        }
-        ,
-        3)*/
-      console.log("Auto Playlist")
-
-      console.log(arr[0])
-
-      //playerState.player.loadVideoById(arr[0]);
+      console.log('playAplaylist arr', arr)
+      console.log("playAplaylist arr[0]", arr[0])
     }
   }
 
