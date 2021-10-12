@@ -11,7 +11,7 @@ import {
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as QueryString from 'query-string';
 import Player from '../components/Player';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useParams } from 'react-router-dom';
 
 import { PlayerContext } from '../contexts/PlayerContext';
 
@@ -22,8 +22,9 @@ function SinglePlaylistPage(props) {
   const [sharelink, setSharelink] = useState(false);
   const [redirect, setRedirect] = useState(false);
   
+  const { playlistId, playlistName } = useParams()
+
   const url = window.location.href;
-  //const playlistId = props.location.state.playlistId
   console.log(props.location.search);
   const params = QueryString.parse(props.location.search);
   console.log(params.playlistId);
@@ -32,7 +33,7 @@ function SinglePlaylistPage(props) {
   const playlistId = params.playlistId;
   const playlistName = params.playlistName;
 
-  const sharing_code = params.code !== undefined ? params.code : null;
+  const shareLink = params.code !== undefined ? params.code : null;
 
   function playPause(songObj) {
     //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
@@ -104,12 +105,12 @@ function SinglePlaylistPage(props) {
     console.log('Delete response: ', data);
     if (data.changes > 0) {
 
-      if (!sharing_code) {
+      if (!shareLink) {
         getSinglePlaylist();
   
   
       } else {
-        getSharedPlaylist(sharing_code);
+        getSharedPlaylist(shareLink);
       }
 
     } else if (data.error) {
@@ -176,12 +177,12 @@ function SinglePlaylistPage(props) {
   }
 
   useEffect(() => {
-    if (!sharing_code) {
+    if (!shareLink) {
       getSinglePlaylist();
 
 
     } else {
-      getSharedPlaylist(sharing_code);
+      getSharedPlaylist(shareLink);
     }
     //setRefreshPlaylist(false)
 
@@ -205,7 +206,7 @@ function SinglePlaylistPage(props) {
 
   return (
     <>
-      {!sharing_code && <IsLoggedIn />}
+      {!shareLink && <IsLoggedIn />}
       {redirect && <Redirect to='/' />}
       <div className='single-playlist-wrapper'>
         <div className='single-playlist-header'>
@@ -216,7 +217,7 @@ function SinglePlaylistPage(props) {
             </Link>
           </button>
 
-          {!sharing_code && (
+          {!shareLink && (
             <button
               className='share-playlist-btn icon-btn'
               onClick={(e) => {
@@ -260,7 +261,7 @@ function SinglePlaylistPage(props) {
                   )}
                 </button>
 
-                {!sharing_code && (
+                {!shareLink && (
                   <button
                     className='delete-btn icon-btn'
                     onClick={(e) => {
