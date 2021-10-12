@@ -1,11 +1,18 @@
 import React, { useState, useContext } from 'react';
 import { FaSistrix } from 'react-icons/fa';
 import { SearchContext } from '../contexts/SearchContext';
-import { Redirect} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 function SearchBar(props) {
-  const [ redirect, setRedirect ] = useState(false)
-  const {searchState, updateSearchState, fetchSearchResult} = useContext(SearchContext);
+  const { searchState, updateSearchState, fetchSearchResult } = useContext(SearchContext);
+  
+  let history = useHistory();
+
+function handleSubmit(e) {
+  e.preventDefault()
+  fetchSearchResult()
+  history.push('/search')
+}
 
 function updateSearchTerm(input) {
   updateSearchState({
@@ -21,7 +28,7 @@ function updateSearchType(input) {
 
   return (
     <div className='search-bar'>
-      <form className='search-form' onSubmit={fetchSearchResult}>
+      <form className='search-form' onSubmit={handleSubmit}>
         <button className='btn-container' type='submit'>
           <FaSistrix className='search-icon' />
         </button>

@@ -10,7 +10,6 @@ async function createPlaylistCont(request, response) {
 
   try {
 
-
     let user_id = request.userId
 
     let reqData = request.body
@@ -300,7 +299,6 @@ async function sharePlaylistCont(request, response) {
   let result = null;
 
   try {
-
 
     let user_id = request.userId
 

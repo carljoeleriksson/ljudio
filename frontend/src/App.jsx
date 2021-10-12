@@ -40,7 +40,7 @@ function App() {
             <RouteWrapper path="/login" component={LoginComponent} layout={SinglePageLayout} />
             <RouteWrapper path="/register" component={RegisterComponent} layout={SinglePageLayout} />
             <RouteWrapper path="/search" component={SearchRenderComponent} layout={DashboardLayout} />
-            <RouteWrapper path="/singleplaylistpage" component={SinglePlaylistComponent} layout={DashboardLayout} />
+            <RouteWrapper path="/singleplaylistpage/:playlistId/:playlistName" component={SinglePlaylistComponent} layout={DashboardLayout} />
             <RouteWrapper path="/" component={LandingComponent} layout={DashboardLayout} />
          </Switch>
       </Router>

@@ -3,9 +3,11 @@ import { Redirect, useHistory, Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap/';
 import { FaTrashAlt } from 'react-icons/fa';
 import { GeneralContext } from '../utils/Layouts';
+import { PlayerContext } from '../contexts/PlayerContext';
 
 function Playlists() {
    const [playlistsCxt, setPlaylistsCxt] = useContext(GeneralContext);
+   const [playerState, updatePlayerState] = useContext(PlayerContext);
 
    function getToken() {
       return sessionStorage.getItem('auth');
@@ -60,6 +62,14 @@ function Playlists() {
       // setPlaylists(data);
       // console.log(data);
    }
+   
+   function resetContexts() {
+      updatePlayerState({
+        playlist: [],
+        playedSongIndex: 0,
+        playlistVideoIds: []
+      })
+   }
 
    console.log('playlists from PLAYLISTS', playlists);
    useEffect(() => {
@@ -79,11 +89,8 @@ function Playlists() {
                >
                   <Link
                      to={
-                        '/singleplaylistpage?playlistId=' +
-                        playlist.Id +
-                        '&playlistName=' +
-                        playlist.Name
-                     }
+                        `/singleplaylistpage/${playlist.Id}/${playlist.Name}`
+                     } onClick={resetContexts}
                   >
                      {playlist.Name}
                   </Link>

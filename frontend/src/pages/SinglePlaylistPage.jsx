@@ -1,17 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap/';
 import IsLoggedIn from '../components/IsLoggedIn';
 import {
   FaPlayCircle,
   FaPauseCircle,
   FaTrashAlt,
-  FaShare,
-  FaArrowLeft,
+  FaShare
 } from 'react-icons/fa';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import * as QueryString from 'query-string';
-import Player from '../components/Player';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 
 import { PlayerContext } from '../contexts/PlayerContext';
 
@@ -22,18 +17,22 @@ function SinglePlaylistPage(props) {
   const [sharelink, setSharelink] = useState(false);
   const [redirect, setRedirect] = useState(false);
   
-  const { playlistId, playlistName } = useParams()
-
+  const { playlistId, playlistName, code } = useParams()
+  const shareCode = code;
+  console.log('playlistId', playlistId);
+  console.log('playlistName', playlistName);
+  
   const url = window.location.href;
-  console.log(props.location.search);
-  const params = QueryString.parse(props.location.search);
-  console.log(params.playlistId);
-  console.log(params.playlistName);
 
-  const playlistId = params.playlistId;
-  const playlistName = params.playlistName;
+  // console.log(props.location.search);
+  // const params = QueryString.parse(props.location.search);
+  // console.log(params.playlistId);
+  // console.log(params.playlistName);
 
-  const shareLink = params.code !== undefined ? params.code : null;
+  // const playlistId = params.playlistId;
+  // const playlistName = params.playlistName;
+
+  const shareLink = shareCode !== undefined ? shareCode : null;
 
   function playPause(songObj) {
     //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
@@ -101,27 +100,25 @@ function SinglePlaylistPage(props) {
       `/api/delete_from_playlist/playlist/${playlistId}/contentid/${contentId}`,
       { headers: { Authorization: `Bearer ${TokenKey}` } }
     );
+
     const data = await response.json();
     console.log('Delete response: ', data);
     if (data.changes > 0) {
 
       if (!shareLink) {
         getSinglePlaylist();
-  
-  
       } else {
         getSharedPlaylist(shareLink);
       }
 
     } else if (data.error) {
-
       setError(data.message);
     }
   }
 
   async function sharePlaylist(e) {
     e.preventDefault();
-    // console.log('Delete from Playlist#ID:' + playlistId);
+
     const TokenKey = getToken();
     const response = await fetch(`/api/share_playlist/${playlistId}`, {
       headers: { Authorization: `Bearer ${TokenKey}` },
@@ -132,7 +129,7 @@ function SinglePlaylistPage(props) {
       setError(data.message);
     } else if (data) {
       console.log('Share code' + data);
-      navigator.clipboard.writeText(url + '&code=' + data);
+      navigator.clipboard.writeText(`${url}/${data}`);
       setSharelink(true);
     }
   }
@@ -168,7 +165,7 @@ function SinglePlaylistPage(props) {
         }
         ,
         3)*/
-      console.log("Auto Paylist")
+      console.log("Auto Playlist")
 
       console.log(arr[0])
 
@@ -180,29 +177,26 @@ function SinglePlaylistPage(props) {
     if (!shareLink) {
       getSinglePlaylist();
 
-
     } else {
       getSharedPlaylist(shareLink);
     }
-    //setRefreshPlaylist(false)
-
-    // playAplaylist()
+    
   }, []);
 
   function addDefaultThumb(e) {
-    e.target.src = '../assets/default-thumb.png';
+    e.target.src = '.../assets/default-thumb.png';
   }
 
-  function resetPlayerContext() {
-    updatePlayerState({
-      isPlaying: false,
-      playlist: [],
-      playedSongIndex: 0,
-      playlistVideoIds: []
-    })
+  // function resetPlayerContext() {
+  //   updatePlayerState({
+  //     isPlaying: false,
+  //     playlist: [],
+  //     playedSongIndex: 0,
+  //     playlistVideoIds: []
+  //   })
     
-    setRedirect(true);
-  }
+  //   setRedirect(true);
+  // }
 
   return (
     <>
@@ -211,12 +205,6 @@ function SinglePlaylistPage(props) {
       <div className='single-playlist-wrapper'>
         <div className='single-playlist-header'>
           <h2>{playlistName}</h2>
-          <button className='back-btn icon-btn'>
-            <Link onClick={resetPlayerContext} to={'/'}>
-              <FaArrowLeft />
-            </Link>
-          </button>
-
           {!shareLink && (
             <button
               className='share-playlist-btn icon-btn'
@@ -276,8 +264,6 @@ function SinglePlaylistPage(props) {
             ))}
         </ul>
         {error != undefined && error}
-
-        <Player></Player>
       </div>
     </>
   );

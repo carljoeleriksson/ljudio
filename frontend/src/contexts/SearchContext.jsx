@@ -1,5 +1,4 @@
 import React, { useState, createContext } from 'react'
-import { Redirect} from 'react-router-dom'
 
 export const SearchContext = createContext();
 
@@ -7,9 +6,8 @@ function SearchContextProvider(props) {
 	const [searchState, setSearchState] = useState({
 		searchResult: '',
 		searchTerm: '',
-		searchType: 'search'
+		searchType: 'songs'
 	})
-	
 
 	const updateSearchState = function updateSearch(updates) {
 		setSearchState({
@@ -19,8 +17,7 @@ function SearchContextProvider(props) {
 	}
 
 	const fetchSearchResult = async function fetchSearchRes(e) {
-		e.preventDefault();
-		console.log('searchType: ' + searchState.searchType);
+		console.log("In fetchSearchResults");
   
 		const response = await fetch('/api/search', {
 		   method: 'POST',
@@ -40,6 +37,7 @@ function SearchContextProvider(props) {
 		   console.log('Failed to fetch. Got no data from backend.');
 		}
 	 }
+	 
 
 	 const providerValue = {
 		searchState,

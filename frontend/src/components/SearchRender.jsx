@@ -9,16 +9,16 @@ import { SearchContext } from '../contexts/SearchContext';
 export const ModalContext = createContext();
 
 function SearchRender() {
-   const { searchState, updateSearchState } = useContext(SearchContext)
-   const [ playerState, updatePlayerState ] = useContext(PlayerContext)
-   console.log('searchState.searchResult', searchState.searchResult);
-   const [showContext, setShowContext] = useState(false);
+   const  { searchState } = useContext(SearchContext)
+   const searchResult = searchState.searchResult
+   console.log('searchState.searchResult', searchResult);
 
+   const [ playerState, updatePlayerState ] = useContext(PlayerContext)
+   const [showContext, setShowContext] = useState(false);
    const [songPlaying, setSongPlaying] = useState('');
    const [addSong, setAddSong] = useState();
 
    function playPause(songObj) {
-      //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
       if(playerState.isPlaying && playerState.songPlaying.videoId === songObj.videoId){
          updatePlayerState({
             isPlaying: false
@@ -39,10 +39,6 @@ function SearchRender() {
       setShowContext(true);
    }
 
-   function playSong(videoId) {
-      console.log(videoId);
-      setSongPlaying(videoId);
-   }
   // play a list of songs
   // to be called later
   function playAplaylist() {
@@ -50,42 +46,24 @@ function SearchRender() {
    // arr.forEach(element => {
    let arr = []
    let songs = []
-   console.log(arr)
-   searchState.searchResult.filter((content) => content.type == 'song')
-      .map((song) => {
-         console.log(song)
-         arr.push(song.videoId)
-         songs.push(song)
-
-
+   
+   if(searchResult){
+      searchResult.filter((content) => content.type == 'song')
+         .map((song) => {
+            console.log(song)
+            arr.push(song.videoId)
+            songs.push(song)
       })
-   updatePlayerState({
-      isPlaying: true,
-      playlist: songs,
-      songPlaying: songs[0],
-      playedSongIndex: 0,
-      playlistVideoIds: arr
+   
 
-   })
-   // setPlayerState({
-   // songPlaying: 
-   // }) 
-   console.log(arr)
-
-   // playerState.songPlaying.videoId = 'e1FN047_LT0'
-  /* const oo = playerState.player.loadPlaylist(
-      {
-         playlist: arr
-      }
-      ,
-      3) */
-   console.log("Auto Paylist")
-
-   console.log(arr[0])
-
-   //playerState.player.loadVideoById(arr[0]);
-
-
+      updatePlayerState({
+         isPlaying: true,
+         playlist: songs,
+         songPlaying: songs[0],
+         playedSongIndex: 0,
+         playlistVideoIds: arr
+      })
+   }
 }
 
  
@@ -108,12 +86,10 @@ function SearchRender() {
    // }
 
     useEffect(() => {
-      console.log("Play a playlist:")
+      //console.log("Play a playlist:")
       playAplaylist()
-   }, [searchState.searchResult]);
-   // useEffect(() => {
-   //    getPlayListDb();
-   // }, []);
+   }, [searchResult]);
+   
    function addDefaultThumb(e){
       e.target.src = '../assets/default-thumb.png'
     }
@@ -122,6 +98,17 @@ function SearchRender() {
       <ModalContext.Provider value={[showContext, setShowContext]}>
          {songPlaying !== '' && <Player videoId={songPlaying} />}
          {addSong !== undefined && <PlaylistModal {...addSong} />}
+
+      {!searchResult ? 
+      <div className="search-result-wrapper">
+         <div className="song-result-container">
+            <h3>Found nothing!</h3>
+            <h5>Try searching for something else.</h5>
+         </div>
+      </div>
+      
+      :
+
       <div className="search-result-wrapper">
          <div className="song-result-container">
             <h2>Songs</h2>
@@ -150,6 +137,7 @@ function SearchRender() {
             </ul>
          </div>
       </div>
+      }
 {/* 
          <div className="artist-result-container">
             <h2>Artists</h2>
