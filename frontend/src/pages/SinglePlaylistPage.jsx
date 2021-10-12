@@ -23,17 +23,15 @@ function SinglePlaylistPage(props) {
   const [redirect, setRedirect] = useState(false);
   
   const url = window.location.href;
-  //const playlistId = props.location.state.playlistId
-  console.log(props.location.search);
+  console.log('props', props);
+  console.log('props.location.search', props.location.search);
   const params = QueryString.parse(props.location.search);
-  console.log(params.playlistId);
-  console.log(params.playlistName);
-
+  console.log('params.code', params.code);
   const playlistId = params.playlistId;
   const playlistName = params.playlistName;
 
   const sharing_code = params.code !== undefined ? params.code : null;
-
+  console.log('sharing_code', sharing_code);
   function playPause(songObj) {
     //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
     if (
