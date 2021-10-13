@@ -5,9 +5,10 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { GeneralContext } from '../utils/Layouts';
 import { PlayerContext } from '../contexts/PlayerContext';
 import { IsOpenContext } from '../contexts/IsOpenContext';
+import { PlaylistsContext } from '../contexts/PlaylistsContext';
 
 function Playlists() {
-   const [playlistsCxt, setPlaylistsCxt] = useContext(GeneralContext);
+   const [playlistsCxt, setPlaylistsCxt] = useContext(PlaylistsContext);
    const [playerState, updatePlayerState] = useContext(PlayerContext);
    const { isMenuOpen, toggleMenu, stateChangeHandler } = useContext(IsOpenContext)
 

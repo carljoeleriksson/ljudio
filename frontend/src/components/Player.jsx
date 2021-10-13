@@ -8,7 +8,6 @@ import { styled } from '@mui/material/styles';
 export default function Player(props) {
    const [playerState, setPlayerState] = useContext(PlayerContext);
    const [currentTime, setCurrentTime] = useState();
-   const [duration, setDuration] = useState(0);
    const [progressBar, setProgressBar] = useState(0);
 
    const PrettoSlider = styled(Slider)({
@@ -68,14 +67,36 @@ export default function Player(props) {
         }
       }
 
-   const opts = {
-      height: '0',
-      width: '0',
-      playerVars: {
-         // https://developers.google.com/youtube/player_parameters
-         autoplay: 1,
-      },
-   };
+      function nextSong() {
+         playerState.playlist.map((el, index) => {
+            if (el.videoId == playerState.songPlaying.videoId) {
+               let currentVideoId = ++index;
+               if (currentVideoId < playerState.playlist.length) {
+                  setPlayerState({
+                     isPlaying: true,
+                     songPlaying: playerState.playlist[currentVideoId],
+                  });
+               }
+            }
+         });
+      }
+   
+      function prevSong() {
+         playerState.playlist.map((el, index) => {
+            if (el.videoId == playerState.songPlaying.videoId) {
+               let currentVideoId = --index;
+               if (
+                  currentVideoId < playerState.playlist.length &&
+                  currentVideoId >= 0
+               ) {
+                  setPlayerState({
+                     isPlaying: true,
+                     songPlaying: playerState.playlist[currentVideoId],
+                  });
+               }
+            }
+         });
+      }
 
    const padTime = (time) => {
       return String(time).length === 1 ? `0${time}` : `${time}`;
@@ -101,6 +122,15 @@ export default function Player(props) {
 
       return formattedTime;
    }
+
+   const playerOptions = {
+      height: '0',
+      width: '0',
+      playerVars: {
+         // https://developers.google.com/youtube/player_parameters
+         autoplay: 1,
+      },
+   };
 
    function videoOnPlay(event) {
       setPlayerState({
@@ -137,58 +167,29 @@ export default function Player(props) {
       3)
   }
 
-   function addDefaultThumb(e) {
-      e.target.src = '../assets/default-thumb.png';
-   }
+   
 
    function onPlayerStateChange(event) {
-      // console.log(event)
-      // console.log(playerState.isPlaying)
       var progress_bar = null;
       if (playerState.isPlaying === true) {
-         // $('#progressBar').show();
-
-         //progress_interval(playerTotalTime, playerCurrentTime)
          progress_bar = setInterval(function () {
-            //   console.log("playerCurrentTime: "+ playerCurrentTime)
-
             var playerTotalTime = event.target.getDuration();
-
-            //console.log("playerTotalTime: "+ playerTotalTime)
-
             var playerCurrentTime = event.target.getCurrentTime();
-
             var playingPercentage = (playerCurrentTime / playerTotalTime) * 100;
-
-            //console.log('playerTimeDifference: ' + playingPercentage);
 
             if (playingPercentage >= 0) {
                setProgressBar(playingPercentage);
             }
-
-            // setProgressBar(playingPercentage);
          }, 1000);
-      } else {
-         /*  let currentVideoId = 0
-       console.log("Event state:")
-       console.log(event.data)
-        
-        if(event.data == 0){ // song play end
-          console.log("Ended")
-          currentVideoId++;
-          if (currentVideoId < playerState.playlist.length) {
-            console.log(playerState.playlist[currentVideoId])
 
-            playerState.player.loadVideoById(playerState.playlist[currentVideoId]);
-          }
-        } */
+      } else {
          clearTimeout(progress_bar);
       }
 
       if (event.data != null && event.data === 0) {
          console.log('done');
          console.log(playerState.songPlaying.videoId);
-         //let index = 0
+
          playerState.playlist.map((el, index) => {
             if (el.videoId == playerState.songPlaying.videoId) {
                let currentVideoId = ++index;
@@ -201,20 +202,6 @@ export default function Player(props) {
                }
             }
          });
-
-         //let currentVideoId = 0
-         // let currentVideoId = ++playerState.playedSongIndex
-         //if (currentVideoId < playerState.playlist.length) {
-         //  console.log(playerState.playlist[currentVideoId])
-
-         //  playerState.playlist map to find playlist song by event.target.videoId
-         // move to next index when u found it
-
-         // let currentPlayingSong = playerState.playlist.filter((el) => el.videoId == playerState.playlist[currentVideoId])
-         //   console.log(currentPlayingSong)
-         //  playerState.player.loadVideoById(playerState.playlist[currentVideoId]);
-
-         //   }
       }
    }
    function handlePlayMove(e) {
@@ -231,42 +218,15 @@ export default function Player(props) {
       playerState.player.seekTo(moveInSek);
    }
 
-   function nextSong() {
-      playerState.playlist.map((el, index) => {
-         if (el.videoId == playerState.songPlaying.videoId) {
-            let currentVideoId = ++index;
-            if (currentVideoId < playerState.playlist.length) {
-               setPlayerState({
-                  isPlaying: true,
-                  songPlaying: playerState.playlist[currentVideoId],
-               });
-            }
-         }
-      });
-   }
-
-   function prevSong() {
-      playerState.playlist.map((el, index) => {
-         if (el.videoId == playerState.songPlaying.videoId) {
-            let currentVideoId = --index;
-            if (
-               currentVideoId < playerState.playlist.length &&
-               currentVideoId >= 0
-            ) {
-               setPlayerState({
-                  isPlaying: true,
-                  songPlaying: playerState.playlist[currentVideoId],
-               });
-            }
-         }
-      });
+   function addDefaultThumb(e) {
+      e.target.src = '../assets/default-thumb.png';
    }
 
    return (
       <div className="player-wrapper">
          <YouTube
             videoId={playerState.songPlaying.videoId}
-            opts={opts}
+            opts={playerOptions}
             onReady={videoOnReady}
             onPlay={videoOnPlay}
             onPause={videoOnPause}
@@ -274,18 +234,14 @@ export default function Player(props) {
          />
 
          <div className="progress-bar-wrapper">
-            <span id="current-time">{playerState.songPlaying && formatTime()}</span>{' '}
-            {/**This we will set dynamically later */}
+            <span id="current-time">{playerState.songPlaying && formatTime()}</span>
             <PrettoSlider
                min={0}
                max={100}
                value={progressBar}
                onChange={handlePlayMove}
             />
-            <span id="duration">
-               {playerState.songPlaying &&
-                  formatDuration(playerState.songPlaying.duration / 1000)}
-            </span>
+            <span id="duration">{playerState.songPlaying && formatDuration(playerState.songPlaying.duration / 1000)}</span>
          </div>
          <div className="song-playing-details">
             <span className="player-title">

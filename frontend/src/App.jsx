@@ -12,6 +12,7 @@ import {
 import PlayerContextProvider from './contexts/PlayerContext';
 import SearchContextProvider from './contexts/SearchContext';
 import IsOpenContextProvider from './contexts/IsOpenContext';
+import PlaylistsContextProvider from './contexts/PlaylistsContext';
 
 import { DashboardLayout, SinglePageLayout, SharedPlaylistLayout } from './utils/Layouts';
 
@@ -36,6 +37,7 @@ function App() {
    return (
       <PlayerContextProvider>
       <SearchContextProvider>
+      <PlaylistsContextProvider>
       <IsOpenContextProvider>
       <Router>
          <Switch>
@@ -48,6 +50,7 @@ function App() {
          </Switch>
       </Router>
       </IsOpenContextProvider>
+      </PlaylistsContextProvider>
       </SearchContextProvider>
       </PlayerContextProvider>
    );
