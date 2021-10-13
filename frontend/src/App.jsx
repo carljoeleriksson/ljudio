@@ -11,6 +11,7 @@ import {
 
 import PlayerContextProvider from './contexts/PlayerContext';
 import SearchContextProvider from './contexts/SearchContext';
+import IsOpenContextProvider from './contexts/IsOpenContext';
 
 import { DashboardLayout, SinglePageLayout, SharedPlaylistLayout } from './utils/Layouts';
 
@@ -35,6 +36,7 @@ function App() {
    return (
       <PlayerContextProvider>
       <SearchContextProvider>
+      <IsOpenContextProvider>
       <Router>
          <Switch>
             <RouteWrapper path="/login" component={LoginComponent} layout={SinglePageLayout} />
@@ -45,6 +47,7 @@ function App() {
             <RouteWrapper path="/" component={LandingComponent} layout={DashboardLayout} />
          </Switch>
       </Router>
+      </IsOpenContextProvider>
       </SearchContextProvider>
       </PlayerContextProvider>
    );

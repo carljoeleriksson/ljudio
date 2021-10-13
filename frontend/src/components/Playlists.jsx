@@ -4,10 +4,12 @@ import { Button } from 'react-bootstrap/';
 import { FaTrashAlt } from 'react-icons/fa';
 import { GeneralContext } from '../utils/Layouts';
 import { PlayerContext } from '../contexts/PlayerContext';
+import { IsOpenContext } from '../contexts/IsOpenContext';
 
 function Playlists() {
    const [playlistsCxt, setPlaylistsCxt] = useContext(GeneralContext);
    const [playerState, updatePlayerState] = useContext(PlayerContext);
+   const { isMenuOpen, toggleMenu, stateChangeHandler } = useContext(IsOpenContext)
 
    function getToken() {
       return sessionStorage.getItem('auth');
@@ -63,12 +65,9 @@ function Playlists() {
       // console.log(data);
    }
    
-   function resetContexts() {
-      updatePlayerState({
-        playlist: [],
-        playedSongIndex: 0,
-        playlistVideoIds: []
-      })
+   function handleClick() {
+      console.log('Playlist link clicked');
+      toggleMenu()
    }
 
    console.log('playlists from PLAYLISTS', playlists);
@@ -90,7 +89,7 @@ function Playlists() {
                   <Link
                      to={
                         `/singleplaylistpage/${playlist.Id}/${playlist.Name}`
-                     } onClick={resetContexts}
+                     } onClick={handleClick}
                   >
                      {playlist.Name}
                   </Link>

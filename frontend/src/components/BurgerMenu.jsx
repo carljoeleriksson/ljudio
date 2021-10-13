@@ -1,9 +1,11 @@
 import { color } from '@mui/system';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
 import Playlists from './Playlists';
 import { FaDoorOpen } from 'react-icons/fa';
+
+import { IsOpenContext } from '../contexts/IsOpenContext';
 
 const styles = {
    bmBurgerButton: {
@@ -52,7 +54,8 @@ const styles = {
 };
 
 function BurgerMenu() {
-   const [redirect, setRedirect] = useState(false);
+   const { isMenuOpen, toggleMenu, stateChangeHandler } = useContext(IsOpenContext)
+   const [ redirect, setRedirect ] = useState(false);
    const showSettings = (e) => {
       e.preventDefault();
    };
@@ -64,7 +67,12 @@ function BurgerMenu() {
    }
 
    return (
-      <Menu styles={styles} width={'280px'}>
+      <Menu 
+         isOpen={isMenuOpen} 
+         onStateChange={(state) => stateChangeHandler(state)}
+         styles={styles} 
+         width={'280px'}
+      >
          <h5 className="burger-menu-title">Playlists</h5>
          <Playlists></Playlists>
          <button className="logout-btn icon-btn" onClick={logout}><FaDoorOpen/><span>Logout</span></button>
