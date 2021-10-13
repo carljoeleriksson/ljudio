@@ -18,9 +18,10 @@ function SinglePlaylistPage(props) {
   const [redirect, setRedirect] = useState(false);
   
   const { playlistId, playlistName, code } = useParams()
-  const shareCode = code;
+
   console.log('playlistId', playlistId);
   console.log('playlistName', playlistName);
+  console.log('shareCode', code);
   
   const url = window.location.href;
 
@@ -32,7 +33,7 @@ function SinglePlaylistPage(props) {
   // const playlistId = params.playlistId;
   // const playlistName = params.playlistName;
 
-  const shareLink = shareCode !== undefined ? shareCode : null;
+  const shareCode = code !== undefined ? code : null;
 
   function playPause(songObj) {
     //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
@@ -53,7 +54,6 @@ function SinglePlaylistPage(props) {
     }
   }
 
-  //This is the fetch that we're gonna use once we can connecto to backend.
   function getToken() {
     return sessionStorage.getItem('auth');
   }
@@ -105,10 +105,10 @@ function SinglePlaylistPage(props) {
     console.log('Delete response: ', data);
     if (data.changes > 0) {
 
-      if (!shareLink) {
+      if (!shareCode) {
         getSinglePlaylist();
       } else {
-        getSharedPlaylist(shareLink);
+        getSharedPlaylist(shareCode);
       }
 
     } else if (data.error) {
@@ -160,39 +160,29 @@ function SinglePlaylistPage(props) {
     }
   }
 
-  useEffect(() => {
-    if (!shareLink) {
-      getSinglePlaylist();
-
-    } else {
-      getSharedPlaylist(shareLink);
-    }
-    
-  }, []);
-
   function addDefaultThumb(e) {
     e.target.src = '.../assets/default-thumb.png';
   }
 
-  // function resetPlayerContext() {
-  //   updatePlayerState({
-  //     isPlaying: false,
-  //     playlist: [],
-  //     playedSongIndex: 0,
-  //     playlistVideoIds: []
-  //   })
+
+  useEffect(() => {
+    if (!shareCode) {
+      getSinglePlaylist();
+
+    } else {
+      getSharedPlaylist(shareCode);
+    }
     
-  //   setRedirect(true);
-  // }
+  }, []);
 
   return (
     <>
-      {!shareLink && <IsLoggedIn />}
-      {redirect && <Redirect to='/' />}
+      {!shareCode && <IsLoggedIn />}
+      { redirect && <Redirect to='/' /> }
       <div className='single-playlist-wrapper'>
         <div className='single-playlist-header'>
           <h2>{playlistName}</h2>
-          {!shareLink && (
+          {!shareCode && (
             <button
               className='share-playlist-btn icon-btn'
               onClick={(e) => {
@@ -236,7 +226,7 @@ function SinglePlaylistPage(props) {
                   )}
                 </button>
 
-                {!shareLink && (
+                {!shareCode && (
                   <button
                     className='delete-btn icon-btn'
                     onClick={(e) => {

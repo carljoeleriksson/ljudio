@@ -12,7 +12,7 @@ import {
 import PlayerContextProvider from './contexts/PlayerContext';
 import SearchContextProvider from './contexts/SearchContext';
 
-import { DashboardLayout, SinglePageLayout } from './utils/Layouts';
+import { DashboardLayout, SinglePageLayout, SharedPlaylistLayout } from './utils/Layouts';
 
 import './App.css';
 
@@ -40,7 +40,8 @@ function App() {
             <RouteWrapper path="/login" component={LoginComponent} layout={SinglePageLayout} />
             <RouteWrapper path="/register" component={RegisterComponent} layout={SinglePageLayout} />
             <RouteWrapper path="/search" component={SearchRenderComponent} layout={DashboardLayout} />
-            <RouteWrapper path="/singleplaylistpage/:playlistId/:playlistName" component={SinglePlaylistComponent} layout={DashboardLayout} />
+            <RouteWrapper path="/singleplaylistpage/:playlistId/:playlistName/:code" component={SinglePlaylistComponent} layout={SharedPlaylistLayout} />
+            <RouteWrapper path="/singleplaylistpage/:playlistId/:playlistName/" component={SinglePlaylistComponent} layout={DashboardLayout} />
             <RouteWrapper path="/" component={LandingComponent} layout={DashboardLayout} />
          </Switch>
       </Router>
