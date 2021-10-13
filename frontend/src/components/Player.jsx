@@ -2,8 +2,7 @@ import React, { useContext, useState } from 'react';
 import YouTube from 'react-youtube';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
 import { PlayerContext } from '../contexts/PlayerContext';
-import { ProgressBar } from 'react-bootstrap';
-import Slider, { SliderThumb } from '@mui/material/Slider';
+import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 
 export default function Player(props) {
@@ -68,38 +67,7 @@ export default function Player(props) {
           })
         }
       }
-    
-      function playNext(){
-        //console.log("Play next:")
-        playerState.playlist.map((el, index) => {
-          if (el.videoId == playerState.songPlaying.videoId) {
-            let currentVideoId = ++index
-            if (currentVideoId < playerState.playlist.length) {
-              console.log(playerState.playlist[currentVideoId])
-              setPlayerState({
-                isPlaying: true,
-                songPlaying: playerState.playlist[currentVideoId]
-              })
-            }
-          }
-        })
-      }
-    
-      function playBack (){
-        //console.log("Play back:")
-        playerState.playlist.map((el, index) => {
-          if (el.videoId == playerState.songPlaying.videoId) {
-            let currentVideoId = --index
-            if (currentVideoId < playerState.playlist.length && currentVideoId >= 0) {
-              console.log(playerState.playlist[currentVideoId])
-              setPlayerState({
-                isPlaying: true,
-                songPlaying: playerState.playlist[currentVideoId]
-              })
-            }
-          }
-        })
-      }
+
    const opts = {
       height: '0',
       width: '0',
@@ -150,16 +118,6 @@ export default function Player(props) {
       setPlayerState({
          isPlaying: false,
          player: event.target,
-      });
-   }
-
-   // play a list of songs
-   // to be called later
-   function playAplaylist() {
-      playerState.player.loadVideoById({
-         videoId: playerState.songPlaying.videoId,
-         startSeconds: 5,
-         endSeconds: 60,
       });
    }
 

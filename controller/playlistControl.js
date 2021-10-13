@@ -3,32 +3,26 @@ const db = require('../model/playlistModel')
 //const { fetchInfo, connectTopApi } = require('../model/mediaModel')
 
 
-// a controle to create a new playlist
+// a control to create a new playlist
 async function createPlaylistCont(request, response) {
 
   let result = null;
 
   try {
 
-
     let user_id = request.userId
-
     let reqData = request.body
-
     let playlist_name = reqData.Name
 
     let insert = await db.createPlaylist(user_id, playlist_name)
-
-    //console.log(insert)
 
     let playlist_id = insert.lastInsertRowid
 
     let playlist = await db.browseUserPlaylists(user_id)
 
-    console.log("New playlist is created #Id "+ playlist_id)
+    console.log("New playlist id: ", playlist_id)
 
     result = playlist
-    // result = playlist_id
 
     response.status(201)
 
@@ -49,21 +43,6 @@ async function createPlaylistCont(request, response) {
   response.json(result);
 
 }
-
-// a controle to add media to the playlist
-
-/*
-{
-  "Email" : "mr.omr86@gmail.com",
-  "Password": "pwd123"
-} */
-
-/* request body :JSON
-{
-"Playlist_id" : "",
- "Content" : media json obj
-}
-*/
 
 async function addToPlaylistCont(request, response) {
 
@@ -128,22 +107,15 @@ async function browseUserPlaylistsCont(request, response) {
   let result = null;
 
   try {
-
-
     let user_id = request.userId
-
-    //let playlist_id = request.params.id
-
     let playlist = await db.browseUserPlaylists(user_id)
 
     result = playlist
-
 
     // catch any throwable error 
   } catch (e) {
     // log error to server  
     console.log(e.message);
-
 
     // assign catched error as json obj
     result = {
@@ -157,34 +129,24 @@ async function browseUserPlaylistsCont(request, response) {
 
 }
 
-
-
 // A controle to delete a song from playlists
 async function deleteFromPlaylist(request, response) {
 
   let result = null;
 
   try {
-
-
     let user_id = request.userId
-
     let playlist_id = request.params.playlistId
-
     let content_id = request.params.contentId
-
     let playlist_db_id = await db.getUserPlaylistId(user_id, playlist_id)
-
 
     let del = await db.deleteFromPlaylist(user_id, content_id, playlist_db_id)
 
     if (del.changes == 0) {
-
-      throw Error("Can not find that content in playlist!")
-
+      throw Error("Can't find song in playlist!")
     }
 
-    console.log("Content#Id:"+content_id +" deleted from playlist#"+ playlist_id)
+    console.log("Song id: "+content_id +" deleted from playlist: "+ playlist_id)
 
     result = del
 
@@ -193,8 +155,7 @@ async function deleteFromPlaylist(request, response) {
   } catch (e) {
     // log error to server  
     console.log(e.message);
-
-
+    
     // assign catched error as json obj
     result = {
       "error": e.name,
@@ -301,11 +262,8 @@ async function sharePlaylistCont(request, response) {
 
   try {
 
-
     let user_id = request.userId
-
     let playlist_id = request.params.id
-
     let playlist_db_id = await db.getUserPlaylistId(user_id, playlist_id)
 
     console.log(playlist_db_id)

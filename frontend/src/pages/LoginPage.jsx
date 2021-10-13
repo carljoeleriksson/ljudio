@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import validateLogin from './validateLogin';
+import validateLogin from '../components/validateLogin';
 import { Link, Redirect } from 'react-router-dom';
 
 function Login() {

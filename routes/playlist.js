@@ -1,8 +1,17 @@
 const { Router } = require('express');
 const router = new Router();
 
-const { createPlaylistCont, addToPlaylistCont, browseUserPlaylistsCont, 
-    fetchPlaylistContentCont, deleteFromPlaylist, deletePlaylist, sharePlaylistCont, fetchSharedPlaylistContentCont } = require('../controller/playlistControl.js');
+const { 
+    createPlaylistCont, 
+    addToPlaylistCont, 
+    browseUserPlaylistsCont, 
+    fetchPlaylistContentCont, 
+    deleteFromPlaylist, 
+    deletePlaylist, 
+    sharePlaylistCont, 
+    fetchSharedPlaylistContentCont 
+    } = require('../controller/playlistControl.js');
+
 const { user } = require('../middleware/auth.js');
 
 

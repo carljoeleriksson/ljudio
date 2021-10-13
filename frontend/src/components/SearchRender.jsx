@@ -3,32 +3,22 @@ import { FaPlayCircle, FaPauseCircle, FaPlus } from 'react-icons/fa';
 import Player from '../components/Player';
 import PlaylistModal from '../components/PlaylistModal';
 
-export const Context = createContext();
-
 import { PlayerContext } from '../contexts/PlayerContext';
+import { SearchContext } from '../contexts/SearchContext';
 
+export const ModalContext = createContext();
 
-function SearchRender(result) {
+function SearchRender() {
+   const  { searchState } = useContext(SearchContext)
+   const searchResult = searchState.searchResult
+   console.log('searchState.searchResult', searchResult);
 
-
-
-
-   
-   if(result.result){
-   const searchResult = result.result;
-   
    const [ playerState, updatePlayerState ] = useContext(PlayerContext)
-   
-
-
    const [showContext, setShowContext] = useState(false);
-
    const [songPlaying, setSongPlaying] = useState('');
    const [addSong, setAddSong] = useState();
-   // const [getPlaylist, setGetplaylist] = useState({});
 
    function playPause(songObj) {
-      //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
       if(playerState.isPlaying && playerState.songPlaying.videoId === songObj.videoId){
          updatePlayerState({
             isPlaying: false
@@ -49,10 +39,6 @@ function SearchRender(result) {
       setShowContext(true);
    }
 
-   function playSong(videoId) {
-      console.log(videoId);
-      setSongPlaying(videoId);
-   }
   // play a list of songs
   // to be called later
   function playAplaylist() {
@@ -60,42 +46,24 @@ function SearchRender(result) {
    // arr.forEach(element => {
    let arr = []
    let songs = []
-   console.log(arr)
-   searchResult.filter((content) => content.type == 'song')
-      .map((song) => {
-         console.log(song)
-         arr.push(song.videoId)
-         songs.push(song)
-
-
+   
+   if(searchResult){
+      searchResult.filter((content) => content.type == 'song')
+         .map((song) => {
+            console.log(song)
+            arr.push(song.videoId)
+            songs.push(song)
       })
-   updatePlayerState({
-      isPlaying: true,
-      playlist: songs,
-      songPlaying: songs[0],
-      playedSongIndex: 0,
-      playlistVideoIds: arr
+   
 
-   })
-   // setPlayerState({
-   // songPlaying: 
-   // }) 
-   console.log(arr)
-
-   // playerState.songPlaying.videoId = 'e1FN047_LT0'
-  /* const oo = playerState.player.loadPlaylist(
-      {
-         playlist: arr
-      }
-      ,
-      3) */
-   console.log("Auto Paylist")
-
-   console.log(arr[0])
-
-   //playerState.player.loadVideoById(arr[0]);
-
-
+      updatePlayerState({
+         isPlaying: true,
+         playlist: songs,
+         songPlaying: songs[0],
+         playedSongIndex: 0,
+         playlistVideoIds: arr
+      })
+   }
 }
 
  
@@ -118,25 +86,33 @@ function SearchRender(result) {
    // }
 
     useEffect(() => {
-      console.log("Play a playlist:")
+      //console.log("Play a playlist:")
       playAplaylist()
    }, [searchResult]);
-   // useEffect(() => {
-   //    getPlayListDb();
-   // }, []);
+   
    function addDefaultThumb(e){
       e.target.src = '../assets/default-thumb.png'
     }
 
    return (
-      <Context.Provider value={[showContext, setShowContext]}>
+      <ModalContext.Provider value={[showContext, setShowContext]}>
          {songPlaying !== '' && <Player videoId={songPlaying} />}
          {addSong !== undefined && <PlaylistModal {...addSong} />}
+
+      {!searchResult ? 
+      <div className="search-result-wrapper">
+         <div className="song-result-container">
+            <h2>{searchState.searchMessage}</h2>
+         </div>
+      </div>
+      
+      :
+
       <div className="search-result-wrapper">
          <div className="song-result-container">
             <h2>Songs</h2>
             <ul className="song-list">
-               {searchResult
+               {searchState.searchResult
                   .filter((content) => content.type == 'song')
                   .map((song) => (
                      <li className="search-li" key={song.videoId}>
@@ -160,6 +136,7 @@ function SearchRender(result) {
             </ul>
          </div>
       </div>
+      }
 {/* 
          <div className="artist-result-container">
             <h2>Artists</h2>
@@ -190,11 +167,8 @@ function SearchRender(result) {
          */}
 
          {/* HERE, we might put a div with playlist-results later */}
-      </Context.Provider>
+      </ModalContext.Provider>
    );
-} else {
-   return(<></>)
-}
 }
 
 export default SearchRender;

@@ -200,28 +200,16 @@ deletePlaylist(user_id, playlist_id){
 },
 // share playlist
 sharePlaylist(user_id, playlist_id) {
-
     if (!user_id) {
-
         throw Error("Invalid User ID!")
-
-    }
-
-    if (!playlist_id) {
-
+    } else if (!playlist_id) {
         throw Error("Invalid Playlist ID!")
-
     }
-
-
-
-    //playlist_db_id = getUserPlaylistId(user_id, playlist_id)
 
     let sharing_code = nanoid();
 
     const insert = conn.prepare('INSERT INTO PlayLists_Share(Playlist_id, Code) VALUES(?, ?)')
         .run(playlist_id, sharing_code)
-
 
     return sharing_code
 
@@ -230,9 +218,7 @@ sharePlaylist(user_id, playlist_id) {
 fetchSharedPlaylistContent(code){
 
     if (!code) {
-
         throw Error("No sharing code provided!")
-
     }
 
     const select = 'SELECT plc.Id, plc.Playlist_id, plc.Content FROM PLaylists_Content as plc LEFT JOIN Playlists_Share as pls ON pls.Playlist_id = plc.Playlist_id WHERE pls.Code = ?'

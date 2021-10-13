@@ -1,17 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap/';
 import IsLoggedIn from '../components/IsLoggedIn';
 import {
   FaPlayCircle,
   FaPauseCircle,
   FaTrashAlt,
-  FaShare,
-  FaArrowLeft,
+  FaShare
 } from 'react-icons/fa';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import * as QueryString from 'query-string';
-import Player from '../components/Player';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 
 import { PlayerContext } from '../contexts/PlayerContext';
 
@@ -22,16 +17,24 @@ function SinglePlaylistPage(props) {
   const [sharelink, setSharelink] = useState(false);
   const [redirect, setRedirect] = useState(false);
   
-  const url = window.location.href;
-  console.log('props', props);
-  console.log('props.location.search', props.location.search);
-  const params = QueryString.parse(props.location.search);
-  console.log('params.code', params.code);
-  const playlistId = params.playlistId;
-  const playlistName = params.playlistName;
+  const { playlistId, playlistName, code } = useParams()
 
-  const sharing_code = params.code !== undefined ? params.code : null;
-  console.log('sharing_code', sharing_code);
+  console.log('playlistId', playlistId);
+  console.log('playlistName', playlistName);
+  console.log('shareCode', code);
+  
+  const url = window.location.href;
+
+  // console.log(props.location.search);
+  // const params = QueryString.parse(props.location.search);
+  // console.log(params.playlistId);
+  // console.log(params.playlistName);
+
+  // const playlistId = params.playlistId;
+  // const playlistName = params.playlistName;
+
+  const shareCode = code !== undefined ? code : null;
+
   function playPause(songObj) {
     //{playerState.isPlaying && playerState.songPlaying.videoId === song.videoId ?  <FaPauseCircle /> : <FaPlayCircle />}
     if (
@@ -51,7 +54,6 @@ function SinglePlaylistPage(props) {
     }
   }
 
-  //This is the fetch that we're gonna use once we can connecto to backend.
   function getToken() {
     return sessionStorage.getItem('auth');
   }
@@ -98,27 +100,25 @@ function SinglePlaylistPage(props) {
       `/api/delete_from_playlist/playlist/${playlistId}/contentid/${contentId}`,
       { headers: { Authorization: `Bearer ${TokenKey}` } }
     );
+
     const data = await response.json();
     console.log('Delete response: ', data);
     if (data.changes > 0) {
 
-      if (!sharing_code) {
+      if (!shareCode) {
         getSinglePlaylist();
-  
-  
       } else {
-        getSharedPlaylist(sharing_code);
+        getSharedPlaylist(shareCode);
       }
 
     } else if (data.error) {
-
       setError(data.message);
     }
   }
 
   async function sharePlaylist(e) {
     e.preventDefault();
-    // console.log('Delete from Playlist#ID:' + playlistId);
+
     const TokenKey = getToken();
     const response = await fetch(`/api/share_playlist/${playlistId}`, {
       headers: { Authorization: `Bearer ${TokenKey}` },
@@ -129,7 +129,7 @@ function SinglePlaylistPage(props) {
       setError(data.message);
     } else if (data) {
       console.log('Share code' + data);
-      navigator.clipboard.writeText(url + '&code=' + data);
+      navigator.clipboard.writeText(`${url}/${data}`);
       setSharelink(true);
     }
   }
@@ -142,12 +142,11 @@ function SinglePlaylistPage(props) {
     console.log(data)
     if (data.length > 0) {
       data.map((song) => {
-        console.log(song)
+        console.log('playAplaylist song', song)
         arr.push(song.Content.videoId)
         songs.push(song.Content)
-
-
       })
+
       updatePlayerState({
         isPlaying: true,
         playlist: songs,
@@ -156,65 +155,34 @@ function SinglePlaylistPage(props) {
         playlistVideoIds: arr
       })
 
-      console.log(arr)
-    //  console.log("player")
-     // console.log(playerState.player)
-    /*  const oo = playerState.player.loadPlaylist(
-        {
-          playlist: arr
-        }
-        ,
-        3)*/
-      console.log("Auto Paylist")
-
-      console.log(arr[0])
-
-      //playerState.player.loadVideoById(arr[0]);
+      console.log('playAplaylist arr', arr)
+      console.log("playAplaylist arr[0]", arr[0])
     }
   }
-
-  useEffect(() => {
-    if (!sharing_code) {
-      getSinglePlaylist();
-
-
-    } else {
-      getSharedPlaylist(sharing_code);
-    }
-    //setRefreshPlaylist(false)
-
-    // playAplaylist()
-  }, []);
 
   function addDefaultThumb(e) {
-    e.target.src = '../assets/default-thumb.png';
+    e.target.src = '.../assets/default-thumb.png';
   }
 
-  function resetPlayerContext() {
-    updatePlayerState({
-      isPlaying: false,
-      playlist: [],
-      playedSongIndex: 0,
-      playlistVideoIds: []
-    })
+
+  useEffect(() => {
+    if (!shareCode) {
+      getSinglePlaylist();
+
+    } else {
+      getSharedPlaylist(shareCode);
+    }
     
-    setRedirect(true);
-  }
+  }, []);
 
   return (
     <>
-      {!sharing_code && <IsLoggedIn />}
-      {redirect && <Redirect to='/' />}
+      {!shareCode && <IsLoggedIn />}
+      { redirect && <Redirect to='/' /> }
       <div className='single-playlist-wrapper'>
         <div className='single-playlist-header'>
           <h2>{playlistName}</h2>
-          <button className='back-btn icon-btn'>
-            <Link onClick={resetPlayerContext} to={'/'}>
-              <FaArrowLeft />
-            </Link>
-          </button>
-
-          {!sharing_code && (
+          {!shareCode && (
             <button
               className='share-playlist-btn icon-btn'
               onClick={(e) => {
@@ -258,7 +226,7 @@ function SinglePlaylistPage(props) {
                   )}
                 </button>
 
-                {!sharing_code && (
+                {!shareCode && (
                   <button
                     className='delete-btn icon-btn'
                     onClick={(e) => {
@@ -273,8 +241,6 @@ function SinglePlaylistPage(props) {
             ))}
         </ul>
         {error != undefined && error}
-
-        <Player></Player>
       </div>
     </>
   );
