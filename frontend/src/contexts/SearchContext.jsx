@@ -6,7 +6,8 @@ function SearchContextProvider(props) {
 	const [searchState, setSearchState] = useState({
 		searchResult: '',
 		searchTerm: '',
-		searchType: 'songs'
+		searchType: 'songs',
+		searchMessage: ''
 	})
 
 	const updateSearchState = function updateSearch(updates) {
@@ -18,7 +19,8 @@ function SearchContextProvider(props) {
 
 	const fetchSearchResult = async function fetchSearchRes(e) {
 		console.log("In fetchSearchResults");
-  
+		updateSearchState({searchMessage: 'Searching...'})
+
 		const response = await fetch('/api/search', {
 		   method: 'POST',
 		   body: JSON.stringify({
@@ -32,8 +34,9 @@ function SearchContextProvider(props) {
 		const data = await response.json();
   
 		if (data) {
-		   updateSearchState({searchResult: data.content});
+		   updateSearchState({searchResult: data.content, searchMessage: ''});
 		} else {
+			updateSearchState({searchMessage: 'Found nothing☹️ Try something else!'})
 		   console.log('Failed to fetch. Got no data from backend.');
 		}
 	 }

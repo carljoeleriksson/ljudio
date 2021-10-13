@@ -4,7 +4,7 @@ import { SearchContext } from '../contexts/SearchContext';
 import { useHistory } from 'react-router-dom'
 
 function SearchBar(props) {
-  const { searchState, updateSearchState, fetchSearchResult } = useContext(SearchContext);
+  const { updateSearchState, fetchSearchResult } = useContext(SearchContext);
   
   let history = useHistory();
 

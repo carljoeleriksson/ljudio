@@ -102,8 +102,7 @@ function SearchRender() {
       {!searchResult ? 
       <div className="search-result-wrapper">
          <div className="song-result-container">
-            <h3>Found nothing!</h3>
-            <h5>Try searching for something else.</h5>
+            <h2>{searchState.searchMessage}</h2>
          </div>
       </div>
       
