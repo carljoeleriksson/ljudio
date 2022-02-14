@@ -164,6 +164,9 @@ function SinglePlaylistPage(props) {
     e.target.src = '.../assets/default-thumb.png';
   }
 
+//antingen använd playlistCxt för att uppdatera sidan i useEffect
+//eller använd dig av previous props !== current props i [] på use effect.
+
 
   useEffect(() => {
     if (!shareCode) {
